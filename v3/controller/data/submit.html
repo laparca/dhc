@@ -1,0 +1,73 @@
+<form action="?page=queue&op=submit" method="post">
+<table class='submit'>
+<tr>
+	<td class='submitleft'>Algorithm</td>
+	<td class='submitright'>
+		<select name="alg">
+			<option value="md4">MD4</option>
+			<option value="md5" selected>MD5</option>
+			<option value="md5crypt">MD5crypt</option>
+			<option value="ntlm">NTLM</option>
+			<option value="sha1">SHA-1</option>
+		</select>
+	</td>
+</tr>
+<tr>
+	<td class='submitleft'>
+		Hash Values<br/>
+		<span class='submitnotes'>(one per line)</span>
+	</td>
+	<td class='submitright'>
+		<textarea name='hash' style='width:400px;height:125px'></textarea>
+	</td>
+</tr>
+<tr>
+	<td class='submitleft'>Character set</td>
+	<td class='submitright'>
+		<input type='checkbox' name="lower" checked/> Lowercase letters<br/>
+		<input type='checkbox' name="upper" checked/> Uppercase letters<br/>
+		<input type='checkbox' name="nums"/> Numbers<br/>
+		<input type='checkbox' name="somesymbols"/> Common symbols<br/>
+		<input type='checkbox' name="allsymbols"/> Rare symbols<br/>
+		<input type='checkbox' name="space"/> Space<br/>
+		<input type='checkbox' name="newline"/> Newline<br/>
+	</td>
+</tr>
+<tr>
+	<td class='submitleft'>Max Length</td>
+	<td class='submitright'>
+		<input type='text' name='len' style='width:50px' value='8'/>
+	</td>
+</tr>
+<tr>
+	<td class='submitleft'>Expiration</td>
+	<td class='submitright'>
+		<select name="exp">
+			<option value="15">15 minutes</option>
+			<option value="30">30 minutes</option>
+			<option value="60" selected="1">1 hour</option>
+			<option value="120">2 hours</option>
+			<option value="300">5 hours</option>
+			<option value="720">12 hours</option>
+			<option value="1440">1 day</option>
+			<option value="10080">1 week</option>
+			<option value="0">Never</option>
+		</select>
+	</td>
+</tr>
+<tr>
+	<td class='submitleft'>Priority</td>
+	<td class='submitright'>
+		<select name="pri">
+			<option value="0">Idle</option>
+			<option value="5" selected>Normal</option>
+			<option value="10">Urgent</option>
+		</select>
+	</td>
+</tr>
+<tr>
+	<td class='submitleft'>&nbsp;</td>
+	<td class='submitright'><input type="submit" value="Submit Hash"/></td>
+</tr>
+</table>
+</form>

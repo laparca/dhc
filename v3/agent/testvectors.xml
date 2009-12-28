@@ -1,0 +1,82 @@
+<testvectors>
+	
+	<!-- 1 char -->
+	<suite device="cpu" charset="abcdefghijklmnopqrstuvwxyz" start="a" end="z">
+		<test desc="MD5      (1)" alg="md5" hash="4b43b0aee35624cd95b910189b3dc231" cleartext="r"/>
+		<test desc="MD5      (2)" alg="md5" hash="d8578edf8458ce06fbc5bb76a58c5ca4" cleartext=""/>
+	</suite>
+	
+	<suite device="gpu" charset="abcdefghijklmnopqrstuvwxyz" start="a" end="z">
+		<test desc="MD4      (1)" alg="md4" hash="7a1b96563495a2286ab79687369c07b3" cleartext="r"/>
+		<test desc="MD4      (2)" alg="md4" hash="eb36d0997d1ed6c8d28a66096a2f97c6" cleartext=""/>
+		<test desc="MD5      (1)" alg="md5" hash="4b43b0aee35624cd95b910189b3dc231" cleartext="r"/>
+		<test desc="MD5      (2)" alg="md5" hash="d8578edf8458ce06fbc5bb76a58c5ca4" cleartext=""/>
+		<test desc="MD5crypt (1)" alg="md5crypt" hash="$1$RirbtGbt$dg24AqRDTPa3YF88FZjEd." cleartext="r"/>
+		<test desc="MD5crypt (2)" alg="md5crypt" hash="$1$DXmOdKk6$DWjQ0CpbkJalnPNzGsqHt1" cleartext=""/>
+		<test desc="NTLM     (1)" alg="ntlm" hash="edb9b445c52137dce3abb04c0e7493e4" cleartext="r"/>
+		<test desc="NTLM     (2)" alg="ntlm" hash="c8695eedafd1168ca164daf0da0be1df" cleartext=""/>
+		<test desc="SHA-1    (1)" alg="sha1" hash="4dc7c9ec434ed06502767136789763ec11d2c4b7" cleartext="r"/>
+		<test desc="SHA-1    (2)" alg="sha1" hash="b1b3773a05c0ed0176787a4f1574ff0075f7521e" cleartext=""/>
+	</suite>
+	
+	
+	<!-- 2 char -->
+	<suite device="cpu" charset="abcdefghijklmnopqrstuvwxyz" start="aa" end="zz">
+		<test desc="MD5      (1)" alg="md5" hash="8030aac38dd093d491b3c10cb59832f2" cleartext="qx"/>
+		<test desc="MD5      (2)" alg="md5" hash="d8578edf8458ce06fbc5bb76a58c5ca4" cleartext=""/>
+	</suite>
+	
+	<suite device="gpu" charset="abcdefghijklmnopqrstuvwxyz" start="aa" end="zz">
+		<test desc="MD4      (1)" alg="md4" hash="96694c9cbe3588aff579be1dc626b591" cleartext="qx"/>
+		<test desc="MD4      (2)" alg="md4" hash="eb36d0997d1ed6c8d28a66096a2f97c6" cleartext=""/>
+		<test desc="MD5      (1)" alg="md5" hash="8030aac38dd093d491b3c10cb59832f2" cleartext="qx"/>
+		<test desc="MD5      (2)" alg="md5" hash="d8578edf8458ce06fbc5bb76a58c5ca4" cleartext=""/>
+		<test desc="MD5crypt (1)" alg="md5crypt" hash="$1$QKeKkxf5$re0FGVMFNAN3d0APiQrNy/" cleartext="qx"/>
+		<test desc="MD5crypt (2)" alg="md5crypt" hash="$1$DXmOdKk6$DWjQ0CpbkJalnPNzGsqHt1" cleartext=""/>
+		<test desc="NTLM     (1)" alg="ntlm" hash="86fe1e5eae2ac4ee3e84d70e89072fbc" cleartext="qx"/>
+		<test desc="NTLM     (2)" alg="ntlm" hash="c8695eedafd1168ca164daf0da0be1df" cleartext=""/>
+		<test desc="SHA-1    (1)" alg="sha1" hash="04affb5109a0a8874c988e11f0385f49a12efb8c" cleartext="qx"/>
+		<test desc="SHA-1    (2)" alg="sha1" hash="b1b3773a05c0ed0176787a4f1574ff0075f7521e" cleartext=""/>
+	</suite>
+	
+	
+	<!-- 3 char -->
+	<suite device="cpu" charset="abcdefghijklmnopqrstuvwxyz" start="aaa" end="zzz">
+		<test desc="MD5      (1)" alg="md5" hash="4ed9407630eb1000c0f6b63842defa7d" cleartext="def"/>
+		<test desc="MD5      (2)" alg="md5" hash="d8578edf8458ce06fbc5bb76a58c5ca4" cleartext=""/>
+	</suite>
+	
+	<suite device="gpu" charset="abcdefghijklmnopqrstuvwxyz" start="aaa" end="zzz">
+		<test desc="MD4      (1)" alg="md4" hash="e68aa70a2e81650bad0c9cdabbe39894" cleartext="def"/>
+		<test desc="MD4      (2)" alg="md4" hash="eb36d0997d1ed6c8d28a66096a2f97c6" cleartext=""/>
+		<test desc="MD5      (1)" alg="md5" hash="4ed9407630eb1000c0f6b63842defa7d" cleartext="def"/>
+		<test desc="MD5      (2)" alg="md5" hash="d8578edf8458ce06fbc5bb76a58c5ca4" cleartext=""/>
+		<test desc="MD5crypt (1)" alg="md5crypt" hash="$1$MVYqfx62$hHdUKJzJ7xb3SJLWIo.yO0" cleartext="def"/>
+		<test desc="MD5crypt (2)" alg="md5crypt" hash="$1$DXmOdKk6$DWjQ0CpbkJalnPNzGsqHt1" cleartext=""/>
+		<test desc="NTLM     (1)" alg="ntlm" hash="68171e55d24504226ea78b58733c24c7" cleartext="def"/>
+		<test desc="NTLM     (2)" alg="ntlm" hash="c8695eedafd1168ca164daf0da0be1df" cleartext=""/>
+		<test desc="SHA-1    (1)" alg="sha1" hash="589c22335a381f122d129225f5c0ba3056ed5811" cleartext="def"/>
+		<test desc="SHA-1    (2)" alg="sha1" hash="b1b3773a05c0ed0176787a4f1574ff0075f7521e" cleartext=""/>
+	</suite>
+	
+	
+	<!-- 4 char -->
+	<suite device="cpu" charset="abcdefghijklmnopqrstuvwxyz" start="aaaa" end="zzzz">
+		<test desc="MD5      (1)" alg="md5" hash="098f6bcd4621d373cade4e832627b4f6" cleartext="test"/>
+		<test desc="MD5      (2)" alg="md5" hash="d8578edf8458ce06fbc5bb76a58c5ca4" cleartext=""/>
+	</suite>
+	
+	<suite device="gpu" charset="abcdefghijklmnopqrstuvwxyz" start="aaaa" end="zzzz">
+		<test desc="MD4      (1)" alg="md4" hash="db346d691d7acc4dc2625db19f9e3f52" cleartext="test"/>
+		<test desc="MD4      (2)" alg="md4" hash="eb36d0997d1ed6c8d28a66096a2f97c6" cleartext=""/>
+		<test desc="MD5      (1)" alg="md5" hash="098f6bcd4621d373cade4e832627b4f6" cleartext="test"/>
+		<test desc="MD5      (2)" alg="md5" hash="d8578edf8458ce06fbc5bb76a58c5ca4" cleartext=""/>
+		<test desc="MD5crypt (1)" alg="md5crypt" hash="$1$UIeqa2eX$S6AxcrK.CBQfPmjj/J/vB1" cleartext="test"/>
+		<test desc="MD5crypt (2)" alg="md5crypt" hash="$1$DXmOdKk6$DWjQ0CpbkJalnPNzGsqHt1" cleartext=""/>
+		<test desc="NTLM     (1)" alg="ntlm" hash="0cb6948805f797bf2a82807973b89537" cleartext="test"/>
+		<test desc="NTLM     (2)" alg="ntlm" hash="c8695eedafd1168ca164daf0da0be1df" cleartext=""/>
+		<test desc="SHA-1    (1)" alg="sha1" hash="a94a8fe5ccb19ba61c4c0873d391e987982fbbd3" cleartext="test"/>
+		<test desc="SHA-1    (2)" alg="sha1" hash="b1b3773a05c0ed0176787a4f1574ff0075f7521e" cleartext=""/>
+	</suite>
+	
+</testvectors>
