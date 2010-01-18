@@ -112,8 +112,8 @@ extern "C" __global__ void sha256Kernel(int* gtarget, int* gstart, char* gsalt, 
 		start[threadIdx.x] = gstart[threadIdx.x];
 	
 	//Cache target value (do byte-swap here)
-	__shared__ int target[5];
-	if(threadIdx.x < 5)
+	__shared__ int target[8];
+	if(threadIdx.x < 8)
 		target[threadIdx.x] = bswap(gtarget[threadIdx.x]);
 	
 	//Wait for all cache filling to finish
@@ -124,7 +124,7 @@ extern "C" __global__ void sha256Kernel(int* gtarget, int* gstart, char* gsalt, 
 		
 	//Test the output
 	int* pt = (int*)target;
-	if( (pt[0] == a) && (pt[1] == b) && (pt[2] == c) && (pt[3] == d) && (pt[4] == e))
+	if( (pt[0] == a) && (pt[1] == b) && (pt[2] == c) && (pt[3] == d) && (pt[4] == e) && (pt[5] == f) && (pt[6] == g) && (pt[7] == h))
 	{
 		//If we get here, we must be a match! Save the result and quit
 		*status = 1;

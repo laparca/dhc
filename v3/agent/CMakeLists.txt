@@ -60,6 +60,7 @@ IF(${CUDA_ENABLED})
 		md5crypt_kernel.cu
 		ntlm_kernel.cu
 		sha1_kernel.cu
+		sha256_kernel.cu
 		)
 		
 		#Get some file names
