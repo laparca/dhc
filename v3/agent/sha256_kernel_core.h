@@ -218,7 +218,7 @@ s1 = ROTR(w##orig2, 17) ^ ROTR(w##orig2, 19) ^ (w##orig2 >> 10); \
 w##dest = w##orig3 + s0 + w##orig4 + s1;
 
 #define PreRound()                                                   \
-        s0 = ROTR(a, 2) ^ (ROTR(a, 13) ^ (ROTR(a, 22);           \
+        s0 = ROTR(a, 2) ^ ROTR(a, 13) ^ ROTR(a, 22);           \
         maj = (a && b) ^ (a && c) ^ (b && c);                 \
         t2 = s0 + maj;                                               \
         s1 = ROTR(e, 6) ^ ROTR(e, 11) ^ ROTR(e, 25);             \
@@ -245,7 +245,7 @@ w##dest = w##orig3 + s0 + w##orig4 + s1;
 //STEP 4: SHA-256 Rounds
 {
 	unsigned int s0,s1;
-	unsigned int maj, t2, ch;
+	unsigned int maj, t1, t2, ch;
 
 	// Extend the sixteen 32-bit words into sixty-four 32-bit words:
 	Extend(16,  1, 14,  0,  9);

@@ -44,6 +44,10 @@
 //Textures
 texture<int, 1, cudaReadModeElementType> texCharset;
 
+#define AddPadding(num) case num: \
+		w##num = (w##num & ~paddmask) | padding; \
+		break
+
 #define InitGuess(num, a,b,c,d)				\
 		{										\
 			/* Calculate the four indices */	\
@@ -78,6 +82,11 @@ texture<int, 1, cudaReadModeElementType> texCharset;
 				carry = 0;								\
 		}
 
+#define bswap(x) ( (x & 0xFF)<<24 | (x&0xFF00) << 8 | (x&0xFF0000) >> 8 | (x&0xFF000000) >> 24  )
+
+#define SaveOutput(num) \
+	case num:	\
+		reinterpret_cast<int*>(output)[num] = w##num;
 
 /*!
 	@brief CUDA implementation of SHA256	
