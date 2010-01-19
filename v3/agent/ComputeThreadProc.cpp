@@ -89,6 +89,7 @@ void ComputeThreadProc(void* pData)
 			algs.push_back("md5crypt");
 			algs.push_back("ntlm");
 			algs.push_back("sha1");
+			algs.push_back("sha256");
 		}
 		else if(LINUX==1 && AMD64==1)			//64 bit Linux
 			algs.push_back("md5");

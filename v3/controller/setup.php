@@ -121,6 +121,9 @@ if ($action == "y")
 		$query5 = "CREATE TABLE IF NOT EXISTS `hashes` (
 		  `id` int(11) NOT NULL auto_increment,
 		  `active` int(11) NOT NULL,
+		  `crack` int(11) NOT NULL,
+		  `hash` text collate latin1_general_ci NOT NULL,
+		  `collision` text collate latin1_general_ci NOT NULL,
 		 PRIMARY KEY (`id`)
 		 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;";
 		 
