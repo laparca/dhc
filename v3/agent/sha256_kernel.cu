@@ -82,6 +82,35 @@ texture<int, 1, cudaReadModeElementType> texCharset;
 				carry = 0;								\
 		}
 
+#define Extend(dest, orig1, orig2, orig3, orig4)                 \
+        s0 = ROTR(w##orig1, 7) ^ ROTR(w##orig1, 18) ^ (w##orig1 >> 3);   \
+        s1 = ROTR(w##orig2, 17) ^ ROTR(w##orig2, 19) ^ (w##orig2 >> 10); \
+        w##dest = w##orig3 + s0 + w##orig4 + s1;
+
+#define PreRound()                                             \
+        s0 = ROTR(a, 2) ^ ROTR(a, 13) ^ ROTR(a, 22);           \
+        maj = (a & b) ^ (a & c) ^ (b & c);                  \
+        t2 = s0 + maj;                                         \
+        s1 = ROTR(e, 6) ^ ROTR(e, 11) ^ ROTR(e, 25);           \
+        ch = (e & f) ^ ((~ e) &  g);
+
+#define PostRound()                                                  \
+        h = g;                                                       \
+        g = f;                                                       \
+        f = e;                                                       \
+        e = d + t1;                                                  \
+        d = c;                                                       \
+        c = b;                                                       \
+        b = a;                                                       \
+        a = t1 + t2;
+
+#define Round(it)                                                    \
+        PreRound();                                                  \
+        t1 = h + s1 + ch + k##it + w##it;                            \
+        PostRound();
+
+#define ROTR(a,shamt) (((a) >> shamt) | ((a) << (32-shamt)))
+
 #define bswap(x) ( (x & 0xFF)<<24 | (x&0xFF00) << 8 | (x&0xFF0000) >> 8 | (x&0xFF000000) >> 24  )
 
 #define SaveOutput(num) \

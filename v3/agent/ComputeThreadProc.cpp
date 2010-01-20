@@ -303,6 +303,10 @@ void DoWorkUnitOnGPU(WorkUnit& wu, Device* pDevice, CudaContext* pContext)
 		else
 			threadcount = 64;
 	}
+	else if(wu.m_algorithm == "sha256") // SHA256 requires a lot of registers
+	{
+		threadcount = 64;
+	}
 	unsigned long hashcount = xblockcount * threadcount;
 	
 	//Record performance info

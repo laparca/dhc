@@ -212,34 +212,6 @@ unsigned int
 	g = 0x1f83d9ab,
 	h = 0x5be0cd19;
 
-#define Extend(dest, orig1, orig2, orig3, orig4)                     \
-s0 = ROTR(w##orig1, 7) ^ ROTR(w##orig1, 18) ^ (w##orig1 >> 3);   \
-s1 = ROTR(w##orig2, 17) ^ ROTR(w##orig2, 19) ^ (w##orig2 >> 10); \
-w##dest = w##orig3 + s0 + w##orig4 + s1;
-
-#define PreRound()                                                   \
-        s0 = ROTR(a, 2) ^ ROTR(a, 13) ^ ROTR(a, 22);           \
-        maj = (a && b) ^ (a && c) ^ (b && c);                 \
-        t2 = s0 + maj;                                               \
-        s1 = ROTR(e, 6) ^ ROTR(e, 11) ^ ROTR(e, 25);             \
-        ch = (e && f) ^ ((~ e) &&  g);
-
-#define PostRound()                                                  \
-        h = g;                                                       \
-        g = f;                                                       \
-        f = e;                                                       \
-        e = d + t1;                                                  \
-        d = c;                                                       \
-        c = b;                                                       \
-        b = a;                                                       \
-        a = t1 + t2;
-
-#define Round(it)                                                    \
-        PreRound();                                                  \
-        t1 = h + s1 + ch + k##it + w##it;                            \
-        PostRound();
-
-#define ROTR(a,shamt) (((a) >> shamt) | ((a) << (32-shamt)))
 
 //////////////////////////////////////////////////////////////////////////////
 //STEP 4: SHA-256 Rounds
@@ -298,70 +270,14 @@ w##dest = w##orig3 + s0 + w##orig4 + s1;
 	Extend(63, 48, 61, 47, 56);
 
 
-	Round( 0);
-	Round( 1);
-	Round( 2);
-	Round( 3);
-	Round( 4);
-	Round( 5);
-	Round( 6);
-	Round( 7);
-	Round( 8);
-	Round( 9);
-	Round(10);
-	Round(11);
-	Round(12);
-	Round(13);
-	Round(14);
-	Round(15);
-	Round(16);
-	Round(17);
-	Round(18);
-	Round(19);
-	Round(20);
-	Round(21);
-	Round(22);
-	Round(23);
-	Round(24);
-	Round(25);
-	Round(26);
-	Round(27);
-	Round(28);
-	Round(29);
-	Round(30);
-	Round(31);
-	Round(32);
-	Round(33);
-	Round(34);
-	Round(35);
-	Round(36);
-	Round(37);
-	Round(38);
-	Round(39);
-	Round(40);
-	Round(41);
-	Round(42);
-	Round(43);
-	Round(44);
-	Round(45);
-	Round(46);
-	Round(47);
-	Round(48);
-	Round(49);
-	Round(50);
-	Round(51);
-	Round(52);
-	Round(53);
-	Round(54);
-	Round(55);
-	Round(56);
-	Round(57);
-	Round(58);
-	Round(59);
-	Round(60);
-	Round(61);
-	Round(62);
-	Round(63);
+	Round( 0); Round( 1); Round( 2); Round( 3); Round( 4); Round( 5); Round( 6); Round( 7);
+	Round( 8); Round( 9); Round(10); Round(11); Round(12); Round(13); Round(14); Round(15);
+	Round(16); Round(17); Round(18); Round(19); Round(20); Round(21); Round(22); Round(23);
+	Round(24); Round(25); Round(26); Round(27); Round(28); Round(29); Round(30); Round(31);
+	Round(32); Round(33); Round(34); Round(35); Round(36); Round(37); Round(38); Round(39);
+	Round(40); Round(41); Round(42); Round(43); Round(44); Round(45); Round(46); Round(47);
+	Round(48); Round(49); Round(50); Round(51); Round(52); Round(53); Round(54); Round(55);
+	Round(56); Round(57); Round(58); Round(59); Round(60); Round(61); Round(62); Round(63);
 
 	a += 0x6a09e667;
 	b += 0xbb67ae85;
@@ -371,5 +287,4 @@ w##dest = w##orig3 + s0 + w##orig4 + s1;
 	f += 0x9b05688c;
 	g += 0x1f83d9ab;
 	h += 0x5be0cd19;
-
 }
