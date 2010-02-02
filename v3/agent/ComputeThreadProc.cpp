@@ -89,6 +89,7 @@ void ComputeThreadProc(void* pData)
 			algs.push_back("md5crypt");
 			algs.push_back("ntlm");
 			algs.push_back("sha1");
+			algs.push_back("sha256");
 		}
 		else if(LINUX==1 && AMD64==1)			//64 bit Linux
 			algs.push_back("md5");
@@ -301,6 +302,10 @@ void DoWorkUnitOnGPU(WorkUnit& wu, Device* pDevice, CudaContext* pContext)
 			threadcount = 128;
 		else
 			threadcount = 64;
+	}
+	else if(wu.m_algorithm == "sha256") // SHA256 requires a lot of registers
+	{
+		threadcount = 64;
 	}
 	unsigned long hashcount = xblockcount * threadcount;
 	

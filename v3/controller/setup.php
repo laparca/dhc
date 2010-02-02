@@ -71,8 +71,6 @@ if ($action == "y")
 
 	if ($uname!="" && $pass!="" && $db!="")
 	{
-		//TODO: Update this for new database schema
-		
 		$sql = mysql_connect ($dbserver, $uname, $pass);
 		mysql_select_db($db, $sql);
 		$query1 = "CREATE TABLE IF NOT EXISTS `cracks` (
@@ -85,6 +83,7 @@ if ($action == "y")
 		`started` int(11) NOT NULL,
 		`expiration` int(11) NOT NULL,
 		`priority` int(11) NOT NULL,
+		`active` int(11) NOT NULL,
 		`disposition` varchar(6) collate latin1_general_ci NOT NULL,
 		`collision` varchar(255) collate latin1_general_ci NOT NULL,
 		`updated` int(11) NOT NULL,
@@ -119,8 +118,16 @@ if ($action == "y")
 		) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
 		";
 
-
-		if(mysql_query($query1) && mysql_query($query2) && mysql_query($query3) && mysql_query($query4))
+		$query5 = "CREATE TABLE IF NOT EXISTS `hashes` (
+		  `id` int(11) NOT NULL auto_increment,
+		  `active` int(11) NOT NULL,
+		  `crack` int(11) NOT NULL,
+		  `hash` text collate latin1_general_ci NOT NULL,
+		  `collision` text collate latin1_general_ci NOT NULL,
+		 PRIMARY KEY (`id`)
+		 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;";
+		 
+		if(mysql_query($query1) && mysql_query($query2) && mysql_query($query3) && mysql_query($query4) && mysql_query($query5))
 		{
 			$dbserver = addslashes($dbserver);
 			$uname = addslashes($uname);

@@ -345,6 +345,8 @@ void ControllerLink::DecodeHash(
 	}
 	else if(algorithm == "sha1")
 		hashlen = 20;
+	else if(algorithm == "sha256")
+		hashlen = 32;
 	else	
 		ThrowCustomError("Unknown hash function");
 		

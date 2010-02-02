@@ -205,6 +205,7 @@ int main(int argc, char* argv[])
 			gpus = driver.GetDeviceCount();
 			if(g_bNoGPU)
 				gpus = 0;
+			cout << "CUDA is enabled and there are " << gpus << " GPUs" << endl;
 		#endif
 		
 		//Do tests
@@ -235,8 +236,11 @@ int main(int argc, char* argv[])
 					float gflops = static_cast<float>(tdev.GetClockRate() * 8 * 3 * tdev.GetMultiprocessorCount()) / 1000000;
 					
 					//CUDA under 50 gflops isnt worth bothering with, skip it
-					if(gflops < 50)
-						continue;
+					//if(gflops < 50)
+					//{
+					//	cout << "Your CUDA device is too slow. Switching to CPU" << endl;
+					//	continue;
+					//}
 					
 					ComputeDevice dev;
 					dev.bGPU = true;

@@ -218,7 +218,8 @@ function DoQueue()
 			'md5' => 32,
 			'md4' => 32,
 			'ntlm' => 32,
-			'sha1' => 40, 
+			'sha1' => 40,
+			'sha256' => 64,
 			'md5crypt' => -1	/* TODO: do something here */
 			);
 		$hashlen = $hash_lengths[$alg];
