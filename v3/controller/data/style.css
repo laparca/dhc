@@ -29,6 +29,11 @@ tr
  Page header
  ************************************************************/
 
+.logo_header
+{
+	background: white;
+}
+
 table.header
 {
 	background-color:	#6d787e;
@@ -38,7 +43,7 @@ table.header
 	width:				100%;
 }
 
-a.tabon
+.tabon
 {
 	-moz-border-radius-topleft:		5px;
 	-moz-border-radius-topright:	5px;
@@ -48,7 +53,7 @@ a.tabon
 	text-decoration:	none;
 }
 
-a.taboff
+.taboff
 {
 	-moz-border-radius-topleft:		5px;
 	-moz-border-radius-topright:	5px;
@@ -68,7 +73,7 @@ td.lheader
 	width:				300px;
 }
 
-td.rheader
+.rheader
 {
 	border:				0;
 	padding-right:		20%;
@@ -173,9 +178,4 @@ div.graphtitle
 	margin-top:			10px;
 	text-align:			right;
 	width:				100%;
-}
-
-.logo_header
-{
-	background: white;
 }

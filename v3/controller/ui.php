@@ -75,7 +75,8 @@ foreach($links as $pg => $txt)
 	$c = 'taboff';
 	if($pg == $page)
 		$c = 'tabon';
-	$menu .= "<a class='$c' href='?page=$pg'>$txt</a>\n";
+	//$menu .= "<a class='$c' href='?page=$pg'>$txt</a>\n";
+	$menu .= "<li class='$c'><a href='?paga=$pg'>$txt</a></li>"
 }
 
 //Set up templating
