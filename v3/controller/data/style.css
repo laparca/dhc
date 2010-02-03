@@ -31,47 +31,48 @@ tr
 .logo_header
 {
 	/*background: white;*/
-	padding-left: 10px;
+	padding-left: 30px;
 	padding-top: 15px;
+	margin-bottom: 20px;
 }
 
-.tabon
+ul.rheader li.tabon a
 {
 	background-color:	#FFFFFF;
-	border: 1px solid #AAAAAA;
 	border-bottom: 1px solid #FFFFFF;
 }
 
-.taboff
+ul.rheader li.taboff a
 {
-	background-color:	#AAAAAA;
-	border: 1px solid #AAAAAA;
+	background-color:	#CCCCCC;
 }
 
 .taboff a
 {
-		color: #FFFFFF;
+	color:              #FFFFFF;
 }
 
 ul.rheader
 {
 	list-style-type:    none;
 	border-bottom:      1px solid #AAAAAA;
-	text-align: left;
-	margin: 0;
+	text-align:         left;
+	margin:             0px;
 }
 
-.rheader li
+ul.rheader li
 {
-	display: inline;
-	margin-left: 5px;
-	padding-left: 4px;
-	padding-right: 4px;
+	display:            inline;
+	margin-left:        5px;
+	padding-left:       4px;
+	padding-right:      4px;
 }
 
-.rheader a
+ul.rheader li a
 {
 	text-decoration: none;
+	border: 1px solid #AAAAAA;
+	padding: 1px 10px;
 }
 
 /************************************************************
