@@ -77,11 +77,11 @@ td.lheader
 
 .rheader
 {
-	border:				0;
+	/*border:				0;
 	padding-right:		20%;
 	padding-bottom:		0px;
 	text-align:			right;
-	/*vertical-align:		bottom;*/
+	vertical-align:		bottom;*/
 	list-style-type:    none;
 	border-bottom:      1px solid #AAAAAA;
 }
@@ -90,7 +90,7 @@ td.lheader
 {
 	float: left;
 	border: 1px solid #AAAAAA;
-	margin-left: 2px;
+	margin-left: 5px;
 }
 
 /************************************************************
