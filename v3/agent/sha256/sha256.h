@@ -15,7 +15,8 @@ public:
 	}
 	void ExecuteCPU();
 	void ExecuteGPU();
-	void Prepare() {}	
+
+	void Prepare(WorkUnit & wo) {}	
 };
 
 #endif
