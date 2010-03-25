@@ -53,12 +53,22 @@ using namespace std;
  */
 class Algorithm {
 public:
+	/*!
+		@brief Returns the name of the algorithm
+	 */
 	virtual string GetName() = 0;
-	virtual int HashLength() = 0;
+	virtual int  HashLength() = 0;
 	virtual void ExecuteCPU() = 0;
 	virtual void ExecuteGPU() = 0;
-	virtual void Prepare(WorkUnit & wo) = 0;
 	
+	/*!
+		@brief Prepares information to accelerate hash attack or to perform better the functionality
+		@param wo
+	 */
+	virtual void Prepare(WorkUnit & wo) = 0;
+
+
+public:
 };
 
 #endif
