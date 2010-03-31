@@ -146,6 +146,8 @@ int main(int argc, char* argv[])
 {
 	try
 	{
+		RegisterAlgorithms();
+		
 		g_bNoCPU = false;
 		g_bNoGPU = false;
 		g_bTesting = false;

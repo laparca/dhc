@@ -95,6 +95,7 @@ ADD_EXECUTABLE(agent
 	Thread.cpp
 	UnitTesting.cpp
 	XmlParser.cpp
+	sha256.cpp
 	
 	${ASM_OUTPUTS}
 	${CUDA_OUTPUTS}
