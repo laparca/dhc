@@ -133,6 +133,7 @@ bool g_bNoCPU;
 	@brief Set to true if we're forcing no GPU cracking
  */
 bool g_bNoGPU;
+void RegisterAlgorithms();
 
 /*!
 	@brief Program entry point
@@ -235,7 +236,7 @@ int main(int argc, char* argv[])
 				{
 					//Check specs
 					Device tdev(i);
-					float gflops = static_cast<float>(tdev.GetClockRate() * 8 * 3 * tdev.GetMultiprocessorCount()) / 1000000;
+					//float gflops = static_cast<float>(tdev.GetClockRate() * 8 * 3 * tdev.GetMultiprocessorCount()) / 1000000;
 					
 					//CUDA under 50 gflops isnt worth bothering with, skip it
 					//if(gflops < 50)
@@ -418,5 +419,7 @@ string GetHostname()
  */
 void RegisterAlgorithms()
 {
-	Algorithm.RegisterAlgorithm(new sha256());
+	Algorithm::RegisterAlgorithm(new sha256());
+	
+	Algorithm::Test();
 }

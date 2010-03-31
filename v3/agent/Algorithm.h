@@ -46,6 +46,7 @@
 #include <string>
 #include <vector>
 #include "WorkUnit.h"
+#include "agent.h"
 
 using namespace std;
 
@@ -71,23 +72,10 @@ public:
 	 */
 	virtual void Prepare(WorkUnit & wo) = 0;
 
-
-private:
-	static vector<Algorithm *> vAlgorithms;
 public:
-	static void RegisterAlgorithm(Algorithm *pAlgorithm)
-	{
-		vAlgorithms.push_back(pAlgorithm);
-	}
-	static Algorithm *GetAlgorithm(string name)
-	{
-		for(vector<Algorithm *>::iterator it = vAlgorithms.begin(); it != vAlgorithms.end(); it++)
-		{
-			if(*it->GetName() == name)
-				return *it;
-		}
-		return NULL;
-	}
+	static void RegisterAlgorithm(Algorithm *pAlgorithm);
+	static Algorithm *GetAlgorithm(string name);
+	static void Test();
 };
 
 #endif
