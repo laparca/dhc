@@ -32,62 +32,14 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.                *
 *                                                                             *
 ******************************************************************************/
+#include "sha256.h"
 
-
-/*!
-	@file Algorithm.h
-	
-	@brief Declararation of an algorithm functionality.
- */
-
-#ifndef ALGORITHM_H
-#define ALGORITHM_H
-
-#include <string>
-#include <vector>
-#include "WorkUnit.h"
-
-using namespace std;
-
-/*!
-	@brief
- */
-class Algorithm
+void sha256::ExecuteCPU()
 {
-public:
-	/*!
-		@brief Returns the name of the algorithm
-	 */
-	virtual string GetName() = 0;
-	virtual int  HashLength() = 0;
-	virtual void ExecuteCPU() = 0;
-	void ExecuteGPU(Device *pDevice);
-	virtual bool IsGPUCapable() = 0;
-	virtual bool IsCPUCapable() = 0;
 	
-	/*!
-		@brief Prepares information to accelerate hash attack or to perform better the functionality
-		@param wo
-	 */
-	virtual void Prepare(WorkUnit & wo) = 0;
+}
 
-
-private:
-	static vector<Algorithm *> vAlgorithms;
-public:
-	static void RegisterAlgorithm(Algorithm *pAlgorithm)
-	{
-		vAlgorithms.push_back(pAlgorithm);
-	}
-	static Algorithm *GetAlgorithm(string name)
-	{
-		for(vector<Algorithm *>::iterator it = vAlgorithms.begin(); it != vAlgorithms.end(); it++)
-		{
-			if(*it->GetName() == name)
-				return *it;
-		}
-		return NULL;
-	}
-};
-
-#endif
+void sha256::ExecuteGPU()
+{
+	
+}

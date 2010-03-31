@@ -406,3 +406,15 @@ string GetHostname()
 	#error Unsupported platform
 #endif
 }
+
+
+
+#include "Algorithm.h"
+#include "sha256.h"
+/*!
+	@brief Register the algorithms used in this agent
+ */
+void RegisterAlgorithms()
+{
+	Algorithm.RegisterAlgorithm(new sha256());
+}

@@ -32,62 +32,34 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.                *
 *                                                                             *
 ******************************************************************************/
+#ifndef SHA256_H
+#define SHA256_H
 
+#include <Algorithm.h>
 
-/*!
-	@file Algorithm.h
-	
-	@brief Declararation of an algorithm functionality.
- */
-
-#ifndef ALGORITHM_H
-#define ALGORITHM_H
-
-#include <string>
-#include <vector>
-#include "WorkUnit.h"
-
-using namespace std;
-
-/*!
-	@brief
- */
-class Algorithm
-{
+class sha256: public Algorithm {
 public:
-	/*!
-		@brief Returns the name of the algorithm
-	 */
-	virtual string GetName() = 0;
-	virtual int  HashLength() = 0;
-	virtual void ExecuteCPU() = 0;
-	void ExecuteGPU(Device *pDevice);
-	virtual bool IsGPUCapable() = 0;
-	virtual bool IsCPUCapable() = 0;
+	string GetName()
+	{
+		return string("sha256");
+	}
+	virtual int HashLength()
+	{
+		return 32;
+	}
+	void ExecuteCPU();
+	void ExecuteGPU();
+
+	virtual bool IsGPUCapable()
+	{
+		return true;
+	}
+	virtual bool IsCPUCapable()
+	{
+		return false;
+	}
 	
-	/*!
-		@brief Prepares information to accelerate hash attack or to perform better the functionality
-		@param wo
-	 */
-	virtual void Prepare(WorkUnit & wo) = 0;
-
-
-private:
-	static vector<Algorithm *> vAlgorithms;
-public:
-	static void RegisterAlgorithm(Algorithm *pAlgorithm)
-	{
-		vAlgorithms.push_back(pAlgorithm);
-	}
-	static Algorithm *GetAlgorithm(string name)
-	{
-		for(vector<Algorithm *>::iterator it = vAlgorithms.begin(); it != vAlgorithms.end(); it++)
-		{
-			if(*it->GetName() == name)
-				return *it;
-		}
-		return NULL;
-	}
+	void Prepare(WorkUnit & wo) {}
 };
 
 #endif
