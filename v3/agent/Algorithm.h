@@ -75,6 +75,7 @@ public:
 public:
 	static void RegisterAlgorithm(Algorithm *pAlgorithm);
 	static Algorithm *GetAlgorithm(string name);
+	static vector<string> GetAlgorithmNames();
 	static void Test();
 };
 

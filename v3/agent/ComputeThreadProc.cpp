@@ -39,7 +39,7 @@
  */
 
 #include "agent.h"
-
+#include "Algorithm.h"
 using namespace std;
 
 extern double g_tBaseN;
