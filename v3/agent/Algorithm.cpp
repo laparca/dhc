@@ -4,7 +4,7 @@
 
 static vector<Algorithm *> vAlgorithms;
 
-vector<Algorithm *>& GetAlgorithmList()
+vector<Algorithm *>& Algorithm::GetAlgorithmList()
 {
 	return vAlgorithms;
 }
@@ -13,7 +13,7 @@ void Algorithm::RegisterAlgorithm(Algorithm *pAlgorithm)
 	vAlgorithms.push_back(pAlgorithm);
 }
 
-Algorithm* Algorithm::GetAlgorithm(string name)
+Algorithm* Algorithm::GetAlgorithm(const string& name)
 {
 	for(vector<Algorithm *>::iterator it = vAlgorithms.begin(); it != vAlgorithms.end(); it++)
 	{

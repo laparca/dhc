@@ -40,6 +40,7 @@
 
 #include "agent.h"
 #include "XmlParser.h"
+#include "Algorithm.h"
 
 using namespace std;
 
@@ -335,6 +336,12 @@ void ControllerLink::DecodeHash(
 	unsigned char* salt
 	)
 {
+	Algorithm *alg = Algorithm::GetAlgorithm(algorithm);
+	if(alg != NULL)
+		hashlen = alg->HashLength();
+	else
+		ThrowCustomError("Unknown hash function");
+/*
 	if(algorithm == "md4" || 
 		algorithm == "md4_fast" || 
 		algorithm == "md5" ||
@@ -349,7 +356,8 @@ void ControllerLink::DecodeHash(
 		hashlen = 32;
 	else	
 		ThrowCustomError("Unknown hash function");
-		
+*/
+
 	if(algorithm != "md5crypt" && hashlen*2 != text.length())
 		ThrowError("Invalid hash length");
 		

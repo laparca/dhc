@@ -107,8 +107,8 @@ public:
 	virtual void Prepare(WorkUnit & wo) = 0;
 
 private:
-	static vector<Algorithm *>& GetAlgorithmList();
 public:
+	static vector<Algorithm *>& GetAlgorithmList();
 	/*!
 	 *	@brief Register an algorithm in a internal list used for
 	 *	control the algorithms.
@@ -120,7 +120,7 @@ public:
 	 *	@param The algorithm searched name
 	 *	@return The algorithm or NULL if it does not exists
 	 */
-	static Algorithm *GetAlgorithm(string name);
+	static Algorithm *GetAlgorithm(const string& name);
 	/*!
 	 *	@brief Return the name of the registered algorithms
 	 *	@return The list of names
@@ -141,10 +141,10 @@ public:
 	 *	@param Function or functor needed to get the algorithms
 	 *	@return The algorithm list.
 	 */
-	template<typename Func> vector<Algorithm *> GetAlgorithms(Func func)
+	template<typename Func> static vector<Algorithm *> GetAlgorithms(Func func)
 	{
 		vector<Algorithm *> result;
-		vector<Algorithm *> algs = GetAlgorithmList();
+		vector<Algorithm *> algs = Algorithm::GetAlgorithmList();
 		vector<Algorithm *>::iterator end = algs.end();
 		for(vector<Algorithm *>::iterator it = algs.begin(); it != end; it ++)
 			if(func(*it))
