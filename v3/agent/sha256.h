@@ -43,13 +43,17 @@ public:
 	{
 		return string("sha256");
 	}
-	virtual int HashLength()
+	int HashLength()
+	{
+		return 32;
+	}
+	int  InputLength()
 	{
 		return 32;
 	}
 	void ExecuteCPU();
 	void ExecuteGPU();
-
+	
 	virtual bool IsGPUCapable()
 	{
 		return true;

@@ -4,7 +4,10 @@
 
 static vector<Algorithm *> vAlgorithms;
 
-
+vector<Algorithm *>& GetAlgorithmList()
+{
+	return vAlgorithms;
+}
 void Algorithm::RegisterAlgorithm(Algorithm *pAlgorithm)
 {
 	vAlgorithms.push_back(pAlgorithm);

@@ -106,6 +106,8 @@ public:
 	 */
 	virtual void Prepare(WorkUnit & wo) = 0;
 
+private:
+	static vector<Algorithm *>& GetAlgorithmList();
 public:
 	/*!
 	 *	@brief Register an algorithm in a internal list used for
@@ -124,6 +126,31 @@ public:
 	 *	@return The list of names
 	 */
 	static vector<string> GetAlgorithmNames();
+	/*!
+	 *	@brief Returns the list of algorithms that matches with the
+	 *	function func.
+	 *
+	 *	There are lots of situations where the normal functions are not
+	 *	suficient to obtain the desire algorithm. To solve this problem
+	 *	GetAlgoritms function use a function or a functor to look inside
+	 *	each algorithm and to select each algorithm needed. The functor
+	 *	only has to implements the () operator with one parameter of
+	 *	Algorithm * type. This functor o functions has to return true
+	 *	if the algorithm is selected and false in other case.
+	 *
+	 *	@param Function or functor needed to get the algorithms
+	 *	@return The algorithm list.
+	 */
+	template<typename Func> vector<Algorithm *> GetAlgorithms(Func func)
+	{
+		vector<Algorithm *> result;
+		vector<Algorithm *> algs = GetAlgorithmList();
+		vector<Algorithm *>::iterator end = algs.end();
+		for(vector<Algorithm *>::iterator it = algs.begin(); it != end; it ++)
+			if(func(*it))
+				result.push_back(*it);
+		return result;
+	}
 	static void Test();
 };
 

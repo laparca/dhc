@@ -52,6 +52,62 @@ extern bool g_bTesting;
 #endif
 
 /*!
+ *	@class SelectAlgorithms
+ *	@brief Selects the algorithm using the GPU capability or the
+ *	GPU capability.
+ */
+class SelectAlgorithms
+{
+private:
+	bool with_GPU;
+	bool with_CPU;
+
+public:
+	SelectAlgorithms(bool wg, bool wc) : with_GPU(wg), with_CPU(wc)
+	{}
+	
+	bool operator()(Algorithm *alg)
+	{
+		if(alg->IsGPUCapable() && with_GPU)
+			return true;
+		else if(alg->IsCPUCapable() && with_CPU)
+			return true;
+		return false;
+	}
+};
+/*!
+ *	@def SELECT_WITH_GPU
+ *	@brief This define is used as parameter for the SelectAlgorithms
+ *	class and indicates that it has select algorithms that use GPU.
+ */
+#define SELECT_WITH_GPU true, false
+/*!
+ *	@def SELECT_WITH_CPU
+ *	@brief This define is used as parameter for the SelectAlgorithms
+ *	class and indicates that it has select algorithms that use CPU.
+ */
+#define SELECT_WITH_CPU false, true
+/*!
+ *	@def SELECT_WITH_BOTH
+ *	@brief This define is used as parameter for the SelectAlgorithms
+ *	class and indicates that it has select algorithms that use GPU or CPU.
+ */
+#define SELECT_WITH_BOTH true, true
+
+/*!
+ *	@brief Transform an algorithm list into a algorithm name list.
+ *	@param An algorithm list.
+ *	@return Al algorithm name list.
+ */
+vector<string> GetAlgorithmNames(vector<Algorithm *> vAlgorithm)
+{
+	vector<string> names;
+	vector<Algorithm *>::iterator end = vAlgorithm.end();
+	for(vector<Algorithm *>::iterator it = vAlgorithm.begin(); it != end; it++)
+		names.push_back((*it)->GetName());
+	return names;
+}
+/*!
 	@brief Processes events for a single compute device.
 	
 	@param pData A ComputeDevice* pointer, casted to void*, identifying the device to use
@@ -84,15 +140,23 @@ void ComputeThreadProc(void* pData)
 		vector<string> algs;
 		if(pDev->bGPU)							//CUDA, regardless of CPU architecture
 		{
+			vector<Algorithm *> vAlg = Algorithm::GetAlgorithms(SelectAlgorithms(SELECT_WITH_GPU));
+			algs = GetAlgorithmNames(vAlg);
+			/*
 			algs.push_back("md4");
 			algs.push_back("md5");
 			algs.push_back("md5crypt");
 			algs.push_back("ntlm");
 			algs.push_back("sha1");
 			algs.push_back("sha256");
+			*/
 		}
 		else if(LINUX==1 && AMD64==1)			//64 bit Linux
-			algs.push_back("md5");
+		{
+			vector<Algorithm *> vAlg = Algorithm::GetAlgorithms(SelectAlgorithms(SELECT_WITH_CPU));
+			algs = GetAlgorithmNames(vAlg);
+			//algs.push_back("md5");
+		}
 		
 		//Try to get a work unit
 		WorkUnit wu;
