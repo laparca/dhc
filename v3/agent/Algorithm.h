@@ -108,7 +108,10 @@ public:
 
 private:
 public:
-	static vector<Algorithm *>& GetAlgorithmList();
+	typedef vector<Algorithm *> algorithm_list;
+	typedef typename vector<Algorithm *>::iterator algorithm_iterator;
+	
+	static algorithm_list& GetAlgorithmList();
 	/*!
 	 *	@brief Register an algorithm in a internal list used for
 	 *	control the algorithms.
@@ -141,12 +144,12 @@ public:
 	 *	@param Function or functor needed to get the algorithms
 	 *	@return The algorithm list.
 	 */
-	template<typename Func> static vector<Algorithm *> GetAlgorithms(Func func)
+	template<typename Func> static algorithm_list GetAlgorithms(Func func)
 	{
-		vector<Algorithm *> result;
-		vector<Algorithm *> algs = Algorithm::GetAlgorithmList();
-		vector<Algorithm *>::iterator end = algs.end();
-		for(vector<Algorithm *>::iterator it = algs.begin(); it != end; it ++)
+		algorithm_list result;
+		algorithm_list algs = Algorithm::GetAlgorithmList();
+		algorithm_iterator end = algs.end();
+		for(algorithm_iterator it = algs.begin(); it != end; it ++)
 			if(func(*it))
 				result.push_back(*it);
 		return result;
