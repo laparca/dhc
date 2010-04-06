@@ -99,7 +99,7 @@ public:
  *	@param An algorithm list.
  *	@return Al algorithm name list.
  */
-vector<string> GetAlgorithmNames(vector<Algorithm *> vAlgorithm)
+vector<string> GetAlgorithmNames(const vector<Algorithm *>& vAlgorithm)
 {
 	vector<string> names;
 	vector<Algorithm *>::iterator end = vAlgorithm.end();
