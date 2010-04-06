@@ -4,7 +4,7 @@
 
 static Algorithm::algorithm_list vAlgorithms;
 
-algorithm_list& Algorithm::GetAlgorithmList()
+Algorithm::algorithm_list& Algorithm::GetAlgorithmList()
 {
 	return vAlgorithms;
 }

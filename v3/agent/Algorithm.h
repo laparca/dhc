@@ -109,7 +109,7 @@ public:
 private:
 public:
 	typedef vector<Algorithm *> algorithm_list;
-	typedef typename vector<Algorithm *>::iterator algorithm_iterator;
+	typedef vector<Algorithm *>::iterator algorithm_iterator;
 	
 	static algorithm_list& GetAlgorithmList();
 	/*!
