@@ -644,11 +644,12 @@ void Stream::Barrier()
 	@param blockz Number of threads per block along the Z axis
 	@param params Parameters (null-terminated array of KernelParam<T>* pointers).
  */
+/*
 void Stream::AddKernelCall(
 		const CudaKernel& func,
 		int gridx, int gridy,
 		int blockx, int blocky, int blockz,
-		KernelParamBase** params
+		KernelParamBase* params[Size]
 		)
 {
 	Event start;
@@ -717,7 +718,7 @@ void Stream::AddKernelCall(
 		m_profilingConfig.push_back(config);
 		m_profilingTime.push_back(dt);
 	}
-}
+}*/
 
 /*!
 	@brief Adds a device-to-host memory copy to the stream.

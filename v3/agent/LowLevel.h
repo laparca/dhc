@@ -515,12 +515,84 @@ public:
 	
 	//Adds a kernel call to the stream.
 	//Params is a null-terminated array of KernelParam<> objects.
-	void AddKernelCall(
+/*	void AddKernelCall(
 		const CudaKernel& func,
 		int gridx, int gridy,
 		int blockx, int blocky, int blockz,
 		KernelParamBase** params
-		);
+		);*/
+	template<int Size>
+	void AddKernelCall(
+		const CudaKernel& func,
+		int gridx, int gridy,
+		int blockx, int blocky, int blockz,
+		KernelParamBase* params[Size])
+	{
+		Event start;
+		if(m_bProfiling)
+			AddEvent(start);
+
+		//Set up the grid
+		CUresult err;
+		if(CUDA_SUCCESS != (err=cuFuncSetBlockShape(func.GetFunction(), blockx, blocky, blockz)))
+			ThrowCudaLLError("Failed to set kernel block shape", err);
+
+		//Add parameters, stopping on NULL
+		unsigned int size = 0;
+		int paramcount = 0;
+		if(Size > 0)
+		{
+			//Compute parameter size in bytes.
+			//Keep going till we hit a limit (no more than 256 params allowed)
+			for(int i=0; i<Size; i++)
+			{
+				size += params[i]->GetSize();
+				paramcount++;
+			}
+
+			//Save parameter size
+			cuParamSetSize(func.GetFunction(), size);
+
+			//Add the parameters
+			int offset = 0;
+			for(int i=0; i<paramcount; i++)
+			{
+				params[i]->Add(func, offset);
+				offset += params[i]->GetSize();
+			}
+		}
+
+		//Launch the kernel
+		if(CUDA_SUCCESS != (err=cuLaunchGridAsync(
+			func.GetFunction(),
+			gridx,
+			gridy,
+			m_stream)))
+		{
+			ThrowCudaLLError("Failed to launch kernel", err);
+		}
+
+		//Profiling
+		if(m_bProfiling)
+		{
+			//Wait for operation to finish
+			Event end;
+			AddEvent(end);
+			end.Barrier();
+
+			//Get elapsed time
+			double dt = static_cast<double>(Event::GetDelta(start, end)) / 1000;
+
+			//Add data
+			char tconfig[128] = "\0";
+			sprintf(tconfig, "%d x %d, %d x %d x %d", gridx, gridy, blockx, blocky, blockz);
+			char config[128];
+			sprintf(config, "%20s", tconfig);
+			m_profilingDesc.push_back(func.GetDesc());
+			m_profilingConfig.push_back(config);
+			m_profilingTime.push_back(dt);
+		}
+	}
 		
 	//Adds an event to the stream.
 	void AddEvent(Event& event);

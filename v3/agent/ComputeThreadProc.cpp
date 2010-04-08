@@ -40,6 +40,7 @@
 
 #include "agent.h"
 #include "Algorithm.h"
+#include <stdarg.h>
 using namespace std;
 
 extern double g_tBaseN;
@@ -107,6 +108,49 @@ vector<string> GetAlgorithmNames(const vector<Algorithm *>& vAlgorithm)
 		names.push_back((*it)->GetName());
 	return names;
 }
+
+/*!
+ *	@brief Wrapper for cuda kernel functions.
+ *
+ *	CudaFunction generates a wrapper for the cuda kernel functions and
+ *	this is very useful for simplify calling those methods.
+ */
+class CudaFunction
+{
+private:
+	Stream *m_stream;
+	CudaKernel *m_hasker;
+	int m_block_x;
+	int m_block_y;
+	int m_threads_x;
+	int m_threads_y;
+	int m_threads_z;
+public:
+	CudaFunction(Stream *stream, CudaKernel *hasker) :
+		m_stream(stream),
+		m_hasker(hasker),
+		m_threads_x(threads_x),
+		m_threads_y(threads_y),
+		m_threads_z(threads_z)
+	{
+	}
+	void operator()(int n_params, ...)
+	{
+		KernelParamBase *params[n_params];
+		va_list lparams;
+		va_start(lparams, n_params);
+		for(int i = 0; i < n_params; i ++)
+			params[i] = va_arg(lparams, KernelParamBase *);
+		
+		m_stream->AddKernelCall(*m_hasker, m_block_x, m_block_y, m_threads_x, m_thread_y, m_thread_z, params);
+		va_end(lparams);
+	}
+
+	template<int Size> void operator()(KernelParamBase *params[Size])
+	{
+		m_stream->AddKernelCall(*m_hasker, m_block_x, m_block_y, m_threads_x, m_thread_y, m_thread_z, params);
+	}
+};
 /*!
 	@brief Processes events for a single compute device.
 	
@@ -461,6 +505,12 @@ void DoWorkUnitOnGPU(WorkUnit& wu, Device* pDevice, CudaContext* pContext)
 	mystream[0].StartProfiling();
 	mystream[1].StartProfiling();
 	#endif
+	
+	CudaFunction hashStream[2] = {
+		CudaFunction(mystream[0], hasker, xblockcount, 1, threadcount, 1, 1),
+		CudaFunction(mystream[1], hasker, xblockcount, 1, threadcount, 1, 1)
+	};
+	
 	while(BaseNLess(start, end, len))
 	{
 		//Copy start value
@@ -483,7 +533,7 @@ void DoWorkUnitOnGPU(WorkUnit& wu, Device* pDevice, CudaContext* pContext)
 		KernelParam<int> plen(len);
 		KernelParam<int> psaltlen(saltlen);
 		KernelParam<int> targets(nTargetHashes);
-		KernelParamBase* params[] = 
+		KernelParamBase* params[9] = 
 		{
 			&ptarget,
 			&pstart,
@@ -493,15 +543,15 @@ void DoWorkUnitOnGPU(WorkUnit& wu, Device* pDevice, CudaContext* pContext)
 			&pbase,
 			&plen,
 			&psaltlen,
-			&targets,
-			NULL
+			&targets
 		};
 		cuParamSetTexRef(hashker->GetFunction(), CU_PARAM_TR_DEFAULT, texCharset);
-		mystream[nStream].AddKernelCall(
+		hashStream[nStream](params);
+		/*mystream[nStream].AddKernelCall(
 			*hashker,
 			xblockcount, 1,
 			threadcount, 1, 1,
-			params);
+			params);*/
 			
 		//Don't copy results back
 		//We want raw throughput, no need to test until end of WU
