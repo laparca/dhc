@@ -414,6 +414,7 @@ string GetHostname()
 
 #include "Algorithm.h"
 #include "sha256.h"
+
 /*!
 	@brief Register the algorithms used in this agent
  */

@@ -103,8 +103,8 @@ public:
 vector<string> GetAlgorithmNames(const vector<Algorithm *>& vAlgorithm)
 {
 	vector<string> names;
-	vector<Algorithm *>::iterator end = vAlgorithm.end();
-	for(vector<Algorithm *>::iterator it = vAlgorithm.begin(); it != end; it++)
+	vector<Algorithm *>::const_iterator end = vAlgorithm.end();
+	for(vector<Algorithm *>::const_iterator it = vAlgorithm.begin(); it != end; it++)
 		names.push_back((*it)->GetName());
 	return names;
 }
@@ -119,21 +119,23 @@ class CudaFunction
 {
 private:
 	Stream *m_stream;
-	CudaKernel *m_hasker;
+	CudaKernel *m_hashker;
 	int m_block_x;
 	int m_block_y;
 	int m_threads_x;
 	int m_threads_y;
 	int m_threads_z;
 public:
-	CudaFunction(Stream *stream, CudaKernel *hasker) :
+	CudaFunction(Stream *stream, CudaKernel *hashker, int blocks_x, int blocks_y, int threads_x, int threads_y, int threads_z) :
 		m_stream(stream),
-		m_hasker(hasker),
+		m_hashker(hashker),
+		m_block_x(blocks_x),
+		m_block_y(blocks_y),
 		m_threads_x(threads_x),
 		m_threads_y(threads_y),
 		m_threads_z(threads_z)
-	{
-	}
+	{}
+	/*
 	void operator()(int n_params, ...)
 	{
 		KernelParamBase *params[n_params];
@@ -142,13 +144,14 @@ public:
 		for(int i = 0; i < n_params; i ++)
 			params[i] = va_arg(lparams, KernelParamBase *);
 		
-		m_stream->AddKernelCall(*m_hasker, m_block_x, m_block_y, m_threads_x, m_thread_y, m_thread_z, params);
+		m_stream->AddKernelCall(*m_hashker, m_block_x, m_block_y, m_threads_x, m_threads_y, m_threads_z, params);
 		va_end(lparams);
-	}
+	}*/
 
-	template<int Size> void operator()(KernelParamBase *params[Size])
+	template<int Size>
+	void operator()(KernelParamBase *(&params)[Size])
 	{
-		m_stream->AddKernelCall(*m_hasker, m_block_x, m_block_y, m_threads_x, m_thread_y, m_thread_z, params);
+		m_stream->AddKernelCall(*m_hashker, m_block_x, m_block_y, m_threads_x, m_threads_y, m_threads_z, params);
 	}
 };
 /*!
@@ -507,8 +510,8 @@ void DoWorkUnitOnGPU(WorkUnit& wu, Device* pDevice, CudaContext* pContext)
 	#endif
 	
 	CudaFunction hashStream[2] = {
-		CudaFunction(mystream[0], hasker, xblockcount, 1, threadcount, 1, 1),
-		CudaFunction(mystream[1], hasker, xblockcount, 1, threadcount, 1, 1)
+		CudaFunction(&(mystream[0]), hashker, xblockcount, 1, threadcount, 1, 1),
+		CudaFunction(&(mystream[1]), hashker, xblockcount, 1, threadcount, 1, 1)
 	};
 	
 	while(BaseNLess(start, end, len))

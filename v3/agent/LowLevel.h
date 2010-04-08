@@ -526,7 +526,7 @@ public:
 		const CudaKernel& func,
 		int gridx, int gridy,
 		int blockx, int blocky, int blockz,
-		KernelParamBase* params[Size])
+		KernelParamBase* (&params)[Size])
 	{
 		Event start;
 		if(m_bProfiling)
@@ -539,27 +539,23 @@ public:
 
 		//Add parameters, stopping on NULL
 		unsigned int size = 0;
-		int paramcount = 0;
 		if(Size > 0)
 		{
 			//Compute parameter size in bytes.
 			//Keep going till we hit a limit (no more than 256 params allowed)
+			unsigned int offset = 0;
 			for(int i=0; i<Size; i++)
 			{
-				size += params[i]->GetSize();
-				paramcount++;
+				int temp_size = params[i]->GetSize();
+				size += temp_size; //params[i]->GetSize();
+				//Add the parameters
+				params[i]->Add(func, offset);
+				//offset += temp_size;//params[i]->GetSize();
+				offset = size;
 			}
-
 			//Save parameter size
 			cuParamSetSize(func.GetFunction(), size);
 
-			//Add the parameters
-			int offset = 0;
-			for(int i=0; i<paramcount; i++)
-			{
-				params[i]->Add(func, offset);
-				offset += params[i]->GetSize();
-			}
 		}
 
 		//Launch the kernel

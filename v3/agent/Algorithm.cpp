@@ -2,8 +2,8 @@
 #include <iostream>
 
 
-static Algorithm::algorithm_list vAlgorithms;
-
+//Algorithm::algorithm_list Algorithm::vAlgorithms;
+/*
 Algorithm::algorithm_list& Algorithm::GetAlgorithmList()
 {
 	return vAlgorithms;
@@ -12,17 +12,7 @@ void Algorithm::RegisterAlgorithm(Algorithm *pAlgorithm)
 {
 	vAlgorithms.push_back(pAlgorithm);
 }
-
-Algorithm* Algorithm::GetAlgorithm(const string& name)
-{
-	for(algorithm_iterator it = vAlgorithms.begin(); it != vAlgorithms.end(); it++)
-	{
-		if((*it)->GetName() == name)
-			return *it;
-	}
-	return NULL;
-}
-
+*/
 void Algorithm::Test()
 {
 	cout << "Showing the entire algortihm list" << endl;

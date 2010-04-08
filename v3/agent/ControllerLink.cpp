@@ -47,6 +47,9 @@ using namespace std;
 extern string g_server;
 extern string g_hostname;
 
+/* This initialization is mandatory */
+INIT_ALGORITHMS();
+
 size_t curlwritecallback(void *ptr, size_t size, size_t nmemb, void *stream);
 
 /*!

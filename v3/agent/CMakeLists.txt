@@ -89,13 +89,13 @@ ADD_EXECUTABLE(agent
 	BaseN.cpp
 	ComputeThreadProc.cpp
 	ControllerLink.cpp
+	Algorithm.cpp
 	DeviceMemory.cpp
 	LowLevel.cpp
 	MD4MeetInTheMiddleAttack.cpp
 	Thread.cpp
 	UnitTesting.cpp
 	XmlParser.cpp
-	Algorithm.cpp
 	sha256.cpp
 	
 	${ASM_OUTPUTS}
