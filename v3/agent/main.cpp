@@ -414,13 +414,23 @@ string GetHostname()
 
 #include "Algorithm.h"
 #include "sha256.h"
+#include "md5.h"
+#include "md4.h"
+#include "sha1.h"
+#include "md5crypt.h"
+#include "ntlm.h"
 
 /*!
-	@brief Register the algorithms used in this agent
+	@brief Register the algorithms used by this agent
  */
 void RegisterAlgorithms()
 {
 	Algorithm::RegisterAlgorithm(new sha256());
-	
+	Algorithm::RegisterAlgorithm(new sha1());
+	Algorithm::RegisterAlgorithm(new md5());
+	Algorithm::RegisterAlgorithm(new md5crypt());
+	Algorithm::RegisterAlgorithm(new md4());
+	Algorithm::RegisterAlgorithm(new ntlm());
+
 	Algorithm::Test();
 }

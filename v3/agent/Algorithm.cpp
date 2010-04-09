@@ -1,18 +1,6 @@
 #include "Algorithm.h"
 #include <iostream>
 
-
-//Algorithm::algorithm_list Algorithm::vAlgorithms;
-/*
-Algorithm::algorithm_list& Algorithm::GetAlgorithmList()
-{
-	return vAlgorithms;
-}
-void Algorithm::RegisterAlgorithm(Algorithm *pAlgorithm)
-{
-	vAlgorithms.push_back(pAlgorithm);
-}
-*/
 void Algorithm::Test()
 {
 	cout << "Showing the entire algortihm list" << endl;

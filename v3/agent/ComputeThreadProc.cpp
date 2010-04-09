@@ -3,6 +3,7 @@
 * Distributed Hash Cracker v3.0                                               *
 *                                                                             *
 * Copyright (c) 2009 RPISEC.                                                  *
+* Copyright (C) 2010 Samuel Rodriguez Sevilla
 * All rights reserved.                                                        *
 *                                                                             *
 * Redistribution and use in source and binary forms, with or without modifi-  *
@@ -135,19 +136,15 @@ public:
 		m_threads_y(threads_y),
 		m_threads_z(threads_z)
 	{}
-	/*
-	void operator()(int n_params, ...)
-	{
-		KernelParamBase *params[n_params];
-		va_list lparams;
-		va_start(lparams, n_params);
-		for(int i = 0; i < n_params; i ++)
-			params[i] = va_arg(lparams, KernelParamBase *);
-		
-		m_stream->AddKernelCall(*m_hashker, m_block_x, m_block_y, m_threads_x, m_threads_y, m_threads_z, params);
-		va_end(lparams);
-	}*/
 
+	/*!
+	 *	@brief Runs the kernel function.
+	 *	This operator runs the kernel function with the specificed parameters and
+	 *	emultates the aspect of a normal function. The parameters are an array
+	 *	of KernelParamBase. That array cannot be dynamic (allocated with malloc
+	 *	or new) in other case the template will not determine the array size.
+	 *	@param params An array with the params for the kernel function.
+	 */
 	template<int Size>
 	void operator()(KernelParamBase *(&params)[Size])
 	{

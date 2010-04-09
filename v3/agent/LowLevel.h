@@ -514,13 +514,7 @@ public:
 	void StopProfiling();
 	
 	//Adds a kernel call to the stream.
-	//Params is a null-terminated array of KernelParam<> objects.
-/*	void AddKernelCall(
-		const CudaKernel& func,
-		int gridx, int gridy,
-		int blockx, int blocky, int blockz,
-		KernelParamBase** params
-		);*/
+	//Params is an array of KernelParam<> objects.
 	template<int Size>
 	void AddKernelCall(
 		const CudaKernel& func,
@@ -547,10 +541,9 @@ public:
 			for(int i=0; i<Size; i++)
 			{
 				int temp_size = params[i]->GetSize();
-				size += temp_size; //params[i]->GetSize();
+				size += temp_size;
 				//Add the parameters
 				params[i]->Add(func, offset);
-				//offset += temp_size;//params[i]->GetSize();
 				offset = size;
 			}
 			//Save parameter size
