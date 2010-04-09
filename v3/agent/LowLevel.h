@@ -531,10 +531,10 @@ public:
 		if(CUDA_SUCCESS != (err=cuFuncSetBlockShape(func.GetFunction(), blockx, blocky, blockz)))
 			ThrowCudaLLError("Failed to set kernel block shape", err);
 
-		//Add parameters, stopping on NULL
-		unsigned int size = 0;
+		//Add parameters
 		if(Size > 0)
 		{
+			unsigned int size = 0;
 			//Compute parameter size in bytes.
 			//Keep going till we hit a limit (no more than 256 params allowed)
 			unsigned int offset = 0;
