@@ -115,7 +115,36 @@ public:
 	 *	@param wo The workunit with the information to analize
 	 */
 	virtual void Prepare(WorkUnit & wo) = 0;
+	/*!
+	 *	@brief Number of registers used by the GPU version of the algorithm.
+	 *	This value can be obtained using the cubin compilation of the GPU unit. If it is
+	 *	unknown it returns 0.
+	 *	@return The number of registers used
+	 */
+	virtual int RegistersUsed() { return 0; }
+	/*!
+	 *	@brief Amount of constant memory used by the GPU version of the algorithm.
+	 *	This value can be obtained using the cubin compilation of the GPU unit. If it is
+	 *	unknown it return 0.
+	 *	@return The amount of constant memory used
+	 */
+	virtual int ConstantMemoryUsed() { return 0; }
+	/*!
+	 *	@brief Amount of shared memory used by the GPU version of the algorithm.
+	 *	This value can be obtained using the cubin compilation of the GPU unit. If it is
+	 *	unknown it return 0.
+	 *	@return The amount of shared memory used
+	 */
+	virtual int SharedMemoryUsed() { return 0; }
 
+/*!
+ *	\defgroup Algorithm administration system
+ *	\page Algorithm Organization of algorithm
+ *
+ *	Algorithms can be dynamic loaded or can be registered in compilation time
+ *	and to achieve this purpose a algorithm management system is needed.
+ */
+/*@{*/
 public:
 	typedef vector<Algorithm *> algorithm_list;
 	typedef vector<Algorithm *>::iterator algorithm_iterator;
@@ -203,6 +232,7 @@ public:
 		return result;
 	}
 	static void Test();
+	/*@}*/
 };
 
 #endif
