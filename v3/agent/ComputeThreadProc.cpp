@@ -41,6 +41,7 @@
 
 #include "agent.h"
 #include "Algorithm.h"
+#include <time.h>
 #include <stdarg.h>
 using namespace std;
 
@@ -158,6 +159,9 @@ public:
  */
 void ComputeThreadProc(void* pData)
 {
+	long sleep_time = 5000;
+	long waiting_time = -1;
+	
 	//Set up the device
 	ComputeDevice* pDev = reinterpret_cast<ComputeDevice*>(pData);
 	
@@ -203,12 +207,37 @@ void ComputeThreadProc(void* pData)
 		}
 		
 		//Try to get a work unit
+		/* TODO
+		 * Tomar la diferencia de tiempo entre que se envia y se recive la
+		 * respuesta (tiempo de respuesta del servidor). Dependiendo de cuanto
+		 * sea este tiempo se debera esperar mas o menos para realizar la
+		 * siguiente peticion. El objetivo de esto es evitar la saturacion
+		 * del controlador en caso de que haya demasiados agentes ociosos.
+		 *
+		 * Si TRS actual == TRS anterior => mismo tiempo de espera
+		 * Si TRS actual > TRS anterior => subimos el tiempo de espera (5 seg.)
+		 * Si TRS actual < TRS anterior => reducimos el tiempo de espera (1 seg.)
+		 */
 		WorkUnit wu;
-		if(!link.GetWorkUnit(wu, algs))
+		long t0 = time(NULL);
+		bool has_wu = link.GetWorkUnit(wu, algs);
+		long t1 = time(NULL);
+		if(waiting_time != -1)
+		{
+			long wt_now = t1 - t0;
+			if(waiting_time > wt_now && sleep_time > 5000)
+				sleep_time -= 1000;
+			else if(waiting_time < wt_now)
+				sleep_time += 5000;
+		}
+		
+		waiting_time = t1 - t0;
+		
+		if(!has_wu)
 		{
 			//Not cracking, wait 5 seconds and try again
-			cout << "No WU, waiting\n";
-			Sleep(5000);
+			cout << "No WU, waiting " << sleep_time << " milliseconds\n";
+			Sleep(sleep_time);
 			continue;
 		}
 		
