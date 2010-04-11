@@ -232,6 +232,7 @@ void ComputeThreadProc(void* pData)
 		}
 		
 		waiting_time = t1 - t0;
+		cout << "wait time = " << waiting_time << endl;
 		
 		if(!has_wu)
 		{
