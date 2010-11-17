@@ -412,7 +412,7 @@ string GetHostname()
 
 
 
-#include "Algorithm.h"
+#include "AlgorithmFactory.h"
 #include "sha256.h"
 #include "md5.h"
 #include "md4.h"
