@@ -1,4 +1,4 @@
-#include "Algorithm.h"
+#include "AlgorithmFactory.h"
 #include <iostream>
 
 void AlgorithmFactory::Test()
