@@ -42,6 +42,7 @@
 #include "agent.h"
 #include "XmlParser.h"
 #include "Algorithm.h"
+#include "AlgorithmFactory.h"
 
 using namespace std;
 
@@ -340,7 +341,7 @@ void ControllerLink::DecodeHash(
 	unsigned char* salt
 	)
 {
-	Algorithm *alg = Algorithm::GetAlgorithm(algorithm);
+	Algorithm *alg = AlgorithmFactory::GetAlgorithm(algorithm);
 	if(alg != NULL)
 		hashlen = alg->HashLength();
 	else
