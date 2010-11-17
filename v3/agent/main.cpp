@@ -425,12 +425,12 @@ string GetHostname()
  */
 void RegisterAlgorithms()
 {
-	Algorithm::RegisterAlgorithm(new sha256());
-	Algorithm::RegisterAlgorithm(new sha1());
-	Algorithm::RegisterAlgorithm(new md5());
-	Algorithm::RegisterAlgorithm(new md5crypt());
-	Algorithm::RegisterAlgorithm(new md4());
-	Algorithm::RegisterAlgorithm(new ntlm());
+	AlgorithmFactory::RegisterAlgorithm(new sha256());
+	AlgorithmFactory::RegisterAlgorithm(new sha1());
+	AlgorithmFactory::RegisterAlgorithm(new md5());
+	AlgorithmFactory::RegisterAlgorithm(new md5crypt());
+	AlgorithmFactory::RegisterAlgorithm(new md4());
+	AlgorithmFactory::RegisterAlgorithm(new ntlm());
 
-	Algorithm::Test();
+	AlgorithmFactory::Test();
 }
