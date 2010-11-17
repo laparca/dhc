@@ -63,7 +63,10 @@ public:
 		return false;
 	}
 
-	void Prepare(WorkUnit & wo) {}
+	void Prepare(WorkUnit & wo)
+	{
+		
+	}
 };
 
 #endif

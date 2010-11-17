@@ -52,15 +52,6 @@ using namespace std;
 
 
 /*!
- *	@def INIT_ALGORITHMS
- *	@brief Initializes the algorithm system.
- *
- *	This method/macro has to be used in the global section of a source file
- *	for initilize the internal algorithm system.
- */
-#define INIT_ALGORITHMS() Algorithm::algorithm_list Algorithm::vAlgorithms
-
-/*!
  *	@class Algorithm
  *	@brief Algorithm represents a cryptographic function the system can use to
  *	test password fortress.
@@ -136,103 +127,6 @@ public:
 	 *	@return The amount of shared memory used
 	 */
 	virtual int SharedMemoryUsed() { return 0; }
-
-/*!
- *	\defgroup Algorithm administration system
- *	\page Algorithm Organization of algorithm
- *
- *	Algorithms can be dynamic loaded or can be registered in compilation time
- *	and to achieve this purpose a algorithm management system is needed.
- */
-/*@{*/
-public:
-	typedef vector<Algorithm *> algorithm_list;
-	typedef vector<Algorithm *>::iterator algorithm_iterator;
-
-private:
-	/*! 
-	 *	@brief The list of algorithms registered in the system.
-	 *
-	 *	Stores the list of algorithms registered in the system for grand
-	 *	the hability of query them. This attribute has to be initialized in
-	 *	one source file to be accesible. For that initialization you have to
-	 *	declare it as follows:
-	 *	Algorithm::algorithm_list Algorithm::vAlgorithms;
-	 *	You can also use the macro INIT_ALGORITHMS()
-	 */
-	static algorithm_list vAlgorithms;
-
-public:
-	/*!
-	 *	@brief Returns the list of algorithms
-	 *
-	 *	When a functionallity that implies algorithms is need but this
-	 *	functionallity do not exists a this method help us. It returns the
-	 *	list of algorithms and then it can be used to do the desire
-	 *	functionallity.
-	 *
-	 *	@return The algorithm list 
-	 */
-	static algorithm_list& GetAlgorithmList()
-	{
-		return vAlgorithms;
-	}
-	
-	/*!
-	 *	@brief Register an algorithm in a internal list used for
-	 *	control the algorithms.
-	 *	@param pAlgorithm The algorithm to register
-	 */
-	static void RegisterAlgorithm(Algorithm *pAlgorithm)
-	{
-		vAlgorithms.push_back(pAlgorithm);
-	}
-	/*!
-	 *	@brief Returns the algorithm whos name is the user specified
-	 *	@param name The algorithm searched name
-	 *	@return The algorithm or NULL if it does not exists
-	 */
-	static Algorithm *GetAlgorithm(const string& name)
-	{
-		algorithm_iterator end = vAlgorithms.end();
-		for(algorithm_iterator it = vAlgorithms.begin(); it != end; it++)
-		{
-			if((*it)->GetName() == name)
-				return *it;
-		}
-		return NULL;
-	}
-	/*!
-	 *	@brief Return the name of the registered algorithms
-	 *	@return The list of names
-	 */
-	static vector<string> GetAlgorithmNames();
-	/*!
-	 *	@brief Returns the list of algorithms that matches with the
-	 *	function func.
-	 *
-	 *	There are lots of situations where the normal functions are not
-	 *	suficient to obtain the desire algorithm. To solve this problem
-	 *	GetAlgoritms function use a function or a functor to look inside
-	 *	each algorithm and to select each algorithm needed. The functor
-	 *	only has to implements the () operator with one parameter of
-	 *	Algorithm * type. This functor o functions has to return true
-	 *	if the algorithm is selected and false in other case.
-	 *
-	 *	@param func Function or functor needed to get the algorithms
-	 *	@return The algorithm list.
-	 */
-	template<typename Func> static algorithm_list GetAlgorithms(Func func)
-	{
-		algorithm_list result;
-		algorithm_iterator end = vAlgorithms.end();
-		for(algorithm_iterator it = vAlgorithms.begin(); it != end; it ++)
-			if(func(*it))
-				result.push_back(*it);
-		return result;
-	}
-	static void Test();
-	/*@}*/
 };
 
 #endif

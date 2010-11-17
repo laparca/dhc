@@ -89,7 +89,7 @@ ADD_EXECUTABLE(agent
 	BaseN.cpp
 	ComputeThreadProc.cpp
 	ControllerLink.cpp
-	Algorithm.cpp
+	AlgorithmFactory.cpp
 	DeviceMemory.cpp
 	LowLevel.cpp
 	MD4MeetInTheMiddleAttack.cpp

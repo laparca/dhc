@@ -1,7 +1,7 @@
 #include "Algorithm.h"
 #include <iostream>
 
-void Algorithm::Test()
+void AlgorithmFactory::Test()
 {
 	cout << "Showing the entire algortihm list" << endl;
 	for(algorithm_iterator it = vAlgorithms.begin(); it != vAlgorithms.end(); it++)
@@ -15,7 +15,7 @@ void Algorithm::Test()
 	}
 }
 
-vector<string> Algorithm::GetAlgorithmNames()
+vector<string> AlgorithmFactory::GetAlgorithmNames()
 {
 	vector<string> v;
 	for(algorithm_iterator it = vAlgorithms.begin(); it != vAlgorithms.end(); it++)

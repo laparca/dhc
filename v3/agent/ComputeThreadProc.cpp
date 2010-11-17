@@ -41,6 +41,7 @@
 
 #include "agent.h"
 #include "Algorithm.h"
+#include "AlgorithmFactory.h"
 #include <time.h>
 #include <stdarg.h>
 using namespace std;
@@ -188,7 +189,7 @@ void ComputeThreadProc(void* pData)
 		vector<string> algs;
 		if(pDev->bGPU)							//CUDA, regardless of CPU architecture
 		{
-			vector<Algorithm *> vAlg = Algorithm::GetAlgorithms(SelectAlgorithms(SELECT_WITH_GPU));
+			vector<Algorithm *> vAlg = AlgorithmFactory::GetAlgorithms(SelectAlgorithms(SELECT_WITH_GPU));
 			algs = GetAlgorithmNames(vAlg);
 			/*
 			algs.push_back("md4");
@@ -201,7 +202,7 @@ void ComputeThreadProc(void* pData)
 		}
 		else if(LINUX==1 && AMD64==1)			//64 bit Linux
 		{
-			vector<Algorithm *> vAlg = Algorithm::GetAlgorithms(SelectAlgorithms(SELECT_WITH_CPU));
+			vector<Algorithm *> vAlg = AlgorithmFactory::GetAlgorithms(SelectAlgorithms(SELECT_WITH_CPU));
 			algs = GetAlgorithmNames(vAlg);
 			//algs.push_back("md5");
 		}
@@ -392,6 +393,12 @@ void DoWorkUnitOnGPU(WorkUnit& wu, Device* pDevice, CudaContext* pContext)
 		ThrowError("Max 128 hashes per block\n");
 	
 	//TODO: Sanity check charset (duplicate check, etc)?
+	
+	//** {{ CODIGO PARA LA PRECARGA DEL ALGORITMO
+	Algorithm *alg = AlgorithmFactory::GetAlgorithm(wu.m_algorithm);
+	alg->Prepare(wu);
+	//** }}
+	
 	
 	//Load hash module and kernel from PTX
 	string fname = string("ptx/") + wu.m_algorithm + ".ptx";
