@@ -38,6 +38,14 @@
 #include <string>
 using namespace std;
 
+/*!
+ * @class Executor
+ * @brief Executor prepares the GPU for run Algorithms using a known method.
+ *
+ * When an Algorithm must be executed in a GPU this algorithm needs its values
+ * loaded in the GPU memory. An executor represents a mechanism to initialize
+ * the GPU for an algorithm.
+ */
 class Executor
 {
 public:

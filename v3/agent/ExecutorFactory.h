@@ -41,10 +41,21 @@
 #include <map>
 using namespace std;
 
+/*!
+ *	@def INIT_EXECUTORS
+ *	@brief Initializes the executors system.
+ *
+ *	This method/macro has to be used in the global section of a source file
+ *	for initilize the internal executors system.
+ */
+#define INIT_EXECUTORS() map<string, Executor *> ExecutorFactory::vExecutors
+
+/*!
+ */
 class ExecutorFactory
 {
 private:
-	static map<string, Executor> vExecutors;
+	static map<string, Executor *> vExecutors;
 
 public:
 	static Executor* Get(const string& name);
