@@ -396,10 +396,10 @@ void DoWorkUnitOnGPU(WorkUnit& wu, Device* pDevice, CudaContext* pContext)
 	
 	//** {{ CODIGO PARA LA PRECARGA DEL ALGORITMO
 	Algorithm *alg = AlgorithmFactory::GetAlgorithm(wu.m_algorithm);
-	alg->Prepare(wu);
+	alg->Prepare(pDevice, pContext, wu);
 	//** }}
 	
-	
+/*	{{ OLD
 	//Load hash module and kernel from PTX
 	string fname = string("ptx/") + wu.m_algorithm + ".ptx";
 	Module hashmod(fname, *pContext);
@@ -420,7 +420,8 @@ void DoWorkUnitOnGPU(WorkUnit& wu, Device* pDevice, CudaContext* pContext)
 		for(unsigned int i=0; i<nTargetHashes; i++)
 			MD4MeetInTheMiddlePreprocessing(wu.m_hashvalues[i]);
 	}
-	
+}} */
+
 	/*
 	//DEBUG: Set length
 	len = 3;

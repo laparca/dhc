@@ -3,7 +3,7 @@
 * Distributed Hash Cracker v3.0                                               *
 *                                                                             *
 * Copyright (c) 2009 RPISEC.                                                  *
-* Copyright (C) 2010 Samuel Rodríguez Sevilla
+* Copyright (C) 2010 Samuel Rodriguez Sevilla
 * All rights reserved.                                                        *
 *                                                                             *
 * Redistribution and use in source and binary forms, with or without modifi-  *
@@ -31,114 +31,24 @@
 * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS          *
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.                *
 *                                                                             *
-******************************************************************************/
-#ifndef MD4_H
-#define MD4_H
+*******************************************************************************/
+#ifndef EXECUTOR_H
+#define EXECUTOR_H
 
-#include <Algorithm.h>
+#include <string>
+using namespace std;
 
-class md4: public Algorithm {
+class Executor
+{
 public:
-	string GetName()
+	virtual void Execute() = 0;
+	virtual string GetName() = 0;
+	
+	void operator()()
 	{
-		return string("md4");
+		Execute();
 	}
-	int HashLength()
-	{
-		return 16;
-	}
-	int  InputLength()
-	{
-		return 16;
-	}
-	void ExecuteCPU() {}
-	void ExecuteGPU() {}
-
-	virtual bool IsGPUCapable()
-	{
-		return true;
-	}
-	virtual bool IsCPUCapable()
-	{
-		return false;
-	}
-
-	void Prepare(WorkUnit & wo)
-	{
-		
-	}
-#ifdef CUDA_ENABLED
-private:
-	Module *hashmod;
-	CudaKernel *haskher;
-	Device *pDevice;
-	CudaContext *pContext;
-	WorkUnit *wu;
-public:	
-	/*!
-	 *  @brief Prepared information to accelerate hash attack or to improve the performance. It is
-	 *         indicated for CUDA devices.
-	 *  @param pDevice
-	 *  @param pContext
-	 *  @param wu
-	 */
-	void Prepare(Device *pDevice, CudaContext *pContext, WorkUnit *wu)
-	{
-		this->pDevice = pDevice;
-		this->pContext = pContext;
-		this->wu = wu;
-		
-		hashmod = new Module(ReadPtx("md4"), pContext);
-		
-		string func = "md4";
-
-		if(wu.m_start.length() <= 12)						//If we are cracking a weak algorithm, switch to
-		{																// the cryptanalytic attack when possible
-			func = "md4_fast";
-		}
-		
-		if(wu.m_hashvalues.size() > 1)
-			func = func + "BatchKernel";
-		else
-			func = func + "Kernel";
-		
-		hashker = hashmod->GetKernel(func.c_str());
-
-		//Perform cryptanalytic attacks on weak algorithms
-		if(wu.m_algorithm == "md4_fast")
-		{
-			for(unsigned int i=0; i<nTargetHashes; i++)
-				MD4MeetInTheMiddlePreprocessing(wu.m_hashvalues[i]);
-		}		
-	}
-#endif
 };
 
-string ReadPtx(string name)
-{
-	// Directorios a probar
-	string dirs[] = { string("./"), string("ptx/"), string("/usr/lib/cracker/ptx/") };
-	string code;
-	
-	for(int i = 0; i < sizeof(dirs)/sizeof(string); i++)
-	{
-		string path = dirs[i] + name + ".ptx";
-		ifstream myfile(path.c_str());
-		if(!myfile) continue;
-		
-		char line[1024];
-		while(!myfile.eof())
-		{
-			myfile.getline(line, 1024);
-			code += line;
-			code += "\n";
-		}
-		
-		return string(code);
-	}
-	
-	string strErr = string("Failed to open CUDA module file ") + fname;
-	ThrowCustomError(strErr.c_str());
-}
 
 #endif
