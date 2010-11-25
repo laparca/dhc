@@ -37,11 +37,15 @@
 
 #include "Executor.h"
 
+/*!
+ * @class BasicExecutor
+ * @brief
+ */
 class BasicExecutor: public Executor
 {
 public:
-	void Execute();
-	string GetName() { return "BasicExecutor"; }
+	void Execute(Algorithm *alg, WorkUnit& wu, Device* pDevice, CudaContext* pContext);
+	string GetName();
 };
 
 #endif

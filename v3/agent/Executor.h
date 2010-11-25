@@ -3,7 +3,7 @@
 * Distributed Hash Cracker v3.0                                               *
 *                                                                             *
 * Copyright (c) 2009 RPISEC.                                                  *
-* Copyright (C) 2010 Samuel Rodriguez Sevilla
+* Copyright (C) 2010 Samuel Rodriguez Sevilla                                 *
 * All rights reserved.                                                        *
 *                                                                             *
 * Redistribution and use in source and binary forms, with or without modifi-  *
@@ -35,6 +35,7 @@
 #ifndef EXECUTOR_H
 #define EXECUTOR_H
 
+#include "Algorithm.h"
 #include <string>
 using namespace std;
 
@@ -49,7 +50,15 @@ using namespace std;
 class Executor
 {
 public:
-	virtual void Execute() = 0;
+	/*!
+	 * @brief Executes an Algorithm into the GPU
+	 */
+	virtual void Execute(Algorithm *alg, WorkUnit& wu, Device* pDevice, CudaContext* pContext) = 0;
+	
+	/*!
+	 * @brief Returns the Executor name
+	 * @return The name of the Executor
+	 */
 	virtual string GetName() = 0;
 	
 	void operator()()

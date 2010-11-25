@@ -36,6 +36,7 @@
 #define MD4_H
 
 #include <Algorithm.h>
+#include <ExecutorFactory.h>
 
 class md4: public Algorithm {
 public:
@@ -52,7 +53,11 @@ public:
 		return 16;
 	}
 	void ExecuteCPU() {}
-	void ExecuteGPU() {}
+	void ExecuteGPU(WorkUnit& wu, Device* pDevice, CudaContext* pContext)
+	{
+		Executor *exec = ExecutorFactory::Get("BasicExecutor");
+		exec->Execute(this, wu, pDevice, pContext);
+	}
 
 	virtual bool IsGPUCapable()
 	{
