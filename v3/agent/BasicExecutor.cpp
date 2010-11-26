@@ -28,12 +28,6 @@ void BasicExecutor::Execute(Algorithm *alg, WorkUnit& wu, Device* pDevice, CudaC
 
 	//TODO: Sanity check charset (duplicate check, etc)?
 
-	//** {{ CODIGO PARA LA PRECARGA DEL ALGORITMO
-	Algorithm *alg = AlgorithmFactory::GetAlgorithm(wu.m_algorithm);
-	//alg->Prepare(pDevice, pContext, wu);
-	alg->ExecuteGPU(pDevice, pContext, wu);
-	//** }}
-
 /*	{{ OLD
 	//Load hash module and kernel from PTX
 	string fname = string("ptx/") + wu.m_algorithm + ".ptx";

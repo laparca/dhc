@@ -90,6 +90,8 @@ ADD_EXECUTABLE(agent
 	ComputeThreadProc.cpp
 	ControllerLink.cpp
 	AlgorithmFactory.cpp
+	ExecutorFactory.cpp
+	BasicExecutor.cpp
 	DeviceMemory.cpp
 	LowLevel.cpp
 	MD4MeetInTheMiddleAttack.cpp
