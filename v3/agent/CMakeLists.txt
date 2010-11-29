@@ -23,7 +23,12 @@ ELSE()
 ENDIF()
 
 IF(MACOSX)
- SET(BIN_FORMAT macho)
+	IF(AMD64)
+		#Requieres a new nasm version. The version of nasm that comes with XCode is too old.
+		SET(BIN_FORMAT macho64)
+	ELSE()
+ 		SET(BIN_FORMAT macho)
+	ENDIF()
 ENDIF()
 
 

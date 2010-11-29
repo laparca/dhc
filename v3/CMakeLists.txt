@@ -138,6 +138,9 @@ CONFIGURE_FILE(config.h.in ${CMAKE_BINARY_DIR}/config.h)
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${PIC_FLAG} ${ARCH_SWITCH}"  )
 SET(CMAKE_LD_FLAGS "${CMAKE_LD_FLAGS} ${PIC_FLAG} ${ARCH_SWITCH}"  )
 
+# Set the cuda include directory and the cuda library path
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -I${CUDA_DIR}/include")
+SET(CMAKE_LD_FLAGS "${CMAKE_LD_FLAGS} -L${CUDA_DIR}/lib")
 ###############################################################################
 #Binary modules
 ADD_SUBDIRECTORY(agent)
