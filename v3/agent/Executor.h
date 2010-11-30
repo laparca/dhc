@@ -61,9 +61,9 @@ public:
 	 */
 	virtual string GetName() = 0;
 	
-	void operator()()
+	void operator()(Algorithm *alg, WorkUnit& wu, Device* pDevice, CudaContext* pContext)
 	{
-		Execute();
+		Execute(alg, wu, pDevice, pContext);
 	}
 };
 

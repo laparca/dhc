@@ -191,22 +191,14 @@ void ComputeThreadProc(void* pData)
 		{
 			vector<Algorithm *> vAlg = AlgorithmFactory::GetAlgorithms(SelectAlgorithms(SELECT_WITH_GPU));
 			algs = GetAlgorithmNames(vAlg);
-			/*
-			algs.push_back("md4");
-			algs.push_back("md5");
-			algs.push_back("md5crypt");
-			algs.push_back("ntlm");
-			algs.push_back("sha1");
-			algs.push_back("sha256");
-			*/
 		}
+#if defined(LINUX) && defined(AMD64)
 		else if(LINUX==1 && AMD64==1)			//64 bit Linux
 		{
 			vector<Algorithm *> vAlg = AlgorithmFactory::GetAlgorithms(SelectAlgorithms(SELECT_WITH_CPU));
 			algs = GetAlgorithmNames(vAlg);
-			//algs.push_back("md5");
 		}
-		
+#endif
 		//Try to get a work unit
 		/* TODO
 		 * Tomar la diferencia de tiempo entre que se envia y se recive la
@@ -376,7 +368,7 @@ void DoWorkUnitOnGPU(WorkUnit& wu, Device* pDevice, CudaContext* pContext)
 	//** {{ CODIGO PARA LA PRECARGA DEL ALGORITMO
 	Algorithm *alg = AlgorithmFactory::GetAlgorithm(wu.m_algorithm);
 	//alg->Prepare(pDevice, pContext, wu);
-	alg->ExecuteGPU(pDevice, pContext, wu);
+	alg->ExecuteGPU(wu, pDevice, pContext);
 	//** }}
 }
 #endif
