@@ -1,5 +1,7 @@
 #include "BasicExecutor.h"
 
+extern double g_tBaseN;
+
 string BasicExecutor::GetName()
 {
 	return string("BasicExecutor");
@@ -155,6 +157,10 @@ void BasicExecutor::Execute(Algorithm *alg, WorkUnit& wu, Device* pDevice, CudaC
 	//Bind charset texture
 	CUtexref texCharset;
 	CUresult result;
+	
+	/** TODO
+	* Tengo que leer el hashmod desde el algoritmo.
+	*/
 	if(CUDA_SUCCESS != (result = cuModuleGetTexRef(&texCharset, hashmod.GetModule(), "texCharset")))
 		ThrowCudaLLError("Failed to get reference to texCharset", result);
 	if(CUDA_SUCCESS != (result = cuTexRefSetAddress(

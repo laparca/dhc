@@ -105,7 +105,7 @@ public:
 	 *	@brief Prepares information to accelerate hash attack or to perform better the functionality
 	 *	@param wo The workunit with the information to analize
 	 */
-	virtual void Prepare(WorkUnit & wo) = 0;
+	//virtual void Prepare(WorkUnit & wo) = 0;
 #ifdef CUDA_ENABLED
 	/*!
 	 *  @brief Prepared information to accelerate hash attack or to improve the performance. It is

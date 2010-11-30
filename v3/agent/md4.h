@@ -55,46 +55,13 @@ public:
 	void ExecuteCPU() {}
 	void ExecuteGPU(WorkUnit& wu, Device* pDevice, CudaContext* pContext)
 	{
-		Executor *exec = ExecutorFactory::Get("BasicExecutor");
-		exec->Execute(this, wu, pDevice, pContext);
-	}
+		Module *hashmod;
+		CudaKernel *haskher;
 
-	virtual bool IsGPUCapable()
-	{
-		return true;
-	}
-	virtual bool IsCPUCapable()
-	{
-		return false;
-	}
-
-	void Prepare(WorkUnit & wo)
-	{
-		
-	}
-#ifdef CUDA_ENABLED
-private:
-	Module *hashmod;
-	CudaKernel *haskher;
-	Device *pDevice;
-	CudaContext *pContext;
-	WorkUnit *wu;
-public:	
-	/*!
-	 *  @brief Prepared information to accelerate hash attack or to improve the performance. It is
-	 *         indicated for CUDA devices.
-	 *  @param pDevice
-	 *  @param pContext
-	 *  @param wu
-	 */
-	void Prepare(Device *pDevice, CudaContext *pContext, WorkUnit *wu)
-	{
-		this->pDevice = pDevice;
-		this->pContext = pContext;
-		this->wu = wu;
-		
+		/* Loads the ptx code into memory and creates the module */
 		hashmod = new Module(ReadPtx("md4"), pContext);
 		
+		/* Identify the function to use */
 		string func = "md4";
 
 		if(wu.m_start.length() <= 12)						//If we are cracking a weak algorithm, switch to
@@ -107,6 +74,7 @@ public:
 		else
 			func = func + "Kernel";
 		
+		/* Load the function */
 		hashker = hashmod->GetKernel(func.c_str());
 
 		//Perform cryptanalytic attacks on weak algorithms
@@ -115,8 +83,23 @@ public:
 			for(unsigned int i=0; i<nTargetHashes; i++)
 				MD4MeetInTheMiddlePreprocessing(wu.m_hashvalues[i]);
 		}		
+
+		Executor *exec = ExecutorFactory::Get("BasicExecutor");
+		exec->Execute(this, wu, pDevice, pContext);
 	}
+
+	virtual bool IsGPUCapable()
+	{
+#ifdef CUDA_ENABLED
+		return true;
+#else
+		return false;
 #endif
+	}
+	virtual bool IsCPUCapable()
+	{
+		return false;
+	}
 };
 
 string ReadPtx(string name)
