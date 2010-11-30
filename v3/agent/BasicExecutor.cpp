@@ -86,7 +86,7 @@ void BasicExecutor::Execute(Algorithm *alg, WorkUnit& wu, Device* pDevice, CudaC
 
 	//Record performance info
 	double tstart = GetTime();
-	g_tBaseN = 0;
+	unsigned long g_tBaseN = 0;
 	unsigned long nHashes = 0;
 
 	Stream mystream[2];
