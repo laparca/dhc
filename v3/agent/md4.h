@@ -56,10 +56,11 @@ public:
 	void ExecuteGPU(WorkUnit& wu, Device* pDevice, CudaContext* pContext)
 	{
 		Module *hashmod;
-		CudaKernel *haskher;
-
+		CudaKernel *hashker;
+		unsigned int nTargetHashes = wu.m_hashvalues.size();
+		
 		/* Loads the ptx code into memory and creates the module */
-		hashmod = new Module(ReadPtx("md4"), pContext);
+		hashmod = new Module("md4", ReadPtx("md4"), *pContext);
 		
 		/* Identify the function to use */
 		string func = "md4";
@@ -84,8 +85,12 @@ public:
 				MD4MeetInTheMiddlePreprocessing(wu.m_hashvalues[i]);
 		}		
 
+		executor_parameters parameters;
+		parameters["hashmod"] = hashmod;
+		parameters["hashker"] = hashker;
+		
 		Executor *exec = ExecutorFactory::Get("BasicExecutor");
-		exec->Execute(this, wu, pDevice, pContext);
+		exec->Execute(this, wu, pDevice, pContext, parameters);
 	}
 
 	virtual bool IsGPUCapable()
@@ -102,31 +107,5 @@ public:
 	}
 };
 
-string ReadPtx(string name)
-{
-	// Directorios a probar
-	string dirs[] = { string("./"), string("ptx/"), string("/usr/lib/cracker/ptx/") };
-	string code;
-	
-	for(int i = 0; i < sizeof(dirs)/sizeof(string); i++)
-	{
-		string path = dirs[i] + name + ".ptx";
-		ifstream myfile(path.c_str());
-		if(!myfile) continue;
-		
-		char line[1024];
-		while(!myfile.eof())
-		{
-			myfile.getline(line, 1024);
-			code += line;
-			code += "\n";
-		}
-		
-		return string(code);
-	}
-	
-	string strErr = string("Failed to open CUDA module file ") + fname;
-	ThrowCustomError(strErr.c_str());
-}
 
 #endif

@@ -1,4 +1,7 @@
 INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR})
+IF(CUDA_ENABLED)
+	LINK_DIRECTORIES("${CUDA_DIR}/lib")
+ENDIF()
 
 ###############################################################################
 #version.h generation

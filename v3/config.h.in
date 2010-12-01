@@ -44,6 +44,9 @@
 #ifndef __CONFIG_H__
 #define __CONFIG_H__
 
+#include <string>
+using namespace std;
+
 //Operating systems
 #cmakedefine UNIX       1
 #cmakedefine LINUX      1

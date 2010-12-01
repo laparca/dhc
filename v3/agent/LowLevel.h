@@ -280,6 +280,7 @@ class Module
 {
 public:
 	Module(std::string fname, CudaContext& context);
+	Module(std::string fname, std::string fcontent, CudaContext& context);
 	~Module();
 	
 	CudaKernel* GetKernel(const char* func);
