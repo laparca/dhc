@@ -227,7 +227,11 @@ md5_tbuf:
 ;xmm1			B
 ;xmm2			C
 ;xmm3			D
+%ifdef MACOSX
+global MD5Hash ;:function
+%else
 global MD5Hash:function
+%endif
 MD5Hash:
 	push	rbp								;Standard entry sequence
 	mov		rbp, rsp			
