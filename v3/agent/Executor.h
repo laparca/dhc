@@ -36,8 +36,31 @@
 #define EXECUTOR_H
 
 #include "Algorithm.h"
+#include <map>
 #include <string>
 using namespace std;
+
+/*!
+ *	@def GET_EXECUTOR_PARAM
+ *	@brief This define is used as parameter for the SelectAlgorithms
+ *	class and indicates that it has select algorithms that use GPU.
+ */
+#define GET_EXECUTOR_PARAM(type, name)                           \
+type name;                                                       \
+do                                                               \
+{                                                                \
+   executor_parameters_iterator value = parameters.find(#name);  \
+   if(value != parameters.end())                                 \
+   {                                                             \
+      name = *(static_cast<type*>(value->second));               \
+   }                                                             \
+   else                                                          \
+      throw "Parameter is not defined";                          \
+}while(0)
+
+
+typedef map<string, void*> executor_parameters;
+typedef map<string, void*>::iterator executor_parameters_iterator;
 
 /*!
  * @class Executor
@@ -53,7 +76,7 @@ public:
 	/*!
 	 * @brief Executes an Algorithm into the GPU
 	 */
-	virtual void Execute(Algorithm *alg, WorkUnit& wu, Device* pDevice, CudaContext* pContext) = 0;
+	virtual void Execute(Algorithm *alg, WorkUnit& wu, Device* pDevice, CudaContext* pContext, executor_parameters& parameters) = 0;
 	
 	/*!
 	 * @brief Returns the Executor name
@@ -61,9 +84,9 @@ public:
 	 */
 	virtual string GetName() = 0;
 	
-	void operator()(Algorithm *alg, WorkUnit& wu, Device* pDevice, CudaContext* pContext)
+	void operator()(Algorithm *alg, WorkUnit& wu, Device* pDevice, CudaContext* pContext, executor_parameters& parameters)
 	{
-		Execute(alg, wu, pDevice, pContext);
+		Execute(alg, wu, pDevice, pContext, parameters);
 	}
 };
 

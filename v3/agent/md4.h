@@ -35,8 +35,8 @@
 #ifndef MD4_H
 #define MD4_H
 
-#include <Algorithm.h>
-#include <ExecutorFactory.h>
+#include "Algorithm.h"
+#include "ExecutorFactory.h"
 
 class md4: public Algorithm {
 public:

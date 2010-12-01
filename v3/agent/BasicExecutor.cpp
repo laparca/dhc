@@ -1,13 +1,15 @@
 #include "BasicExecutor.h"
+#include "CudaFunction.h"
 
 extern double g_tBaseN;
+extern bool g_bTesting;
 
 string BasicExecutor::GetName()
 {
 	return string("BasicExecutor");
 }
 
-void BasicExecutor::Execute(Algorithm *alg, WorkUnit& wu, Device* pDevice, CudaContext* pContext)
+void BasicExecutor::Execute(Algorithm *alg, WorkUnit& wu, Device* pDevice, CudaContext* pContext, executor_parameters& parameters)
 {
 	//Look up the start and end values
 	int rcharset[256];
@@ -20,6 +22,12 @@ void BasicExecutor::Execute(Algorithm *alg, WorkUnit& wu, Device* pDevice, CudaC
 	unsigned int base = wu.m_charset.size();
 	unsigned int nTargetHashes = wu.m_hashvalues.size();
 
+	typedef Module* pModule;
+	typedef CudaKernel * pCudaKernel;
+	
+	GET_EXECUTOR_PARAM(pModule, hashmod);
+	GET_EXECUTOR_PARAM(pCudaKernel, hashker);
+	
 	//Start and end lengths must match
 	if(len != wu.m_end.length())
 		ThrowError("Invalid work unit");	
@@ -161,7 +169,7 @@ void BasicExecutor::Execute(Algorithm *alg, WorkUnit& wu, Device* pDevice, CudaC
 	/** TODO
 	* Tengo que leer el hashmod desde el algoritmo.
 	*/
-	if(CUDA_SUCCESS != (result = cuModuleGetTexRef(&texCharset, hashmod.GetModule(), "texCharset")))
+	if(CUDA_SUCCESS != (result = cuModuleGetTexRef(&texCharset, hashmod->GetModule(), "texCharset")))
 		ThrowCudaLLError("Failed to get reference to texCharset", result);
 	if(CUDA_SUCCESS != (result = cuTexRefSetAddress(
 		NULL,

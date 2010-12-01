@@ -3,7 +3,7 @@
 * Distributed Hash Cracker v3.0                                               *
 *                                                                             *
 * Copyright (c) 2009 RPISEC.                                                  *
-* Copyright (C) 2010 Samuel Rodriguez Sevilla
+* Copyright (C) 2010 Samuel Rodriguez Sevilla                                 *
 * All rights reserved.                                                        *
 *                                                                             *
 * Redistribution and use in source and binary forms, with or without modifi-  *
@@ -118,6 +118,7 @@ vector<string> GetAlgorithmNames(const vector<Algorithm *>& vAlgorithm)
  *	CudaFunction generates a wrapper for the cuda kernel functions and
  *	this is very useful for simplify calling those methods.
  */
+/*
 class CudaFunction
 {
 private:
@@ -147,7 +148,7 @@ public:
 	 *	or new) in other case the template will not determine the array size.
 	 *	@param params An array with the params for the kernel function.
 	 */
-	template<int Size>
+/*	template<int Size>
 	void operator()(KernelParamBase *(&params)[Size])
 	{
 		m_stream->AddKernelCall(*m_hashker, m_block_x, m_block_y, m_threads_x, m_threads_y, m_threads_z, params);

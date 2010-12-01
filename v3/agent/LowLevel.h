@@ -187,7 +187,7 @@ public:
 	
 	int GetMajorVersion();
 	int GetMinorVersion();
-	unsigned int GetTotalMem();
+	size_t GetTotalMem();
 	std::string GetName();
 	
 	void PrintDebugInfo(bool bShowAll = false);

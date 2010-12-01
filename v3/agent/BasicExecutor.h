@@ -44,7 +44,7 @@
 class BasicExecutor: public Executor
 {
 public:
-	void Execute(Algorithm *alg, WorkUnit& wu, Device* pDevice, CudaContext* pContext);
+	void Execute(Algorithm *alg, WorkUnit& wu, Device* pDevice, CudaContext* pContext, executor_parameters& parameters);
 	string GetName();
 };
 
