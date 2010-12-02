@@ -228,11 +228,12 @@ md5_tbuf:
 ;xmm2			C
 ;xmm3			D
 %ifdef MACOSX
-global MD5Hash ;:function
+global _MD5Hash
+_MD5Hash:
 %else
 global MD5Hash:function
-%endif
 MD5Hash:
+%endif
 	push	rbp								;Standard entry sequence
 	mov		rbp, rsp			
 	sub		rsp, 256						;Reserve 256 bytes of space for our X buffer

@@ -142,7 +142,14 @@ THREAD_PROTOTYPE(RequestThread, _notused)
 
 double GetTime()
 {
-#ifdef LINUX
+#ifdef MACOSX
+	struct timeval tv;
+	gettimeofday(&tv, NULL);
+	double d = static_cast<double>(tv.tv_usec) * 1000;
+	d /= 1E9f;
+	d += tv.tv_sec;
+	return d;
+#elif LINUX
 	timespec t;
 	clock_gettime(CLOCK_REALTIME,&t);
 	double d = static_cast<double>(t.tv_nsec) / 1E9f;
