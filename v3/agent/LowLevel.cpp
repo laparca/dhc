@@ -261,9 +261,9 @@ int Device::GetMinorVersion()
 /*!
 	@brief Gets the total global memory available on the device, in bytes.
  */
-unsigned int Device::GetTotalMem()
+size_t Device::GetTotalMem()
 {
-	unsigned int mem;
+	size_t mem;
 	CUresult err;
 	if(CUDA_SUCCESS != (err=cuDeviceTotalMem(&mem, m_device)))
 		ThrowCudaLLError("Failed to get CUDA device memory size", err);
@@ -421,6 +421,47 @@ Module::Module(std::string fname, CudaContext& context)
 		ThrowCudaLLError("Failed to JIT CUDA module", err);
 }
 
+/*!
+	@brief Loads a CUDA module from a .cubin or .ptx file.
+	
+	The file is first searched for in the current working directory. If it is not found,
+	"/usr/share/cuvis/" is prepended to the file name. If this fails, an exception is thrown.
+	
+	@param fname Name of the file
+	@param context The current thread context
+ */
+Module::Module(std::string fname, std::string fcontent, CudaContext& context)
+{
+	//Save our file name
+	m_fname = fname;
+	
+	//Set up build flags
+	const int numOptions = 3;
+	int maxregs = 128;
+	float buildtime;
+	//CUjit_target_enum target = context.GetJitTarget();
+	int optimization = 4;
+	CUjit_option options[numOptions]=
+	{
+		CU_JIT_MAX_REGISTERS,
+		CU_JIT_WALL_TIME,
+		CU_JIT_OPTIMIZATION_LEVEL
+	};
+	void* values[numOptions]=
+	{
+		&maxregs,
+		&buildtime,
+		&optimization
+	};
+	
+	//TODO: other parameters (including target)
+	
+	//Load the module
+	CUresult err;
+	if(CUDA_SUCCESS != (err=cuModuleLoadDataEx(&m_module, fcontent.c_str(), numOptions, options, values)))
+		ThrowCudaLLError("Failed to JIT CUDA module", err);
+	
+}
 /*!
 	@brief Unloads a module.
  */

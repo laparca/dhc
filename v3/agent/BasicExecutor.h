@@ -36,6 +36,7 @@
 #define BASIC_EXECUTOR_H
 
 #include "Executor.h"
+#include "LowLevel.h"
 
 /*!
  * @class BasicExecutor
@@ -44,7 +45,7 @@
 class BasicExecutor: public Executor
 {
 public:
-	void Execute(Algorithm *alg, WorkUnit& wu, Device* pDevice, CudaContext* pContext);
+	void Execute(Algorithm *alg, WorkUnit& wu, Device* pDevice, CudaContext* pContext, executor_parameters& parameters);
 	string GetName();
 };
 

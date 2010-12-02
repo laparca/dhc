@@ -47,6 +47,7 @@
 #include <vector>
 #include "WorkUnit.h"
 #include "agent.h"
+#include "LowLevel.h"
 
 using namespace std;
 
@@ -105,7 +106,7 @@ public:
 	 *	@brief Prepares information to accelerate hash attack or to perform better the functionality
 	 *	@param wo The workunit with the information to analize
 	 */
-	virtual void Prepare(WorkUnit & wo) = 0;
+	//virtual void Prepare(WorkUnit & wo) = 0;
 #ifdef CUDA_ENABLED
 	/*!
 	 *  @brief Prepared information to accelerate hash attack or to improve the performance. It is
@@ -114,12 +115,12 @@ public:
 	 *  @param pContext
 	 *  @param wu
 	 */
-	virtual void Prepare(Device *pDevice, CudaContext *pContext, WorkUnit *wu) = 0;
+//	virtual void Prepare(Device *pDevice, CudaContext *pContext, WorkUnit *wu) = 0;
 #endif
 	/*!
 	 *  @brief This method frees the internal memory used during the execution process.
 	 */
-	virtual void End() = 0;
+//	virtual void End() = 0;
 	/*!
 	 *	@brief Number of registers used by the GPU version of the algorithm.
 	 *	This value can be obtained using the cubin compilation of the GPU unit. If it is

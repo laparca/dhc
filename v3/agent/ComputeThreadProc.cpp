@@ -3,7 +3,7 @@
 * Distributed Hash Cracker v3.0                                               *
 *                                                                             *
 * Copyright (c) 2009 RPISEC.                                                  *
-* Copyright (C) 2010 Samuel Rodriguez Sevilla
+* Copyright (C) 2010 Samuel Rodriguez Sevilla                                 *
 * All rights reserved.                                                        *
 *                                                                             *
 * Redistribution and use in source and binary forms, with or without modifi-  *
@@ -118,6 +118,7 @@ vector<string> GetAlgorithmNames(const vector<Algorithm *>& vAlgorithm)
  *	CudaFunction generates a wrapper for the cuda kernel functions and
  *	this is very useful for simplify calling those methods.
  */
+/*
 class CudaFunction
 {
 private:
@@ -147,7 +148,7 @@ public:
 	 *	or new) in other case the template will not determine the array size.
 	 *	@param params An array with the params for the kernel function.
 	 */
-	template<int Size>
+/*	template<int Size>
 	void operator()(KernelParamBase *(&params)[Size])
 	{
 		m_stream->AddKernelCall(*m_hashker, m_block_x, m_block_y, m_threads_x, m_threads_y, m_threads_z, params);
@@ -191,22 +192,14 @@ void ComputeThreadProc(void* pData)
 		{
 			vector<Algorithm *> vAlg = AlgorithmFactory::GetAlgorithms(SelectAlgorithms(SELECT_WITH_GPU));
 			algs = GetAlgorithmNames(vAlg);
-			/*
-			algs.push_back("md4");
-			algs.push_back("md5");
-			algs.push_back("md5crypt");
-			algs.push_back("ntlm");
-			algs.push_back("sha1");
-			algs.push_back("sha256");
-			*/
 		}
+#if defined(LINUX) && defined(AMD64)
 		else if(LINUX==1 && AMD64==1)			//64 bit Linux
 		{
 			vector<Algorithm *> vAlg = AlgorithmFactory::GetAlgorithms(SelectAlgorithms(SELECT_WITH_CPU));
 			algs = GetAlgorithmNames(vAlg);
-			//algs.push_back("md5");
 		}
-		
+#endif
 		//Try to get a work unit
 		/* TODO
 		 * Tomar la diferencia de tiempo entre que se envia y se recive la
@@ -376,7 +369,7 @@ void DoWorkUnitOnGPU(WorkUnit& wu, Device* pDevice, CudaContext* pContext)
 	//** {{ CODIGO PARA LA PRECARGA DEL ALGORITMO
 	Algorithm *alg = AlgorithmFactory::GetAlgorithm(wu.m_algorithm);
 	//alg->Prepare(pDevice, pContext, wu);
-	alg->ExecuteGPU(pDevice, pContext, wu);
+	alg->ExecuteGPU(wu, pDevice, pContext);
 	//** }}
 }
 #endif

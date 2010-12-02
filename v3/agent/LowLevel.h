@@ -187,7 +187,7 @@ public:
 	
 	int GetMajorVersion();
 	int GetMinorVersion();
-	unsigned int GetTotalMem();
+	size_t GetTotalMem();
 	std::string GetName();
 	
 	void PrintDebugInfo(bool bShowAll = false);
@@ -280,6 +280,7 @@ class Module
 {
 public:
 	Module(std::string fname, CudaContext& context);
+	Module(std::string fname, std::string fcontent, CudaContext& context);
 	~Module();
 	
 	CudaKernel* GetKernel(const char* func);

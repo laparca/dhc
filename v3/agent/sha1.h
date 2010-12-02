@@ -35,7 +35,7 @@
 #ifndef SHA1_H
 #define SHA1_H
 
-#include <Algorithm.h>
+#include "Algorithm.h"
 
 class sha1: public Algorithm {
 public:

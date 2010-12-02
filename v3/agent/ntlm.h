@@ -35,7 +35,7 @@
 #ifndef NTLM_H
 #define NTLM_H
 
-#include <Algorithm.h>
+#include "Algorithm.h"
 
 class ntlm: public Algorithm {
 public:
