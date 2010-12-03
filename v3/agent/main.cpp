@@ -467,6 +467,10 @@ string ReadPtx(string name)
 #include "md5crypt.h"
 #include "ntlm.h"
 
+#include "ExecutorFactory.h"
+#include "BasicExecutor.h"
+INIT_EXECUTORS();
+
 /*!
 	@brief Register the algorithms used by this agent
  */
@@ -480,4 +484,6 @@ void RegisterAlgorithms()
 //	AlgorithmFactory::RegisterAlgorithm(new ntlm());
 
 	AlgorithmFactory::Test();
+	
+	ExecutorFactory::Register(new BasicExecutor());
 }
