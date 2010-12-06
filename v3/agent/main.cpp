@@ -106,6 +106,7 @@
 
 #include "agent.h"
 #include "version.h"
+#include  "debug.h"
 #include <fstream>
 using namespace std;
 
@@ -144,6 +145,8 @@ string ConfigDirectories[] = {
 	string("/usr/lib/cracker/ptx/")
 };
 
+INIT_LOG(DEBUG);
+
 /*!
 	@brief Program entry point
 	
@@ -154,6 +157,7 @@ string ConfigDirectories[] = {
  */
 int main(int argc, char* argv[])
 {
+	DO_ENTER("", "main");
 	try
 	{
 		RegisterAlgorithms();
@@ -319,6 +323,7 @@ void OnCtrlC(int sig)
  */
 int GetCpuCores()
 {
+	DO_ENTER("", "GetCpuCores");
 #ifdef LINUX
 	return sysconf( _SC_NPROCESSORS_ONLN );
 #else
@@ -335,6 +340,7 @@ int GetCpuCores()
  */
 THREAD_PROTOTYPE(ComputeThread, _pData)
 {
+	DO_ENTER("", "ComputeThread");
 	//Error-handling wrapper around ComputeThreadProc
 	try
 	{
@@ -359,6 +365,7 @@ THREAD_PROTOTYPE(ComputeThread, _pData)
  */
 void DoThrowError(const char* err, const char* sys_err, const char* file, int line)
 {
+	DO_ENTER("", "DoThrowError");
 	char* buf = new char[strlen(err) + strlen(sys_err) + strlen(file) + 256];
 			
 	//Format the error nicely
@@ -378,6 +385,7 @@ void DoThrowError(const char* err, const char* sys_err, const char* file, int li
  */
 double GetTime()
 {
+	DO_ENTER("", "GetTime");
 #ifdef MACOSX
 	struct timeval tv;
 	gettimeofday(&tv, NULL);
@@ -408,6 +416,7 @@ double GetTime()
  */
 string GetHostname()
 {
+	DO_ENTER("", "GetHostname");
 #if WINDOWS
 	char buf[128];
 	DWORD len=128;
@@ -433,6 +442,7 @@ string GetHostname()
  */
 string ReadPtx(string name)
 {
+	DO_ENTER("", "ReadPtx");
 	// Directorios a probar
 	//string dirs[] = { string("./"), string("ptx/"), string("/usr/lib/cracker/ptx/") };
 	string code;
@@ -450,7 +460,6 @@ string ReadPtx(string name)
 			code += line;
 			code += "\n";
 		}
-		
 		return string(code);
 	}
 	
@@ -476,6 +485,7 @@ INIT_EXECUTORS();
  */
 void RegisterAlgorithms()
 {
+	DO_ENTER("", "RegisterAlgorithms");
 //	AlgorithmFactory::RegisterAlgorithm(new sha256());
 //	AlgorithmFactory::RegisterAlgorithm(new sha1());
 //	AlgorithmFactory::RegisterAlgorithm(new md5());

@@ -49,6 +49,7 @@
 #ifndef LowLevel_h
 #define LowLevel_h
 
+#include "debug.h"
 #ifdef CUDA_ENABLED
 
 /*!
@@ -84,97 +85,97 @@ public:
 	@brief Gets the maximum total number of threads allowed per block.
 	*/
 	int GetMaxThreadsPerBlock()
-	{ return GetAttribute(CU_DEVICE_ATTRIBUTE_MAX_THREADS_PER_BLOCK); }
+	{ DO_ENTER("Device", "GetMaxThreadsPerBlock"); return GetAttribute(CU_DEVICE_ATTRIBUTE_MAX_THREADS_PER_BLOCK); }
 	
 	/*!
 	@brief Gets the maximum number of threads allowed per block in the X direction.
 	*/
 	int GetMaxBlockX()
-	{ return GetAttribute(CU_DEVICE_ATTRIBUTE_MAX_BLOCK_DIM_X); }
+	{ DO_ENTER("Device", "GetMaxBlockX"); return GetAttribute(CU_DEVICE_ATTRIBUTE_MAX_BLOCK_DIM_X); }
 	
 	/*!
 	@brief Gets the maximum number of threads allowed per block in the Y direction.
 	*/
 	int GetMaxBlockY()
-	{ return GetAttribute(CU_DEVICE_ATTRIBUTE_MAX_BLOCK_DIM_Y); }
+	{ DO_ENTER("Device", "GetMaxBlockY"); return GetAttribute(CU_DEVICE_ATTRIBUTE_MAX_BLOCK_DIM_Y); }
 	
 	/*!
 	@brief Gets the maximum number of threads allowed per block in the Z direction.
 	*/
 	int GetMaxBlockZ()
-	{ return GetAttribute(CU_DEVICE_ATTRIBUTE_MAX_BLOCK_DIM_Z); }
+	{ DO_ENTER("Device", "GetMaxBlockZ"); return GetAttribute(CU_DEVICE_ATTRIBUTE_MAX_BLOCK_DIM_Z); }
 	
 	/*!
 	@brief Gets the maximum number of blocks allowed per grid in the X direction.
 	*/
 	int GetMaxGridX()
-	{ return GetAttribute(CU_DEVICE_ATTRIBUTE_MAX_GRID_DIM_X); }
+	{ DO_ENTER("Device", "GetMaxGridX"); return GetAttribute(CU_DEVICE_ATTRIBUTE_MAX_GRID_DIM_X); }
 	
 	/*!
 	@brief Gets the maximum number of blocks allowed per grid in the Y direction.
 	*/
 	int GetMaxGridY()
-	{ return GetAttribute(CU_DEVICE_ATTRIBUTE_MAX_GRID_DIM_Y); }
+	{ DO_ENTER("Device", "GetMaxGridY"); return GetAttribute(CU_DEVICE_ATTRIBUTE_MAX_GRID_DIM_Y); }
 	
 	/*!
 	@brief Gets the maximum number of blocks allowed per grid in the Z direction.
 	*/
 	int GetMaxGridZ()
-	{ return GetAttribute(CU_DEVICE_ATTRIBUTE_MAX_GRID_DIM_Z); }
+	{ DO_ENTER("Device", "GetMaxGridZ"); return GetAttribute(CU_DEVICE_ATTRIBUTE_MAX_GRID_DIM_Z); }
 	
 	/*!
 	@brief Gets the maximum amount of shared memory usable by a single thread block.
 	*/
 	int GetMaxShmem()
-	{ return GetAttribute(CU_DEVICE_ATTRIBUTE_MAX_SHARED_MEMORY_PER_BLOCK); }
+	{ DO_ENTER("Device", "GetMaxShmem"); return GetAttribute(CU_DEVICE_ATTRIBUTE_MAX_SHARED_MEMORY_PER_BLOCK); }
 	
 	/*!
 	@brief Gets the total constant memory available on this device.
 	*/
 	int GetMaxCmem()
-	{ return GetAttribute(CU_DEVICE_ATTRIBUTE_TOTAL_CONSTANT_MEMORY); }
+	{ DO_ENTER("Device", "GetMaxCmem"); return GetAttribute(CU_DEVICE_ATTRIBUTE_TOTAL_CONSTANT_MEMORY); }
 	
 	/*!
 	@brief Gets the warp size of the device (SIMD width)
 	*/
 	int GetWarpSize()
-	{ return GetAttribute(CU_DEVICE_ATTRIBUTE_WARP_SIZE); }
+	{ DO_ENTER("Device", "GetWarpSize"); return GetAttribute(CU_DEVICE_ATTRIBUTE_WARP_SIZE); }
 	
 	/*!
 	@brief Gets the maximum alignment which may be used with cudaMallocPitch().
 	*/
 	int GetMaxPitch()
-	{ return GetAttribute(CU_DEVICE_ATTRIBUTE_MAX_PITCH); }
+	{ DO_ENTER("Device", "GetMaxPitch"); return GetAttribute(CU_DEVICE_ATTRIBUTE_MAX_PITCH); }
 	
 	/*!
 	@brief Gets the total number of registers available per thread block.
 	*/
 	int GetMaxRegisters()
-	{ return GetAttribute(CU_DEVICE_ATTRIBUTE_MAX_REGISTERS_PER_BLOCK); }
+	{ DO_ENTER("Device", "GetMaxRegisters"); return GetAttribute(CU_DEVICE_ATTRIBUTE_MAX_REGISTERS_PER_BLOCK); }
 	
 	/*!
 	@brief Gets the clock rate of the device in KHz.
 	*/
 	int GetClockRate()
-	{ return GetAttribute(CU_DEVICE_ATTRIBUTE_CLOCK_RATE); }
+	{ DO_ENTER("Device", "GetClockRate"); return GetAttribute(CU_DEVICE_ATTRIBUTE_CLOCK_RATE); }
 	
 	/*!
 	@brief Gets the alignment, in bytes, which must be used for texture memory/
 	*/
 	int GetTextureAlignment()
-	{ return GetAttribute(CU_DEVICE_ATTRIBUTE_TEXTURE_ALIGNMENT); }
+	{ DO_ENTER("Device", "GetTextureAlignment"); return GetAttribute(CU_DEVICE_ATTRIBUTE_TEXTURE_ALIGNMENT); }
 	
 	/*!
 	@brief Determines if the device supports computation during a memory bus transfer.
 	*/
 	bool GetGpuOverlap()
-	{ return (GetAttribute(CU_DEVICE_ATTRIBUTE_GPU_OVERLAP) == 1); }
+	{ DO_ENTER("Device", "GetGpuOverlap"); return (GetAttribute(CU_DEVICE_ATTRIBUTE_GPU_OVERLAP) == 1); }
 	
 	/*!
 	@brief Gets the number of multiprocessors (not shader units) on the device.
 	*/
 	int GetMultiprocessorCount()
-	{ return GetAttribute(CU_DEVICE_ATTRIBUTE_MULTIPROCESSOR_COUNT); }
+	{ DO_ENTER("Device", "GetMultiprocessorCount"); return GetAttribute(CU_DEVICE_ATTRIBUTE_MULTIPROCESSOR_COUNT); }
 	
 	/*!
 	@brief Determines if the device has a timeout on kernel execution.
@@ -183,7 +184,7 @@ public:
 	does not have a monitor attached.
 	*/
 	bool GetExecTimeout()
-	{ return (GetAttribute(CU_DEVICE_ATTRIBUTE_KERNEL_EXEC_TIMEOUT) == 1); }
+	{ DO_ENTER("Device", "GetExecTimeout"); return (GetAttribute(CU_DEVICE_ATTRIBUTE_KERNEL_EXEC_TIMEOUT) == 1); }
 	
 	int GetMajorVersion();
 	int GetMinorVersion();
@@ -196,7 +197,7 @@ public:
 	@brief Gets the index of this device (CUDA device ID)
 	*/
 	int GetDeviceID()
-	{ return m_nDevice; }
+	{ DO_ENTER("Device", "GetDeviceID"); return m_nDevice; }
 	
 	CUjit_target_enum GetJitTarget();	
 	
@@ -248,13 +249,13 @@ public:
 		@return The highest compute capability supported by this device.
 	 */
 	CUjit_target_enum GetJitTarget()
-	{ return m_jitTarget; }
+	{ DO_ENTER("CudaContext", "GetJitTarget"); return m_jitTarget; }
 
 	/*!
 		@brief Gets the device associated with this context.
 	 */
 	Device& GetDevice()
-	{ return m_device; }
+	{ DO_ENTER("CudaContext", "GetDevice"); return m_device; }
 	
 protected:
 	/*!
@@ -289,7 +290,7 @@ public:
 		@brief Gets a reference to the underlying CUDA driver API object.
 	 */
 	CUmodule& GetModule()
-	{ return m_module; }
+	{ DO_ENTER("Module", "GetModule"); return m_module; }
 	
 protected:
 	/*!
@@ -327,13 +328,13 @@ public:
 		@brief Gets a reference to the underlying CUDA driver API object.
 	 */
 	CUfunction GetFunction() const
-	{ return m_func; }
+	{ DO_ENTER("CudaKernel", "GetFunction"); return m_func; }
 	
 	/*!
 		@brief Returns a description of the function this kernel object represents
 	 */
 	std::string GetDesc() const
-	{ return m_desc; }
+	{ DO_ENTER("CudaKernel", "GetDesc"); return m_desc; }
 	
 protected:
 	/*!
@@ -389,10 +390,10 @@ public:
 	}
 	
 	virtual void Add(CudaKernel ker, int offset)
-	{ cuParamSeti(ker.GetFunction(), offset, m_val); }
+	{ DO_ENTER("KernelParam<int>", "Add"); cuParamSeti(ker.GetFunction(), offset, m_val); }
 	
 	virtual unsigned int GetSize()
-	{ return sizeof(int); }
+	{ DO_ENTER("KernelParam<int>", "GetSize"); return sizeof(int); }
 	
 	int m_val;
 };
@@ -412,10 +413,10 @@ public:
 	}
 	
 	virtual void Add(CudaKernel ker, int offset)
-	{ cuParamSetf(ker.GetFunction(), offset, m_val); }
+	{ DO_ENTER("KernelParam<float>", "Add"); cuParamSetf(ker.GetFunction(), offset, m_val); }
 	
 	virtual unsigned int GetSize()
-	{ return sizeof(float); }
+	{ DO_ENTER("KernelParam<float>", "GetSize"); return sizeof(float); }
 	
 	float m_val;
 };
@@ -435,10 +436,10 @@ public:
 	}
 	
 	virtual void Add(CudaKernel ker, int offset)
-	{ cuParamSetv(ker.GetFunction(), offset, &m_val, sizeof(m_val)); }
+	{ DO_ENTER("KernelParam<DeviceMemoryBuffer>", "Add"); cuParamSetv(ker.GetFunction(), offset, &m_val, sizeof(m_val)); }
 	
 	virtual unsigned int GetSize()
-	{ return sizeof(void*); }
+	{ DO_ENTER("KernelParam<DeviceMemoryBuffer>", "GetSize"); return sizeof(void*); }
 	
 	void* m_val;
 };
@@ -456,13 +457,13 @@ public:
 		@brief Gets a pointer to the buffer.
 	 */
 	void* GetData()
-	{ return m_data; }
+	{ DO_ENTER("KernelParam<HostMemoryBuffer>", "GetData"); return m_data; }
 
 	/*!
 		@brief Gets the size of the buffer.
 	 */
 	size_t GetSize()
-	{ return m_size; }
+	{ DO_ENTER("KernelParam<HostMemoryBuffer>", "Add"); return m_size; }
 
 protected:
 	/*!
@@ -523,6 +524,7 @@ public:
 		int blockx, int blocky, int blockz,
 		KernelParamBase* (&params)[Size])
 	{
+		DO_ENTER("Stream", "AddKernelCall");
 		Event start;
 		if(m_bProfiling)
 			AddEvent(start);

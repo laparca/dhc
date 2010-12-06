@@ -42,6 +42,7 @@
 #include "agent.h"
 #include "Algorithm.h"
 #include "AlgorithmFactory.h"
+#include "debug.h"
 #include <time.h>
 #include <stdarg.h>
 using namespace std;
@@ -72,6 +73,7 @@ public:
 	
 	bool operator()(Algorithm *alg)
 	{
+		DO_ENTER("SelectAlgorithms", "operator()");
 		if(alg->IsGPUCapable() && with_GPU)
 			return true;
 		else if(alg->IsCPUCapable() && with_CPU)
@@ -105,6 +107,7 @@ public:
  */
 vector<string> GetAlgorithmNames(const vector<Algorithm *>& vAlgorithm)
 {
+	DO_ENTER("", "GetAlgorithmNames");
 	vector<string> names;
 	vector<Algorithm *>::const_iterator end = vAlgorithm.end();
 	for(vector<Algorithm *>::const_iterator it = vAlgorithm.begin(); it != end; it++)
@@ -161,6 +164,7 @@ public:
  */
 void ComputeThreadProc(void* pData)
 {
+	DO_ENTER("", "ComputeThreadProc");
 	long sleep_time = 5000;
 	long waiting_time = -1;
 	
@@ -365,7 +369,8 @@ void DoWorkUnitOnCPU(WorkUnit& wu, int nCore)
 	@param pContext Context being used
  */
 void DoWorkUnitOnGPU(WorkUnit& wu, Device* pDevice, CudaContext* pContext)
-{	
+{
+	DO_ENTER("", "DoWorkUnitOnGPU");
 	//** {{ CODIGO PARA LA PRECARGA DEL ALGORITMO
 	Algorithm *alg = AlgorithmFactory::GetAlgorithm(wu.m_algorithm);
 	//alg->Prepare(pDevice, pContext, wu);

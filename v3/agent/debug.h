@@ -3,7 +3,7 @@
 * Distributed Hash Cracker v3.0                                               *
 *                                                                             *
 * Copyright (c) 2009 RPISEC.                                                  *
-* Copyright (C) 2010 Samuel Rodríguez Sevilla
+* Copyright (C) 2010 Samuel Rodriguez Sevilla                                 *
 * All rights reserved.                                                        *
 *                                                                             *
 * Redistribution and use in source and binary forms, with or without modifi-  *
@@ -32,83 +32,57 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.                *
 *                                                                             *
 ******************************************************************************/
-#ifndef MD4_H
-#define MD4_H
+#ifndef DEBUG_H
+#define DEBUG_H
 
-#include "Algorithm.h"
-#include "ExecutorFactory.h"
-#include "debug.h"
+#define ERROR    0
+#define WARINING 1
+#define MESSAGE  2
+#define LOG      3
+#define DEBUG    4
 
-class md4: public Algorithm {
+#ifdef _DEBUG
+#   define B_LOG(level, i, str)  do { if((level) <= _log_level) cout << "[" << i << "] " << (str) << endl; } while(0)
+#   define DO_ENTER(class, str)     _local_method_log(class, str)
+
+#   define DO_ERROR(str)            B_LOG(ERROR, "ERROR", str)
+#   define DO_WARNING(str)          B_LOG(WARNING, "WARNING", str)
+#   define DO_MESSAGE(str)          B_LOG(MESSAGE, "MESSAGE", str)
+#   define DO_LOG(str)              B_LOG(LOG, "LOG", str)
+#   define DO_DEBUG(str)            B_LOG(DEBUG, "DEBUG", str)
+
+#   define INIT_LOG(lvl)            unsigned int _log_level = (lvl)
+
+extern unsigned int _log_level;
+
+class _local_method_log
+{
 public:
-	string GetName()
+	_local_method_log(string cl, string method) : m_cl(cl), m_method(method)
 	{
-		return string("md4");
+		B_LOG(DEBUG, "ENTER", m_cl + "::" + m_method);
 	}
-	int HashLength()
+	
+	~_local_method_log()
 	{
-		return 16;
+		B_LOG(DEBUG, "EXIT", m_cl + "::" + m_method);
 	}
-	int  InputLength()
-	{
-		return 16;
-	}
-	void ExecuteCPU() {}
-	void ExecuteGPU(WorkUnit& wu, Device* pDevice, CudaContext* pContext)
-	{
-		DO_ENTER("md4", "ExecuteGPU");
-		
-		Module *hashmod;
-		CudaKernel *hashker;
-		unsigned int nTargetHashes = wu.m_hashvalues.size();
-		
-		/* Loads the ptx code into memory and creates the module */
-		hashmod = new Module("md4", ReadPtx("md4"), *pContext);
-		
-		/* Identify the function to use */
-		string func = "md4";
-
-		if(wu.m_start.length() <= 12)						//If we are cracking a weak algorithm, switch to
-		{																// the cryptanalytic attack when possible
-			func = "md4_fast";
-		}
-		
-		if(wu.m_hashvalues.size() > 1)
-			func = func + "BatchKernel";
-		else
-			func = func + "Kernel";
-		
-		/* Load the function */
-		hashker = hashmod->GetKernel(func.c_str());
-
-		//Perform cryptanalytic attacks on weak algorithms
-		if(wu.m_algorithm == "md4_fast")
-		{
-			for(unsigned int i=0; i<nTargetHashes; i++)
-				MD4MeetInTheMiddlePreprocessing(wu.m_hashvalues[i]);
-		}		
-
-		executor_parameters parameters;
-		parameters["hashmod"] = hashmod;
-		parameters["hashker"] = hashker;
-		
-		Executor *exec = ExecutorFactory::Get("BasicExecutor");
-		exec->Execute(this, wu, pDevice, pContext, parameters);
-	}
-
-	virtual bool IsGPUCapable()
-	{
-#ifdef CUDA_ENABLED
-		return true;
-#else
-		return false;
-#endif
-	}
-	virtual bool IsCPUCapable()
-	{
-		return false;
-	}
+private:
+	string m_cl;
+	string m_method;
 };
+
+#else
+#   define B_LOG(level, i, str)
+#   define DO_ENTER(class, str)
+#   define DO_ERROR(str)
+#   define DO_WARNING(str)
+#   define DO_MESSAGE(str)
+#   define DO_LOG(str)
+#   define DO_DEBUG(str)
+#   define INIT_LOG(lvl)
+
+#endif /* _DEBUG */
 
 
 #endif
