@@ -27,7 +27,7 @@ void BasicExecutor::Execute(Algorithm *alg, WorkUnit& wu, Device* pDevice, CudaC
 	unsigned int nTargetHashes = wu.m_hashvalues.size();
 
 	typedef Module* pModule;
-	typedef CudaKernel * pCudaKernel;
+	typedef CudaKernel* pCudaKernel;
 	
 	GET_EXECUTOR_PARAM(pModule, hashmod);
 	GET_EXECUTOR_PARAM(pCudaKernel, hashker);
@@ -315,7 +315,7 @@ void BasicExecutor::Execute(Algorithm *alg, WorkUnit& wu, Device* pDevice, CudaC
 	#endif
 
 	//Clean up
-	delete hashker;
+	//delete hashker;
 
 	#ifdef PROFILING_ENABLED
 	printf("Base-N time: %.3f sec\n", g_tBaseN);

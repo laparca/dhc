@@ -89,11 +89,14 @@ public:
 		}		
 
 		executor_parameters parameters;
-		parameters["hashmod"] = hashmod;
-		parameters["hashker"] = hashker;
+		parameters["hashmod"] = &hashmod;
+		parameters["hashker"] = &hashker;
 		
 		Executor *exec = ExecutorFactory::Get("BasicExecutor");
 		exec->Execute(this, wu, pDevice, pContext, parameters);
+		
+		delete hashker;
+		delete hashmod;
 	}
 
 	virtual bool IsGPUCapable()
