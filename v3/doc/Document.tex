@@ -1,0 +1,33 @@
+\documentclass[12pt]{book}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+%\usepackage{graphicx}
+\usepackage[pdftex]{hyperref}
+\usepackage{emp}
+
+
+\ifx\pdftexversion\undefined
+\usepackage[dvips]{graphicx}
+\else
+\usepackage[pdftex]{graphicx}
+\DeclareGraphicsRule{*}{mps}{*}{}
+\fi
+
+
+\begin{document}
+	
+	\title{Auditoría de contraseñas utilizando tarjetas gráficas}
+	\author{Samuel Rodríguez Sevilla\\Tutor: José María Sierra Cámara}
+	
+	\maketitle
+	\tableofcontents
+	
+	
+	\begin{empfile}
+	\begin{empcmds}
+	input metauml;
+	\end{empcmds}
+	% The rest of the document here
+	\input{ch1.introduccion.tex}
+	\end{empfile}
+\end{document}
