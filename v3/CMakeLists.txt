@@ -143,6 +143,7 @@ ADD_SUBDIRECTORY(stresstest)
 
 ###############################################################################
 #Documentation	
+ADD_SUBDIRECTORY(doc)
 ADD_CUSTOM_TARGET(doc
 	COMMAND doxygen Doxyfile
 	)

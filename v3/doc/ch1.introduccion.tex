@@ -16,3 +16,27 @@ link(inheritance)(B.e -- A.w);
 \caption{A class diagram}
 \end{figure}
 
+
+\begin{figure}
+\centering
+\begin{emp}[classdiag](20, 20)
+save A;
+save B;
+
+Class.A("Point")
+       ("+x: int",
+        "+y: int") ();
+
+Class.B("Circle")
+       ("radius: int")
+       ("+getRadius(): int",
+        "+setRadius(r: int):void");
+
+topToBottom(45)(A, B);
+
+drawObjects(A, B);
+
+clink(aggregationUni)(A, B)
+\end{emp}
+\caption{B class diagram}
+\end{figure}
