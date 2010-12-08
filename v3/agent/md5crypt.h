@@ -35,7 +35,7 @@
 #ifndef MD5_CRYPT_H
 #define MD5_CRYPT_H
 
-#include <Algorithm.h>
+#include "Algorithm.h"
 
 class md5crypt: public Algorithm {
 public:

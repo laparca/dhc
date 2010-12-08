@@ -106,7 +106,8 @@
 
 #include "agent.h"
 #include "version.h"
-
+#include  "debug.h"
+#include <fstream>
 using namespace std;
 
 string g_server;
@@ -136,6 +137,17 @@ bool g_bNoGPU;
 void RegisterAlgorithms();
 
 /*!
+ * @brief List of directories where the cracker looks for extensions
+ */
+string ConfigDirectories[] = {
+	string("./"),
+	string("ptx/"),
+	string("/usr/lib/cracker/ptx/")
+};
+
+INIT_LOG(DEBUG);
+
+/*!
 	@brief Program entry point
 	
 	@param argc Argument count
@@ -145,6 +157,7 @@ void RegisterAlgorithms();
  */
 int main(int argc, char* argv[])
 {
+	DO_ENTER("", "main");
 	try
 	{
 		RegisterAlgorithms();
@@ -310,6 +323,7 @@ void OnCtrlC(int sig)
  */
 int GetCpuCores()
 {
+	DO_ENTER("", "GetCpuCores");
 #ifdef LINUX
 	return sysconf( _SC_NPROCESSORS_ONLN );
 #else
@@ -326,6 +340,7 @@ int GetCpuCores()
  */
 THREAD_PROTOTYPE(ComputeThread, _pData)
 {
+	DO_ENTER("", "ComputeThread");
 	//Error-handling wrapper around ComputeThreadProc
 	try
 	{
@@ -350,6 +365,7 @@ THREAD_PROTOTYPE(ComputeThread, _pData)
  */
 void DoThrowError(const char* err, const char* sys_err, const char* file, int line)
 {
+	DO_ENTER("", "DoThrowError");
 	char* buf = new char[strlen(err) + strlen(sys_err) + strlen(file) + 256];
 			
 	//Format the error nicely
@@ -369,7 +385,15 @@ void DoThrowError(const char* err, const char* sys_err, const char* file, int li
  */
 double GetTime()
 {
-#ifdef LINUX
+	DO_ENTER("", "GetTime");
+#ifdef MACOSX
+	struct timeval tv;
+	gettimeofday(&tv, NULL);
+	double d = static_cast<double>(tv.tv_usec) * 1000;
+	d /= 1E9f;
+	d += tv.tv_sec;
+	return d;
+#elif LINUX
 	timespec t;
 	clock_gettime(CLOCK_REALTIME,&t);
 	double d = static_cast<double>(t.tv_nsec) / 1E9f;
@@ -392,6 +416,7 @@ double GetTime()
  */
 string GetHostname()
 {
+	DO_ENTER("", "GetHostname");
 #if WINDOWS
 	char buf[128];
 	DWORD len=128;
@@ -410,7 +435,38 @@ string GetHostname()
 #endif
 }
 
-
+/*!
+ * @brief Reads a PTX file from the configuration directories.
+ * @param name Filename to load. Must be a ptx file.
+ * @return the ptx file as string
+ */
+string ReadPtx(string name)
+{
+	DO_ENTER("", "ReadPtx");
+	// Directorios a probar
+	//string dirs[] = { string("./"), string("ptx/"), string("/usr/lib/cracker/ptx/") };
+	string code;
+	
+	for(unsigned int i = 0; i < sizeof(ConfigDirectories)/sizeof(string); i++)
+	{
+		string path = ConfigDirectories[i] + name + ".ptx";
+		ifstream myfile(path.c_str());
+		if(!myfile) continue;
+		
+		char line[1024];
+		while(!myfile.eof())
+		{
+			myfile.getline(line, 1024);
+			code += line;
+			code += "\n";
+		}
+		return string(code);
+	}
+	
+	string strErr = string("Failed to open CUDA module file ") + name;
+	ThrowCustomError(strErr.c_str());
+	return string("");
+}
 
 #include "AlgorithmFactory.h"
 #include "sha256.h"
@@ -420,17 +476,24 @@ string GetHostname()
 #include "md5crypt.h"
 #include "ntlm.h"
 
+#include "ExecutorFactory.h"
+#include "BasicExecutor.h"
+INIT_EXECUTORS();
+
 /*!
 	@brief Register the algorithms used by this agent
  */
 void RegisterAlgorithms()
 {
-	AlgorithmFactory::RegisterAlgorithm(new sha256());
-	AlgorithmFactory::RegisterAlgorithm(new sha1());
-	AlgorithmFactory::RegisterAlgorithm(new md5());
-	AlgorithmFactory::RegisterAlgorithm(new md5crypt());
+	DO_ENTER("", "RegisterAlgorithms");
+//	AlgorithmFactory::RegisterAlgorithm(new sha256());
+//	AlgorithmFactory::RegisterAlgorithm(new sha1());
+//	AlgorithmFactory::RegisterAlgorithm(new md5());
+//	AlgorithmFactory::RegisterAlgorithm(new md5crypt());
 	AlgorithmFactory::RegisterAlgorithm(new md4());
-	AlgorithmFactory::RegisterAlgorithm(new ntlm());
+//	AlgorithmFactory::RegisterAlgorithm(new ntlm());
 
 	AlgorithmFactory::Test();
+	
+	ExecutorFactory::Register(new BasicExecutor());
 }

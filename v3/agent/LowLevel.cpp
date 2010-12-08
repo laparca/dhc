@@ -39,6 +39,7 @@
  */
  
 #include "agent.h"
+#include "debug.h"
 #include <fstream>
 using namespace std;
 
@@ -106,6 +107,7 @@ static StringErrPair g_errorStrings[CU_ERR_COUNT]=
 
 const char* LLGetErrorString(CUresult code)
 {
+	DO_ENTER("", "LLGetErrorString");
 	//Check for error
 	for(int i=0; i<CU_ERR_COUNT; i++)
 	{
@@ -125,6 +127,7 @@ const char* LLGetErrorString(CUresult code)
  */
 DriverInterface::DriverInterface()
 {
+	DO_ENTER("DriverInterface", "DriverInterface");
 	//Initialize driver
 	CUresult err;
 	if(CUDA_SUCCESS != (err=cuInit(0)))
@@ -136,6 +139,7 @@ DriverInterface::DriverInterface()
  */
 int DriverInterface::GetDeviceCount()
 {
+	DO_ENTER("DriverInterface", "GetDeviceCount");
 	int count;
 	CUresult err;
 	if(CUDA_SUCCESS != (err=cuDeviceGetCount(&count)))
@@ -150,6 +154,7 @@ int DriverInterface::GetDeviceCount()
  */
 int DriverInterface::GetDriverVersion()
 {
+	DO_ENTER("DriverInterface", "GetDriverVersion");
 	int ver;
 	CUresult err;
 	if(CUDA_SUCCESS != (err=cuDriverGetVersion(&ver)))
@@ -168,6 +173,7 @@ int DriverInterface::GetDriverVersion()
 Device::Device(int iDevice)
 : m_nDevice(iDevice)
 {
+	DO_ENTER("Device", "Device");
 	CUresult err;
 	if(CUDA_SUCCESS != (err=cuDeviceGet(&m_device, iDevice)))
 		ThrowCudaLLError("Failed to open CUDA device", err);
@@ -180,6 +186,8 @@ Device::Device(int iDevice)
  */
 void Device::PrintDebugInfo(bool bShowAll)
 {
+	DO_ENTER("Device", "PrintDebugInfo");
+	
 	cout << GetName().c_str() << endl;
 	cout << "          Compute capability      " << GetMajorVersion() << "." << GetMinorVersion() << endl;
 	cout << "          Max threads per block   " << GetMaxThreadsPerBlock() << endl;
@@ -213,6 +221,8 @@ void Device::PrintDebugInfo(bool bShowAll)
  */
 int Device::GetAttribute(CUdevice_attribute attrib)
 {
+	DO_ENTER("Device", "GetAttribute");
+	
 	CUresult err;
 	int ret;
 	if(CUDA_SUCCESS != (err=cuDeviceGetAttribute(&ret, attrib, m_device)))
@@ -227,6 +237,7 @@ int Device::GetAttribute(CUdevice_attribute attrib)
  */
 std::string Device::GetName()
 {
+	DO_ENTER("Device", "GetName");
 	char buf[128];
 	CUresult err;
 	if(CUDA_SUCCESS != (err=cuDeviceGetName(buf, 127, m_device)))
@@ -239,6 +250,8 @@ std::string Device::GetName()
  */
 int Device::GetMajorVersion()
 {
+	DO_ENTER("Device", "GetMajorVersion");
+	
 	int maj,min;
 	CUresult err;
 	if(CUDA_SUCCESS != (err=cuDeviceComputeCapability(&maj, &min, m_device)))
@@ -251,6 +264,8 @@ int Device::GetMajorVersion()
  */
 int Device::GetMinorVersion()
 {
+	DO_ENTER("Device", "GetMinorVersion");
+	
 	int maj,min;
 	CUresult err;
 	if(CUDA_SUCCESS != (err=cuDeviceComputeCapability(&maj, &min, m_device)))
@@ -261,9 +276,11 @@ int Device::GetMinorVersion()
 /*!
 	@brief Gets the total global memory available on the device, in bytes.
  */
-unsigned int Device::GetTotalMem()
+size_t Device::GetTotalMem()
 {
-	unsigned int mem;
+	DO_ENTER("Device", "GetTotalMem");
+	
+	size_t mem;
 	CUresult err;
 	if(CUDA_SUCCESS != (err=cuDeviceTotalMem(&mem, m_device)))
 		ThrowCudaLLError("Failed to get CUDA device memory size", err);
@@ -275,6 +292,8 @@ unsigned int Device::GetTotalMem()
  */
 CUjit_target_enum Device::GetJitTarget()
 {
+	DO_ENTER("Device", "GetJitTarget");
+	
 	int maj,min;
 	CUresult err;
 	if(CUDA_SUCCESS != (err=cuDeviceComputeCapability(&maj, &min, m_device)))
@@ -312,6 +331,8 @@ CUjit_target_enum Device::GetJitTarget()
 CudaContext::CudaContext(Device& device, YieldMode yieldMode)
 : m_device(device)
 {
+	DO_ENTER("CudaContext", "CudaContext");
+	
 	CUresult err;
 	if(CUDA_SUCCESS != (err=cuCtxCreate(&m_context, yieldMode, device.GetDeviceID())))
 		ThrowCudaLLError("Failed to create CUDA context", err);
@@ -327,6 +348,8 @@ CudaContext::CudaContext(Device& device, YieldMode yieldMode)
  */
 CudaContext::~CudaContext()
 {
+	DO_ENTER("CudaContext", "~CudaContext");
+	
 	cuCtxDetach(m_context);
 }
 
@@ -335,6 +358,8 @@ CudaContext::~CudaContext()
  */
 void CudaContext::Barrier()
 {
+	DO_ENTER("CudaContext", "Barrier");
+	
 	CUresult err;
 	if(CUDA_SUCCESS != (err=cuCtxSynchronize()))
 		ThrowCudaLLError("Failed to create CUDA context", err);
@@ -354,6 +379,8 @@ void CudaContext::Barrier()
  */
 Module::Module(std::string fname, CudaContext& context)
 {
+	DO_ENTER("Module", "Module");
+	
 	//Save our file name
 	m_fname = fname;
 	if(fname.find("ptx/") == 0)
@@ -422,10 +449,53 @@ Module::Module(std::string fname, CudaContext& context)
 }
 
 /*!
+	@brief Loads a CUDA module from a .cubin or .ptx file.
+	
+	The file is first searched for in the current working directory. If it is not found,
+	"/usr/share/cuvis/" is prepended to the file name. If this fails, an exception is thrown.
+	
+	@param fname Name of the file
+	@param context The current thread context
+ */
+Module::Module(std::string fname, std::string fcontent, CudaContext& context)
+{
+	DO_ENTER("Module", "Module");
+	//Save our file name
+	m_fname = fname;
+	
+	//Set up build flags
+	const int numOptions = 3;
+	int maxregs = 128;
+	float buildtime;
+	//CUjit_target_enum target = context.GetJitTarget();
+	int optimization = 4;
+	CUjit_option options[numOptions]=
+	{
+		CU_JIT_MAX_REGISTERS,
+		CU_JIT_WALL_TIME,
+		CU_JIT_OPTIMIZATION_LEVEL
+	};
+	void* values[numOptions]=
+	{
+		&maxregs,
+		&buildtime,
+		&optimization
+	};
+	
+	//TODO: other parameters (including target)
+	
+	//Load the module
+	CUresult err;
+	if(CUDA_SUCCESS != (err=cuModuleLoadDataEx(&m_module, fcontent.c_str(), numOptions, options, values)))
+		ThrowCudaLLError("Failed to JIT CUDA module", err);
+	
+}
+/*!
 	@brief Unloads a module.
  */
 Module::~Module()
 {
+	DO_ENTER("Module", "~Module");
 	cuModuleUnload(m_module);
 }
 
@@ -439,10 +509,15 @@ Module::~Module()
  */
 CudaKernel* Module::GetKernel(const char* funcname)
 {
+	DO_ENTER("Module", "GetKernel");
+	
 	string desc = m_fname + "!" + funcname;
 	
 	CUfunction func;
 	CUresult err;
+#ifdef _DEBUG
+	cout << "cuModuleGetFunction((CUfunction)" << &func <<", (CUmodule)" << m_module << ", (const char *)" << funcname <<")" << endl;
+#endif
 	if(CUDA_SUCCESS != (err=cuModuleGetFunction(&func, m_module, funcname)))
 	{
 		string strErr = string("Failed to load device function ") + funcname;
@@ -464,6 +539,8 @@ CudaKernel* Module::GetKernel(const char* funcname)
 HostMemoryBuffer::HostMemoryBuffer(size_t size)
 : m_size(size)
 {
+	DO_ENTER("HostMemoryBuffer", "HostMemoryBuffer");
+	
 	CUresult err;
 	if(CUDA_SUCCESS != (err=cuMemAllocHost(&m_data, size)))
 		ThrowCudaLLError("Failed to allocate host memory", err);
@@ -474,6 +551,7 @@ HostMemoryBuffer::HostMemoryBuffer(size_t size)
  */
 HostMemoryBuffer::~HostMemoryBuffer()
 {
+	DO_ENTER("HostMemoryBuffer", "~HostMemoryBuffer");
 	cuMemFreeHost(m_data);
 }
 
@@ -487,6 +565,8 @@ HostMemoryBuffer::~HostMemoryBuffer()
  */
 Event::Event(bool bBlocking)
 {
+	DO_ENTER("Event", "Event");
+	
 	CUresult err = CUDA_SUCCESS;
 	if(CUDA_SUCCESS != (err = cuEventCreate(&m_event, bBlocking ? CU_EVENT_BLOCKING_SYNC : CU_EVENT_DEFAULT)))
 		ThrowCudaLLError("Failed to create event", err);
@@ -497,6 +577,7 @@ Event::Event(bool bBlocking)
  */
 Event::~Event()
 {
+	DO_ENTER("Event", "~Event");
 	cuEventDestroy(m_event);
 }
 
@@ -512,6 +593,8 @@ Event::~Event()
  */
 float Event::GetDelta(Event& e1, Event& e2)
 {
+	DO_ENTER("Event", "GetDelta");
+	
 	float ret = 0;
 	
 	CUresult err = CUDA_SUCCESS;
@@ -530,6 +613,8 @@ float Event::GetDelta(Event& e1, Event& e2)
  */
 bool Event::Query()
 {
+	DO_ENTER("Event", "Query");
+	
 	CUresult res = cuEventQuery(m_event);
 	
 	//Done?
@@ -557,6 +642,8 @@ bool Event::Query()
  */
 void Event::Barrier()
 {
+	DO_ENTER("Event", "Barrier");
+	
 	cuEventSynchronize(m_event);
 }
 
@@ -569,6 +656,8 @@ void Event::Barrier()
 Stream::Stream()
 : m_bProfiling(false)
 {
+	DO_ENTER("Stream", "Stream");
+	
 	CUresult res = cuStreamCreate(&m_stream, 0);
 	if(CUDA_SUCCESS != res)
 		ThrowCudaLLError("Failed to create stream", res);
@@ -579,6 +668,7 @@ Stream::Stream()
  */
 Stream::~Stream()
 {
+	DO_ENTER("Stream", "~Stream");
 	cuStreamDestroy(m_stream);
 }
 
@@ -590,6 +680,8 @@ Stream::~Stream()
  */
 void Stream::StartProfiling()
 {
+	DO_ENTER("Stream", "StartProfiling");
+	
 	m_bProfiling = true;
 }
 
@@ -598,6 +690,8 @@ void Stream::StartProfiling()
  */
 void Stream::StopProfiling()
 {
+	DO_ENTER("Stream", "StopProfiling");
+	
 	m_bProfiling = false;
 	
 	printf("\n\n%-80s %20s %12s\n", "Description", "Configuration", "Time");
@@ -616,6 +710,8 @@ void Stream::StopProfiling()
  */
 void Stream::AddEvent(Event& event)
 {
+	DO_ENTER("Stream", "AddEvent");
+	
 	CUresult err;
 	if(CUDA_SUCCESS != (err=cuEventRecord(event.m_event, m_stream)))
 		ThrowCudaLLError("Failed to barrier on stream", err);
@@ -626,6 +722,8 @@ void Stream::AddEvent(Event& event)
  */
 void Stream::Barrier()
 {
+	DO_ENTER("Stream", "Barrier");
+	
 	CUresult err;
 	if(CUDA_SUCCESS != (err=cuStreamSynchronize(m_stream)))
 		ThrowCudaLLError("Failed to barrier on stream", err);
@@ -641,6 +739,8 @@ void Stream::Barrier()
  */
 void Stream::AddDtoHMemcpy(HostMemoryBuffer& dest, DeviceMemoryBuffer& src)
 {
+	DO_ENTER("Stream", "AddDtoHMemcpy");
+	
 	Event start;
 	if(m_bProfiling)
 		AddEvent(start);
@@ -691,6 +791,8 @@ void Stream::AddDtoHMemcpy(HostMemoryBuffer& dest, DeviceMemoryBuffer& src)
  */
 void Stream::AddHtoDMemcpy(DeviceMemoryBuffer& dest, HostMemoryBuffer& src)
 {
+	DO_ENTER("Stream", "AddHtoDMemcpy");
+	
 	Event start;
 	if(m_bProfiling)
 		AddEvent(start);

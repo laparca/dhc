@@ -35,7 +35,7 @@
 #ifndef MD5_H
 #define MD5_H
 
-#include <Algorithm.h>
+#include "Algorithm.h"
 
 class md5: public Algorithm {
 public:

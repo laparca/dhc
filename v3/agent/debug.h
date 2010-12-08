@@ -3,7 +3,7 @@
 * Distributed Hash Cracker v3.0                                               *
 *                                                                             *
 * Copyright (c) 2009 RPISEC.                                                  *
-* Copyright (C) 2010 Samuel Rodriguez Sevilla
+* Copyright (C) 2010 Samuel Rodriguez Sevilla                                 *
 * All rights reserved.                                                        *
 *                                                                             *
 * Redistribution and use in source and binary forms, with or without modifi-  *
@@ -31,22 +31,58 @@
 * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS          *
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.                *
 *                                                                             *
-*******************************************************************************/
-#ifndef BASIC_EXECUTOR_H
-#define BASIC_EXECUTOR_H
+******************************************************************************/
+#ifndef DEBUG_H
+#define DEBUG_H
 
-#include "Executor.h"
-#include "LowLevel.h"
+#define ERROR    0
+#define WARINING 1
+#define MESSAGE  2
+#define LOG      3
+#define DEBUG    4
 
-/*!
- * @class BasicExecutor
- * @brief
- */
-class BasicExecutor: public Executor
+#ifdef _DEBUG
+#   define B_LOG(level, i, str)  do { if((level) <= _log_level) cout << "[" << i << "] " << (str) << endl; } while(0)
+#   define DO_ENTER(class, str)     _local_method_log(class, str)
+
+#   define DO_ERROR(str)            B_LOG(ERROR, "ERROR", str)
+#   define DO_WARNING(str)          B_LOG(WARNING, "WARNING", str)
+#   define DO_MESSAGE(str)          B_LOG(MESSAGE, "MESSAGE", str)
+#   define DO_LOG(str)              B_LOG(LOG, "LOG", str)
+#   define DO_DEBUG(str)            B_LOG(DEBUG, "DEBUG", str)
+
+#   define INIT_LOG(lvl)            unsigned int _log_level = (lvl)
+
+extern unsigned int _log_level;
+
+class _local_method_log
 {
 public:
-	void Execute(Algorithm *alg, WorkUnit& wu, Device* pDevice, CudaContext* pContext, executor_parameters& parameters);
-	string GetName();
+	_local_method_log(string cl, string method) : m_cl(cl), m_method(method)
+	{
+		B_LOG(DEBUG, "ENTER", m_cl + "::" + m_method);
+	}
+	
+	~_local_method_log()
+	{
+		B_LOG(DEBUG, "EXIT", m_cl + "::" + m_method);
+	}
+private:
+	string m_cl;
+	string m_method;
 };
+
+#else
+#   define B_LOG(level, i, str)
+#   define DO_ENTER(class, str)
+#   define DO_ERROR(str)
+#   define DO_WARNING(str)
+#   define DO_MESSAGE(str)
+#   define DO_LOG(str)
+#   define DO_DEBUG(str)
+#   define INIT_LOG(lvl)
+
+#endif /* _DEBUG */
+
 
 #endif

@@ -35,8 +35,9 @@
 #ifndef MD4_H
 #define MD4_H
 
-#include <Algorithm.h>
-#include <ExecutorFactory.h>
+#include "Algorithm.h"
+#include "ExecutorFactory.h"
+#include "debug.h"
 
 class md4: public Algorithm {
 public:
@@ -55,46 +56,16 @@ public:
 	void ExecuteCPU() {}
 	void ExecuteGPU(WorkUnit& wu, Device* pDevice, CudaContext* pContext)
 	{
-		Executor *exec = ExecutorFactory::Get("BasicExecutor");
-		exec->Execute(this, wu, pDevice, pContext);
-	}
-
-	virtual bool IsGPUCapable()
-	{
-		return true;
-	}
-	virtual bool IsCPUCapable()
-	{
-		return false;
-	}
-
-	void Prepare(WorkUnit & wo)
-	{
+		DO_ENTER("md4", "ExecuteGPU");
 		
-	}
-#ifdef CUDA_ENABLED
-private:
-	Module *hashmod;
-	CudaKernel *haskher;
-	Device *pDevice;
-	CudaContext *pContext;
-	WorkUnit *wu;
-public:	
-	/*!
-	 *  @brief Prepared information to accelerate hash attack or to improve the performance. It is
-	 *         indicated for CUDA devices.
-	 *  @param pDevice
-	 *  @param pContext
-	 *  @param wu
-	 */
-	void Prepare(Device *pDevice, CudaContext *pContext, WorkUnit *wu)
-	{
-		this->pDevice = pDevice;
-		this->pContext = pContext;
-		this->wu = wu;
+		Module *hashmod;
+		CudaKernel *hashker;
+		unsigned int nTargetHashes = wu.m_hashvalues.size();
 		
-		hashmod = new Module(ReadPtx("md4"), pContext);
+		/* Loads the ptx code into memory and creates the module */
+		hashmod = new Module("md4", ReadPtx("md4"), *pContext);
 		
+		/* Identify the function to use */
 		string func = "md4";
 
 		if(wu.m_start.length() <= 12)						//If we are cracking a weak algorithm, switch to
@@ -107,6 +78,7 @@ public:
 		else
 			func = func + "Kernel";
 		
+		/* Load the function */
 		hashker = hashmod->GetKernel(func.c_str());
 
 		//Perform cryptanalytic attacks on weak algorithms
@@ -115,35 +87,31 @@ public:
 			for(unsigned int i=0; i<nTargetHashes; i++)
 				MD4MeetInTheMiddlePreprocessing(wu.m_hashvalues[i]);
 		}		
+
+		executor_parameters parameters;
+		parameters["hashmod"] = &hashmod;
+		parameters["hashker"] = &hashker;
+		
+		Executor *exec = ExecutorFactory::Get("BasicExecutor");
+		exec->Execute(this, wu, pDevice, pContext, parameters);
+		
+		delete hashker;
+		delete hashmod;
 	}
+
+	virtual bool IsGPUCapable()
+	{
+#ifdef CUDA_ENABLED
+		return true;
+#else
+		return false;
 #endif
+	}
+	virtual bool IsCPUCapable()
+	{
+		return false;
+	}
 };
 
-string ReadPtx(string name)
-{
-	// Directorios a probar
-	string dirs[] = { string("./"), string("ptx/"), string("/usr/lib/cracker/ptx/") };
-	string code;
-	
-	for(int i = 0; i < sizeof(dirs)/sizeof(string); i++)
-	{
-		string path = dirs[i] + name + ".ptx";
-		ifstream myfile(path.c_str());
-		if(!myfile) continue;
-		
-		char line[1024];
-		while(!myfile.eof())
-		{
-			myfile.getline(line, 1024);
-			code += line;
-			code += "\n";
-		}
-		
-		return string(code);
-	}
-	
-	string strErr = string("Failed to open CUDA module file ") + fname;
-	ThrowCustomError(strErr.c_str());
-}
 
 #endif

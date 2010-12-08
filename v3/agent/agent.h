@@ -52,6 +52,8 @@
 #include <string.h>
 #include <vector>
 
+using namespace std;
+	
 //Generic UNIX stuff (not mac/linux/bsd specific)
 #ifdef UNIX
 #include <unistd.h>
@@ -82,6 +84,9 @@ void DoThrowError(const char* err, const char* sys_err, const char* file, int li
 //Multithreading
 #include "Thread.h"
 #include "Mutex.h"
+
+// Configuration directories (see main.cpp)
+extern string ConfigDirectories[];
 
 /*!
 	@brief A compute device (GPU / cpu core)
@@ -115,6 +120,9 @@ std::string GetHostname();
 //Threads
 THREAD_PROTOTYPE(ComputeThread, _pData);
 void ComputeThreadProc(void* pData);
+
+//Utilities
+string ReadPtx(string name);
 
 //Work units
 void DoWorkUnitOnCPU(WorkUnit& wu, int nCore);

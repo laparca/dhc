@@ -1,4 +1,7 @@
 INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR})
+IF(CUDA_ENABLED)
+	LINK_DIRECTORIES("${CUDA_DIR}/lib")
+ENDIF()
 
 ###############################################################################
 #version.h generation
@@ -23,7 +26,12 @@ ELSE()
 ENDIF()
 
 IF(MACOSX)
- SET(BIN_FORMAT macho)
+	IF(AMD64)
+		#Requieres a new nasm version. The version of nasm that comes with XCode is too old.
+		SET(BIN_FORMAT macho64)
+	ELSE()
+ 		SET(BIN_FORMAT macho)
+	ENDIF()
 ENDIF()
 
 
@@ -35,11 +43,16 @@ IF(AMD64)
 		
 		#Get some file names
 		STRING( REGEX REPLACE "\\.asm" ".o" DEST ${SRC})
-		
+		IF(MACOSX)
+			SET(NASM_MACOSX_FLAGS "-D MACOSX")
+		ELSE()
+			SET(NASM_MACOSX_FLAGS "")
+		ENDIF()
+
 		#Compilation command
 		ADD_CUSTOM_COMMAND(
 			OUTPUT ${DEST}
-			COMMAND nasm -f ${BIN_FORMAT} ${CMAKE_CURRENT_SOURCE_DIR}/${SRC} -o ${CMAKE_CURRENT_BINARY_DIR}/${DEST}
+			COMMAND nasm ${NASM_MACOSX_FLAGS} -f ${BIN_FORMAT} ${CMAKE_CURRENT_SOURCE_DIR}/${SRC} -o ${CMAKE_CURRENT_BINARY_DIR}/${DEST}
 			DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/${SRC}
 			COMMENT "Building asm object ${DEST}"
 			)
