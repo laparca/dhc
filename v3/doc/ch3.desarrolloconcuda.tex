@@ -1,0 +1,37 @@
+\chapter{Desarrollo con CUDA}
+
+Previamente a explicar el grueso del proyecto, consideramos importante explicar cómo se programa en la arquitectura CUDA ya que el diseño de la aplicación en los entornos de alto rendimiento es determinante para poder obtener la máxima optimización. Por eso en este capítulo se va a detallar la arquitectura de CUDA así como las distintas formas de desarrollar con la misma.
+
+\section{Arquitectura de CUDA}
+A la hora de desarrollar en una nueva arquitectura es importante conocer las características de la misma. Estas características pueden ir desde cómo se gestiona la memoria, qué instrucciones posee, etc.
+En el caso concreto de la arquitectura CUDA hay que tener muy en cuenta la organización de la memoria ya que el buen uso de esta influirá de forma muy significativa en el rendimiento de los programas. Esta arquitectura es la misma que la de las tarjetas gráficas y se puede representar como una pirámide de tiempos dependiendo del tipo de memoria a la que se vaya a acceder.
+ 
+Figura 3. Jerarquía de memoria en CUDA
+
+Para el código CUDA la memoria del sistema es inaccesible por lo que solo puede hacer uso de la memoria que se encuentra en la propia unidad de cómputo (normalmente en la tarjeta gráfica). Esto supone que antes de realizar operaciones sobre memoria en CUDA hay que reservar la memoria e inicializarla desde el programa principal (la parte que no se encontrará en la GPU). Esta inicialización suele realizarse en tres tiempos. En un primer momento se preparan los datos que se pasarán a la GPU, seguidamente se reserva la memoria en la tarjeta gráfica y por último se copian los datos a la tarjeta gráfica para poder ser usados desde la parte que será ejecutada en la GPU.
+Por otra parte es importante tener en cuenta que una vez se disponen de los datos sobre la memoria de la tarjeta gráfica es importante estudiar si conviene utilizarlos desde dicho punto o si es preferible realizar una copia a registros de procesador que serán mucho más rápidos. Hay que tener en cuenta que la tarjeta gráfica provee de una gran cantidad de registros (hasta 16.384 en el caso de las nVidia Tesla) para poder acelerar los cálculos por lo que hay que se deberá hacer uso de los mismos en la medida de lo posible para acelerar la velocidad de ejecución de los códigos que se alojen en la GPU.
+Por norma general, siempre que se hace un código que vaya a ser alojado en una GPU se realizará el siguiente proceso (ver la Figura 4):
+
+\begin{itemize}
+	\item Se copian los parámetros que se hallen en memoria global a registros, siempre que sea posible, para acceder a los mismos desde ahí. Esto es especialmente importante si el número de accesos va a ser elevado ya que de otra forma se estaría desperdiciando una gran cantidad de tiempo en realizar accesos a memoria.
+	\item Una vez que ya se tiene la memoria iniciada se procede a realizar los cálculos oportunos.
+	\item Finalmente se preparan los resultados para ser volcados a la memoria global de la tarjeta gráfica y que de este modo puedan ser leídos por la aplicación.
+\end{itemize}
+ 
+Figura 4. Proceso de ejecución de un algoritmo en CUDA
+
+Además de todo lo dicho, CUDA ofrece dos formas distintas para realizar el desarrollo. En la primera forma, la más sencilla, CUDA se encarga de realizar las llamadas al código que se alojará en la GPU de forma transparente de tal forma que no tendremos que preocuparnos de configurar muchos de los parámetros de los que dispone el sistema. Este mecanismo es muy útil y permite un desarrollo rápido de funciones así. Por otro lado estaría el sistema completo con el que debe utilizarse la API de CUDA y que permite un nivel más alto de granularidad. Con este sistema nosotros deberemos de realizar a mano la carga del código en la GPU, seleccionar la GPU de todas las posibles, etc.
+
+\section{Instalación del entorno}
+
+Una vez que se conoce como es la arquitectura, será necesario instalar el entorno CUDA en el sistema para poder utilizarlo. nVidia nos provee de 3 partes distintas:
+
+\begin{itemize}
+	\item El controlador gráfico con soporte de CUDA que es necesario para poder aprovechar las capacidades de cómputo de la tarjeta gráfica.
+	\item El SDK que contiene todas la bibliotecas necesarias para poder desarrollar aplicaciones con soporte de ejecución en GPU.
+	\item El Toolkit con las herramientas necesarias para generar los programas (como nvcc, el compilador de código CUDA) además de bibliotecas de alto nivel como BLAS y aceleración de FFT (transformada rápida de Fourier).
+\end{itemize}
+
+En la web de nVidia recomiendan que se instalen los componentes en el mismo orden en el que aparecen en el listado anterior.
+
+A la hora de realizar la instalación de CUDA es importante tener en cuenta la plataforma (Windows, MacOS X, GNU/Linux) y las versiones. Para el desarrollo del presente proyecto fin de carrera se ha utilizado como equipo de desarrollo un sistema con Ubuntu 10.04 y el equipo de ejecución utiliza Debian GNU/Linux en su última versión estable.

@@ -1,0 +1,97 @@
+\chapter{Implementación}
+
+Para la implementación del sistema distribuido se ha utilizado un software ya existente y libre al que se ha ido modificando para que sea ajuste del mejor modo posible a las necesidades del presente proyecto fin de carrera.
+
+El software utilizado ha sidoDistributed Hash Cracker (en adelante DHC) que se encuentra en http://rpisec.net/projects/show/hash-cracker y que dispone de licencia BSD. Esta herramienta está programada en C++ y ensamblador y es capaz de distribuir el trabajo entre un conjunto de máquinas (denominados agentes por dicho software). Los agentes se encargan de procesar tareas criptográficas tanto en CPU como en GPU dependiendo de los algoritmos implementados en cada caso.
+
+Aunque DHC es una muy buena base sobre la que empezar a desarrollar nuevas funciones resumen no implementadas, es importante tener en cuenta que tiene algunos problemas que es importante solucionar previamente.
+
+El mayor problema actualmente es que aún estando escrito en un lenguaje orientado a objetos, no se hace uso de las características del mismo cuando se debería. Por ejemplo, el código de las funciones resumen de que dispone está entremezclado uno con otro. Esto supone un gran problema al implementar nuevas funciones resumen, ya que implica tener que ver qué partes de código se deben adaptar y cuáles no. Por tanto, es necesario hacer un cambio de cómo controla DHC estas funciones de tal modo que sea más sencillo el mantenimiento de la herramienta.
+
+Por otra parte, la implementación de funciones resumen de que dispone DHC, aún estando relativamente bien surtida, se nos antoja demasiado escasa en funcionalidades al soportar únicamente comprobación por fuerza bruta siendo deseable la posibilidad de utilizar más variedad de modalidades de comprobación en caso de que existiesen de forma que se mejoren los tiempos de comprobación. Este cambio supone una importante contribución a la herramienta y, a nuestro suponer, requiere el cambio mencionado en el párrafo anterior para su mejor desarrollo.
+
+\section{Estimación de costes}
+Cocomo II
+
+\section{Lenguaje de programación utilizado}
+El lenguaje de programación elegido para el proyecto ha sido C++. Esta elección se realiza por diversos factores:
+
+\begin{itemize}
+	\item Tanto los lenguajes C como C++ son completamente compatibles con CUDA. Además, CUDA ofrece algunas ayudas específicas para C++ (como la forma de definir texturas) facilitando el trabajo con dicha tecnología. Éste tipo de ayudas es más patente cuando se utiliza el método sencillo de desarrollo.
+	\item El autor del presente proyecto final de carrera está muy familiarizado con dicho lenguaje lo que permite realizar mejor el desarrollo.
+	\item Aunque no hace un uso adecuado de las capacidades de C++, DHC ha sido desarrollado utilizando dicho lenguaje de programación.
+\end{itemize}
+
+\section{Diseño actual de DHC}
+
+DHC es una aplicación divida en dos partes:
+\begin{itemize}
+	\item Controlador
+	\item Agente
+\end{itemize}
+
+El controlador es el encargado de gestionar las tareas solicitadas. Estas tareas consisten en:
+\begin{itemize}
+	\item Introducción de nuevos resúmenes que probar.
+	\item Crear paquetes de claves a probar y repartirlos entre los agentes para comprobar un determinado resumen.
+	\item Contabilizar el tiempo transcurrido para realizar una comprobación, los agentes existentes y los algoritmos que puede probar cada agente.
+	\item Controlar los tiempos de expiración de las tareas y las prioridades de las mismas.
+\end{itemize}
+
+De este modo el controlador es una de las partes más importantes del sistema al ser la interfaz que el usuario va a utilizar para utilizar los recursos del mismo.
+
+El agente es la aplicación ejecutora, recibe una tarea del controlador y la lleva a cabo, devolviendo a éste el resultado (encontrado o no encontrado).
+
+\section{Modificaciones realizadas a DHC}
+
+\subsection{Diseño de API para algoritmos de codificación}
+
+Como ya se ha comentado anteriormente, una de las mayores deficiencias de DHC, a nuestro entender, es la falta de una API adecuada para poder incorporar nuevos algoritmos. Esto supone a la hora de realizar nuevos algoritmos un problema importante al encontrarse todo el código de los mismos repartido entre distintas funciones y métodos, dificultando enormemente las labores de mantenimiento y de desarrollo. Por este motivo se ha decidido implementar una API para el desarrollo de algoritmos que aprovechando todas las funcionalidades ya existentes mejore de forma sustancial las labores de mantenimiento de la aplicación y facilite el desarrollo de nuevos algoritmos.
+
+El diseño de la API propuesta se ha basado en dos ideas:
+\begin{itemize}
+	\item El algoritmo como sistema de realización de una tarea específica, como pueda ser obtener el valor que generó un determinado resumen y
+	\item El preparador que es el mecanismo de configuración de los parámetros obtenidos del controlador para poder ser utilizados por un algoritmo.
+\end{itemize}
+
+Cada algoritmo tendría asociado un preparador. Inicialmente se adaptaría el sistema existente para disponer del primer preparador al igual que sucederá con los algoritmos ya existentes, que también serán transformados. En la Figura 3 se puede ver a grandes rasgos cómo funcionaría este sistema.
+Estos dos elementos ya existen actualmente en DHC pero de forma difusa y poco clara. Con este cambio de visión se pretende conseguir un mejor diseño que permita una implementación más eficaz.
+ 
+Figura 3. Esquema de ejecución de un algoritmo
+
+A la hora de implementar estas características hay que tener en cuenta que se puede hacer uso tanto de una CPU como de una GPU. Esto supone que tanto el preparador como el algoritmo deben estar capacitados para ofrecer alguna de dichas opciones y, a poder ser, ambas. Esto supone en la práctica que tanto el algoritmos implementado como el configurador pueden estar duplicados (uno especializado en CPU y otro en GPU).
+
+\subsection{Modificaciones para la mejora de la escalabilidad}
+
+En todo sistema es importante tener en cuenta la escalabilidad del mismo. Por este motivo se ha decidido hacer cambios en algunos aspectos internos de DHC para mejorar este punto.
+
+Cada agente de DHC se encuentra en un bucle en el que en cada iteración solicita una unidad de trabajo al controlador. En caso de que no haya tarea alguna que pueda realizar el agente se procede a esperar 5 segundos. Este tiempo puede resultar insuficiente si el controlador tiene que hacer gran cantidad de cálculos o si el número de agentes es tal que saturen con peticiones al controlador (efecto DDoS). Por este motivo se ha diseñado un algoritmo que ajuste el tiempo de espera de forma dinámica para ajustarse mejor a las capacidades del controlador.
+
+El nuevo algoritmo tiene en cuenta el tiempo de respuesta del controlador y si se ha recibido o no una tarea.
+
+\subsubsection{Control del tiempo con respecto al tiempo de respuesta del controlador}
+
+Este sistema mide el tiempo que tarda el controlador en responder a cada solicitud. En caso de que este tiempo se incremente significaría que el controlador se encuentra sobrecargado, por lo que el agente procederá a esperar más tiempo entre consultas.
+
+Igualmente, en caso de que el tiempo disminuyese supondría justo lo contrario, por lo que el tiempo de espera puede reducirse.
+
+\subsubsection{Control del tiempo con respecto a las tareas recibidas}
+
+En este control se considera que en caso de que el controlador no proporcione trabajo a un agente se puede esperar más tiempo. La razón de dicha suposición es que es probable que el controlador no reciba muchas peticiones de tareas, por lo que en caso de que no haya tareas no es necesario estar preguntándole de forma constante.
+
+\section{Algoritmos nuevos de seguridad implementados}
+
+Inicialmente DHC soporta los algoritmos MD4, MD5, SHA1, NTLM y MD5 crypt. Este último es una versión de MD5 utilizada por los sistemas UNIX para almacenar las contraseñas y que se forma de la siguiente forma \$ID\$SALT\$HASH, donde ID es el identificador del algoritmo de resumen empleado (1 para MD5), SALT es una semilla aleatoria que se adjunta a la contraseña a resumir y HASH es el resultado de el resumen de la unión de la contraseña y la semilla.
+
+$$HASH = H(SALT | PASSWD)$$
+
+Estos algoritmos se han recodificado para que se adapten a los cambios mencionados en 5.3.1.Diseño de API para algoritmos de codificación. Tras este cambio se ha procedido al desarrollo de nuevos algoritmos que dotan al sistema de mayor funcionalidad, especialmente si son algoritmos más modernos.
+
+Hay que tener en cuenta que a menos que se hallen debilidades contra los algoritmos el sistema de comprobación a utilizar será siempre el de fuerza bruta. Esto supone que los algoritmos más actuales sean más costosos con respecto al tiempo necesario.
+
+Para el desarrollo de los nuevos algoritmos se ha tenido en cuenta su uso. De este modo no se han implementado algoritmos que estén en desuso por ser de poca utilidad.
+
+\subsection{SHA256}
+
+Este algoritmo de resumen que sustituye al antiguo SHA1 es muy parecido al primero, habiéndose reutilizado todo el código que ha sido posible para simplificar su desarrollo. Es sustancialmente más lento al ejecutarse de esta forma, aproximadamente x1.5 veces más lento.
+La implementación de este algoritmo se ha tomado de la que aparece de Wikipedia y se ha probado que funciona correctamente.

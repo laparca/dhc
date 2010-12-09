@@ -7,7 +7,7 @@ INCLUDE(UseLATEX.CMAKE)
 SET(LATEX_OUTPUT_PATH "out")
 
 ADD_LATEX_DOCUMENT(Document.tex
-	INPUTS ch1.introduccion.tex ch2.antecedentes.tex
+	INPUTS ch1.introduccion.tex ch2.antecedentes.tex ch3.desarrolloconcuda.tex ch4.implementacion.tex
 	IMAGES evolucion-gpu.png
 	DEFAULT_PDF
 	USE_METAPOST)
