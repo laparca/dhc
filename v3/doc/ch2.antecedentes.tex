@@ -44,7 +44,7 @@ Aunque no es propósito del presente proyecto de fin de carrera implementar todo
 
 \section{Ataque de cumpleaños}
 
-Este ataque a los sistemas de resúmenes consiste en que dado un mensaje M cualquiera y si resumen H, de longitud L bits, se puede hallar un mensaje M’ probando combinaciones aleatorias en aproximadamente   intentos (en caso de que la función resumen sea uniformemente distribuida).
+Este ataque a los sistemas de resúmenes consiste en que dado un mensaje $M$ cualquiera y su resumen $H$, de longitud $L$ bits, se puede hallar un mensaje $M’$ probando combinaciones aleatorias en aproximadamente $2^{L/2}$ intentos (en caso de que la función resumen sea uniformemente distribuida).
 
 El principio de funcionamiento de este algoritmo se basa en el estudio estadístico sobre la coincidencia de que dos personas cumplan años el mismo día. A pesar de lo que pueda creerse, la probabilidad de que se encuentre coincidencia crece rápidamente, como puede comprobarse en la Figura 2.Este mismo principio es aplicable a las funciones resumen, como puede comprobarse en (HashFunction Balance andItsImpactonBirthdayAttacks, MihirBellareandTadayoshiKohno).
 
@@ -52,7 +52,7 @@ En el caso de las funciones resumen hay que tener en cuenta la distribución que
  
 Figura 2. Probabilidad de encontrar dos personas nacidas el mismo día con respecto al tamaño del grupo
 
-Estas características del sistema del cumpleaños lo convierten en un sistema ideal para sustituir a los mecanismos de fuerza bruta convencionales, pero hay que tener en cuenta que se debe considerar el tiempo de crear los mensajes a probar (dependiendo de su longitud puodría hacer al sistema igual de rápido que uno de fuerza bruta).
+Estas características del sistema del cumpleaños lo convierten en un sistema ideal para sustituir a los mecanismos de fuerza bruta convencionales, pero hay que tener en cuenta que se debe considerar el tiempo de crear los mensajes a probar (dependiendo de su longitud podría hacer al sistema igual de rápido que uno de fuerza bruta).
 
 \section{Tablas arcoiris}
 
