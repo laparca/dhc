@@ -36,83 +36,13 @@
 #define __PLUGIN_LOADER_H__
 
 /*!
- *	@file Plugin.h
- *	
- *	@brief Plugin facilities.
+ * @file PluginLoader.h
+ *
+ * @brief Adds methods for plugin load.
  */
  
-#define EXPORT extern "C"
-
-#define BEGIN_PLUGIN(author) \
-EXPORT  PluginFactory* GetPluginFactory() {\
-	PluginFactory *rtn = new PluginFactory(author); \
-#define END_PLUGIN() \
-	return rtn; \
-}
-
-#define ADD_ALGORITHM(class, name, version) \
-	rtn->AddFacility(new PluginFacilityAlgorithm<class>(name, version));
-#define ADD_EXECUTOR(class, name, version) \
-	rtn->AddFacility(new PluginFacilityExecutor<class>(name, version));
-
-#define FACILITY_ALGORITHM 0
-#define FACILITY_EXECUTOR  1
-
-
-/*!
- * 
-class PluginFacility {
-	string       facility_name;
-	int          facility_type;
-	unsigned int facility_version;
-public:
-	unsigned int GetVersion() { return facility_version; }
-	int          GetType() { return facility_type; }
-	string       GetName() { return facility_name; }
-	void*        GetInstance() = 0;
-};
-
-template<typename Algorithm>
-class PluginFacilityAlgorithm : public PluginFacility {
-public:
-	PluginFacilityAlgorithm(string name, unsigned int version) :
-	facility_name(name), facility_type(FACILITY_ALGORTHM), facility_version(verion)
-	{}
-	
-	void* GetInstance() { return new Algorithm(); }
-};
-
-template<typename Executor>
-class PluginFacilityAlgorithm : public PluginFacility {
-public:
-	PluginFacilityAlgorithm(string name,  unsigned int version) :
-	facility_name(name), facility_type(FACILITY_EXECUTOR), facility_version(verion)
-	{}
-	
-	void* GetInstance() { return new Executor(); }
-};
-
-class PluginFactory {
-	vector<PluginFacility*> facilites;
-	string _author;
-public:
-	PluginFactory(string author) : _author(author)
-	{}
-	string GetAuthorName()
-	{
-		return _author;
-	}
-	
-	vector<PluginFacility*> GetFacilities()
-	{
-		return facilites;
-	}
-	
-	void AddFacility(PluginFacility *facility)
-	{
-		facilites.push_back(facility);
-	}
-};
-
+/* TODO añadir metodos para buscar todos los ficheros posibles que sean plugin.
+ * TODO cargar cada plugin e instanciar sus facilidades.
+ */
 #endif
 

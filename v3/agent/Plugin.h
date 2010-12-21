@@ -75,8 +75,17 @@ public:
 	* @brief returns the facility version
 	*/
 	unsigned int GetVersion() { return facility_version; }
+	/*!
+	 * @brief returns the type of the facility. May be FACILITY_ALGORITHM or FACILITY_EXECUTOR.
+	 */
 	int          GetType() { return facility_type; }
+	/*!
+	 * @brief returns the facility name.
+	 */
 	string       GetName() { return facility_name; }
+	/*!
+	 * @brief returns a new instance of a facility.
+	 */
 	void*        GetInstance() = 0;
 };
 
@@ -100,22 +109,41 @@ public:
 	void* GetInstance() { return new Executor(); }
 };
 
+/*!
+ * @class PluginFactory
+ * @brief Used to load the facilities inside a plugin.
+ *
+ * When a Plugin is loaded automatically the agent intance a PluginFactory
+ * calling the GetPluginFactory method.
+ */
 class PluginFactory {
 	vector<PluginFacility*> facilites;
 	string _author;
 public:
+	/*!
+	 * @brief When a PluginFactory is craeted an author must be provided for identify the plugin.
+	 */
 	PluginFactory(string author) : _author(author)
 	{}
+	/*!
+	 * @brief returns plugin author name.
+	 */
 	string GetAuthorName()
 	{
 		return _author;
 	}
-	
+
+	/*!
+	 * @brief returns a list with all the facilities defined in the plugin.
+	 */
 	vector<PluginFacility*> GetFacilities()
 	{
 		return facilites;
 	}
-	
+
+	/*!
+	 * @brief add a facility to the plugin list.
+	 */
 	void AddFacility(PluginFacility *facility)
 	{
 		facilites.push_back(facility);
