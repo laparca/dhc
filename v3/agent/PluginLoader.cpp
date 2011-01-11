@@ -32,46 +32,42 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.                *
 *                                                                             *
 ******************************************************************************/
-#ifndef __PLUGIN_LOADER_H__
-#define __PLUGIN_LOADER_H__
+#include "PluginLoader.h"
+#include "debug.h"
+#include <sys/types.h>
+#include <dirent.h>
 
-#include <string>
-using namespace std;
+extern string ConfigDirectories[];
 
-/*!
- * @file PluginLoader.h
- *
- * @brief Adds methods for plugin load.
- */
- 
-/* TODO añadir metodos para buscar todos los ficheros posibles que sean plugin.
- * TODO cargar cada plugin e instanciar sus facilidades.
- */
-/**
- * @class PluginLoader
- * @brief Finds and loads the plugins installed on the predefined directories
- *
- * To load a plugin requiere, first of all, look into all the posible
- * directories where they can be allocated (the list of directories is the global
- * variable @ConfigDirectories@ in main.c).
- *
- * Each plugin file has the .aplug.so and is loaded using ldopen (UNIX/Linux
- * only for now).
- */
-class PluginLoader
+void PluginLoader::Load()
 {
-public:
-	/**
-	 * @brief Loads all the plugins installed
-	 */
-	static void Load();
+	DO_ENTER("PluginLoader", "Load");
 	
-private:
-	/**
-	 * @brief Try to load the plugin in the file @file@
-	 */
-	static void Load(string file);
-};
+	for (int dir_idx = 0 ; dir_idx < sizeof(ConfigDirectories)/sizeof(string); ++dir_idx)
+	{
+		DIR* dir;
+		struct dirent* ent;
+		
+		dir = opendir(ConfigDirectories[dir_idx].c_str());
 
-#endif
+		/* No directory? Try next */
+		if(dir == NULL) continue;
 
+		while((ent = readdir(dir)) != NULL)
+		{
+			string file_name(ent->d_name);
+			string file_ext(".aplug.so");
+			if(file_name.substr(file_name.size() - file_ext.size(), file_ext.size()) == file_ext)
+			{
+				PluginLoader::Load(ConfigDirectories[dir_idx] + file_name);
+			}
+		}
+		closedir(dir);
+	}
+}
+
+void PluginLoader::Load(string file)
+{
+	DO_ENTER("PluginLoader", "Load");
+	DO_MESSAGE(string("Try to load ") + file);
+}

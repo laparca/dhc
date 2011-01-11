@@ -137,7 +137,7 @@ bool g_bNoGPU;
 void RegisterAlgorithms();
 
 /*!
- * @brief List of directories where the cracker looks for extensions
+ * @brief List of directories where the cracker looks for plugins and other files
  */
 string ConfigDirectories[] = {
 	string("./"),

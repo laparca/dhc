@@ -112,6 +112,8 @@ ADD_EXECUTABLE(agent
 	UnitTesting.cpp
 	XmlParser.cpp
 	sha256.cpp
+
+	PluginLoader.cpp
 	
 	${ASM_OUTPUTS}
 	${CUDA_OUTPUTS}
