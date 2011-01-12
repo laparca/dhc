@@ -136,16 +136,7 @@ bool g_bNoCPU;
 bool g_bNoGPU;
 void RegisterAlgorithms();
 
-/*!
- * @brief List of directories where the cracker looks for plugins and other files
- */
-string ConfigDirectories[] = {
-	string("./"),
-	string("ptx/"),
-	string("/usr/lib/cracker/ptx/")
-};
 
-INIT_LOG(DEBUG);
 
 /*!
 	@brief Program entry point
@@ -447,9 +438,9 @@ string ReadPtx(string name)
 	//string dirs[] = { string("./"), string("ptx/"), string("/usr/lib/cracker/ptx/") };
 	string code;
 	
-	for(unsigned int i = 0; i < sizeof(ConfigDirectories)/sizeof(string); i++)
+	for(vector<string>::iterator i = ConfigDirectories.begin(); i != ConfigDirectories.end(); ++i)
 	{
-		string path = ConfigDirectories[i] + name + ".ptx";
+		string path = *i + name + ".ptx";
 		ifstream myfile(path.c_str());
 		if(!myfile) continue;
 		

@@ -11,6 +11,7 @@ string BasicExecutor::GetName()
 	return string("BasicExecutor");
 }
 
+#ifdef CUDA_ENABLED
 void BasicExecutor::Execute(Algorithm *alg, WorkUnit& wu, Device* pDevice, CudaContext* pContext, executor_parameters& parameters)
 {
 	DO_ENTER("BasicExecutor", "Execute");
@@ -341,3 +342,5 @@ void BasicExecutor::Execute(Algorithm *alg, WorkUnit& wu, Device* pDevice, CudaC
 	sprintf(sbuf, "%.3f", speed);
 	wu.m_speed = sbuf;
 }
+
+#endif

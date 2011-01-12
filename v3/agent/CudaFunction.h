@@ -36,6 +36,9 @@
 #ifndef CUDA_FUNCTION_H
 #define CUDA_FUNCTION_H
 
+#include "LowLevel.h"
+
+#ifdef CUDA_ENABLED
 /*!
  *	@brief Wrapper for cuda kernel functions.
  *
@@ -77,5 +80,6 @@ public:
 		m_stream->AddKernelCall(*m_hashker, m_block_x, m_block_y, m_threads_x, m_threads_y, m_threads_z, params);
 	}
 };
+#endif
 
 #endif

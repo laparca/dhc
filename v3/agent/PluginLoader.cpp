@@ -36,19 +36,23 @@
 #include "debug.h"
 #include <sys/types.h>
 #include <dirent.h>
+#include <vector>
+#include <string>
 
-extern string ConfigDirectories[];
+using namespace std;
+
+extern vector<string> ConfigDirectories;
 
 void PluginLoader::Load()
 {
 	DO_ENTER("PluginLoader", "Load");
 	
-	for (int dir_idx = 0 ; dir_idx < sizeof(ConfigDirectories)/sizeof(string); ++dir_idx)
+	for (vector<string>::iterator dir_it = ConfigDirectories.begin() ; dir_it != ConfigDirectories.end(); ++dir_it)
 	{
 		DIR* dir;
 		struct dirent* ent;
 		
-		dir = opendir(ConfigDirectories[dir_idx].c_str());
+		dir = opendir(dir_it->c_str());
 
 		/* No directory? Try next */
 		if(dir == NULL) continue;
@@ -59,7 +63,7 @@ void PluginLoader::Load()
 			string file_ext(".aplug.so");
 			if(file_name.substr(file_name.size() - file_ext.size(), file_ext.size()) == file_ext)
 			{
-				PluginLoader::Load(ConfigDirectories[dir_idx] + file_name);
+				PluginLoader::Load(*dir_it + file_name);
 			}
 		}
 		closedir(dir);

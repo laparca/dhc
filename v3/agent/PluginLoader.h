@@ -53,7 +53,7 @@ using namespace std;
  *
  * To load a plugin requiere, first of all, look into all the posible
  * directories where they can be allocated (the list of directories is the global
- * variable @ConfigDirectories@ in main.c).
+ * variable @ConfigDirectories@ in config.cpp).
  *
  * Each plugin file has the .aplug.so and is loaded using ldopen (UNIX/Linux
  * only for now).

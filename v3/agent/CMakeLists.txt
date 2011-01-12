@@ -112,7 +112,7 @@ ADD_EXECUTABLE(agent
 	UnitTesting.cpp
 	XmlParser.cpp
 	sha256.cpp
-
+	config.cpp
 	PluginLoader.cpp
 	
 	${ASM_OUTPUTS}
