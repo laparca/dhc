@@ -42,7 +42,7 @@
 #define DEBUG    4
 
 #ifdef _DEBUG
-#   define B_LOG(level, i, str)  do { if((level) <= _log_level) cout << "[" << i << "] " << (str) << endl; } while(0)
+#   define B_LOG(level, i, str)  do { MutexLock _log_locker(_log_mutex); if((level) <= _log_level) cout << "[" << i << "] " << (str) << endl; } while(0)
 #   define DO_ENTER(class, str)     _local_method_log(class, str)
 
 #   define DO_ERROR(str)            B_LOG(ERROR, "ERROR", str)
@@ -51,7 +51,15 @@
 #   define DO_LOG(str)              B_LOG(LOG, "LOG", str)
 #   define DO_DEBUG(str)            B_LOG(DEBUG, "DEBUG", str)
 
-#   define INIT_LOG(lvl)            unsigned int _log_level = (lvl)
+#   define INIT_LOG(lvl)            Mutex _log_mutex; unsigned int _log_level = (lvl)
+
+#include "Mutex.h"
+
+extern Mutex _log_mutex;
+
+#include <string>
+#include <iostream>
+using namespace std;
 
 extern unsigned int _log_level;
 

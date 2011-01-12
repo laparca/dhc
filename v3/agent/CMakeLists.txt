@@ -114,6 +114,7 @@ ADD_EXECUTABLE(agent
 	sha256.cpp
 	config.cpp
 	PluginLoader.cpp
+	Mutex.cpp
 	
 	${ASM_OUTPUTS}
 	${CUDA_OUTPUTS}
