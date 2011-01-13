@@ -23,8 +23,9 @@ CREATE TABLE IF NOT EXISTS `stats` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS `workunits` (
-	`id`          INT(11)      NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	`crack`       INT(11)      NOT NULL,
+	`id`          INT(10)      NOT NULL AUTO_INCREMENT PRIMARY KEY,
+--	`crack`       INT(11)      NOT NULL,
+	`crack_id`    INT(10)      NOT NULL,
 	`hostname`    VARCHAR(255) NOT NULL,
 	`devtype`     VARCHAR(16)  NOT NULL,
 	`devid`       INT(11)      NOT NULL,
@@ -36,18 +37,19 @@ CREATE TABLE IF NOT EXISTS `workunits` (
 
 -- A memory table must be better than a MyISAM table. History has lots of access
 -- but no essential data
+-- UNIQUE KEY `time` (`time`,`speed`)
 CREATE TABLE IF NOT EXISTS `history` (
 	`id`          INT(10)      NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	`time`        INT(11)      NOT NULL,
 	`speed`       FLOAT        NOT NULL
-	--, UNIQUE KEY `time` (`time`,`speed`)
 
 ) ENGINE=MEMORY DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS `hashes` (
-	`id`          INT(11)      NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	`id`          INT(10)      NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	`active`      INT(11)      NOT NULL,
-	`crack`       INT(11)      NOT NULL,
+	`crack_id`    INT(10)      NOT NULL,
+--	`crack`       INT(11)      NOT NULL,
 	`hash`        TEXT         NOT NULL,
 	`collision`   TEXT         NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
