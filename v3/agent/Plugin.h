@@ -35,6 +35,11 @@
 #ifndef __PLUGIN_H__
 #define __PLUGIN_H__
 
+#include <string>
+#include <vector>
+using namespace std;
+
+
 /*!
  *	@file Plugin.h
  *	
@@ -46,6 +51,7 @@
 #define BEGIN_PLUGIN(author) \
 EXPORT  PluginFactory* GetPluginFactory() {\
 	PluginFactory *rtn = new PluginFactory(author); \
+
 #define END_PLUGIN() \
 	return rtn; \
 }
@@ -71,6 +77,9 @@ class PluginFacility {
 	int          facility_type;
 	unsigned int facility_version;
 public:
+	PluginFacility(string name, int type, unsigned int version) :
+	facility_name(name), facility_type(type), facility_version(version)
+	{}
 	/*!
 	* @brief returns the facility version
 	*/
@@ -86,24 +95,26 @@ public:
 	/*!
 	 * @brief returns a new instance of a facility.
 	 */
-	void*        GetInstance() = 0;
+	virtual void* GetInstance() = 0;
 };
 
 template<typename Algorithm>
 class PluginFacilityAlgorithm : public PluginFacility {
 public:
 	PluginFacilityAlgorithm(string name, unsigned int version) :
-	facility_name(name), facility_type(FACILITY_ALGORTHM), facility_version(verion)
+	PluginFacility(name, FACILITY_ALGORITHM, version)
+	/*facility_name(name), facility_type(FACILITY_ALGORTHM), facility_version(verion)*/
 	{}
 	
 	void* GetInstance() { return new Algorithm(); }
 };
 
 template<typename Executor>
-class PluginFacilityAlgorithm : public PluginFacility {
+class PluginFacilityExecutor : public PluginFacility {
 public:
-	PluginFacilityAlgorithm(string name,  unsigned int version) :
-	facility_name(name), facility_type(FACILITY_EXECUTOR), facility_version(verion)
+	PluginFacilityExecutor(string name,  unsigned int version) :
+	PluginFacility(name, FACILITY_EXECUTOR, version)
+	/*facility_name(name), facility_type(FACILITY_EXECUTOR), facility_version(verion)*/
 	{}
 	
 	void* GetInstance() { return new Executor(); }

@@ -106,7 +106,7 @@ public:
 
 	void WaitUntilTermination();
 
-	static int ZTHREAD Self();
+	static ZTHREAD Self();
 protected:
 	/*!
 		@brief Our internal thread handle

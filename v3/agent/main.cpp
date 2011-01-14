@@ -469,6 +469,7 @@ string ReadPtx(string name)
 
 #include "ExecutorFactory.h"
 #include "BasicExecutor.h"
+#include "PluginLoader.h"
 INIT_EXECUTORS();
 
 /*!
@@ -477,6 +478,8 @@ INIT_EXECUTORS();
 void RegisterAlgorithms()
 {
 	DO_ENTER("", "RegisterAlgorithms");
+
+	PluginLoader::Load();
 //	AlgorithmFactory::RegisterAlgorithm(new sha256());
 //	AlgorithmFactory::RegisterAlgorithm(new sha1());
 //	AlgorithmFactory::RegisterAlgorithm(new md5());

@@ -142,3 +142,14 @@ ELSE()
 			m pthread dl curl)
 	ENDIF()
 ENDIF()
+
+
+
+
+
+
+
+
+###############################################################################
+# Default Plugins Section
+ADD_LIBRARY(DummyPlug SHARED DummyPlugin.cpp)
