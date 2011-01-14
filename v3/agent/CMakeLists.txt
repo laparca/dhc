@@ -152,4 +152,4 @@ ENDIF()
 
 ###############################################################################
 # Default Plugins Section
-ADD_LIBRARY(DummyPlug SHARED DummyPlugin.cpp)
+ADD_LIBRARY(DummyPlug.aplug SHARED DummyPlugin.cpp)
