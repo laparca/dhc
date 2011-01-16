@@ -34,30 +34,36 @@
 *                                                                             *
 ******************************************************************************/
 
-class AgentController extends AppController {
-	var $name = 'Agent';
-	var $uses = array('Workunit');
+class CrackersController extends AppController {
+	var $name = 'Crackers';
+	var $uses = array('Stat');
 	
-	function getwu() {
-		$hostname = mysql_real_escape_string($this->params['url']['hostname']);
-		$type = mysql_real_escape_string($this->params['url']['type']);
-		$num = intval($this->params['url']['num']);
+	function index() {
 		
-		$now = time();
-		
-		// TODO: need to block Workunit, Crack and Hash?
-		
-		$result = $this->Workunit->find('all', 
-			array(
-				'conditions' => array('Workunit.expiration <' => "$now"),
-				'order'      => array('Workunit.expiration ASC')
-			)
-		);
-		
-		$this->set('test', $result);
 	}
 	
-	function submitwu() {
+	function queue() {
+		
+	}
+	
+	function overview() {
+		$now = time();
+		$exp = $now - 300;
+		
+		//dbquery("DELETE FROM `stats` WHERE `updated` < '$exp'");
+		$this->Stat->deleteAll(array('Stat.updated <' => '$exp'));
+		
+	}
+	
+	function submit() {
+		
+	}
+	
+	function output() {
+		
+	}
+	
+	function stats() {
 		
 	}
 }
