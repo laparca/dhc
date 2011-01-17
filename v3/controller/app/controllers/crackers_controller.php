@@ -37,6 +37,7 @@
 class CrackersController extends AppController {
 	var $name = 'Crackers';
 	var $uses = array('Stat');
+	var $helpers = array('Html', 'Form');
 	
 	function index() {
 		
@@ -47,6 +48,8 @@ class CrackersController extends AppController {
 	}
 	
 	function overview() {
+		//$this->layout = 'cracker';
+		
 		$now = time();
 		$exp = $now - 300;
 		
@@ -59,12 +62,26 @@ class CrackersController extends AppController {
 		
 	}
 	
+	/**
+	* Stores a new has in the database
+	*/
+	function add() {
+		
+	}
+	
 	function output() {
 		
 	}
 	
 	function stats() {
 		
+	}
+	
+	function beforeFilter() {
+		parent::beforeFilter();
+		
+		$this->set('action', $this->params['action']);
+		$this->layout = 'cracker';
 	}
 }
 ?>
