@@ -30,7 +30,13 @@ body {
 
 #header ul > li {
 	display: inline;
-	margin-left: 5px;
+	padding-left: 7px;
+	padding-right: 5px;
+	background: url(../img/bar.png) repeat-y top left;
+}
+
+#header ul > li:first-child {
+	background: none;
 }
 
 #header ul a {
@@ -38,14 +44,19 @@ body {
 	color: white;
 	text-shadow: black 1px 1px 1px;
 	font-family: 'Josefin Sans', arial, serif;
-	font-weight: 600;
+	font-weight: 300;
 	font-style: normal;
+	font-size: 20px;
+}
+
+#header ul .active a {
+	font-size: 30px;
 }
 
 #content {
 	background: white;
 	background: rgba(255, 255, 255, 0.8);
-	margin: 10px;
+	margin: 20px 10px 10px;
 	padding: 10px;
 	
 	box-shadow: black 0px 3px 6px;
