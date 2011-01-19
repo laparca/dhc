@@ -5,6 +5,7 @@
 		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
 		<?php echo $this->Html->charset('UTF-8');?>
 		<?php echo $scripts_for_layout . "\n";?>
+		<link href='http://fonts.googleapis.com/css?family=Josefin+Sans:light,regular,600' rel='stylesheet' type='text/css'>
 		<?php echo $this->Html->css('dhc') . "\n";?>
 	</head>
 	<body>
