@@ -13,16 +13,16 @@
 			<div id="menu">
 				<ul><?php
 					$menu = array(
-						'overview' => 'Overview',
-						'queue'    => 'Queue',
-						'submit'   => 'Submit',
-						'output'   => 'Output',
-						'stats'    => 'Stats',
-						'settings' => 'Settings'
+						'overview' => __('Overview', true),
+						'queue'    => __('Queue', true),
+						'submit'   => __('Submit', true),
+						'output'   => __('Output', true),
+						'stats'    => __('Stats', true),
+						'settings' => __('Settings', true)
 					);
 					
 					foreach($menu as $menu_idx => $menu_elm): ?>
-					<li <?php if($menu_idx == $action ) echo "class='active'";?>><?php echo $this->Html->link(__($menu_elm, true), array('controller' => 'crackers', 'action' => $menu_idx)); ?></li>
+					<li <?php if($menu_idx == $action ) echo "class='active'";?>><?php echo $this->Html->link($menu_elm, array('controller' => 'crackers', 'action' => $menu_idx)); ?></li>
 					<?php endforeach;?>
 				<ul>
 			</div>
