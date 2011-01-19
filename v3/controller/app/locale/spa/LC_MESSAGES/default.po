@@ -1,24 +1,146 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Distributed Hash Cracker\n"
-"POT-Creation-Date: 2011-01-17 22:23+0100\n"
-"PO-Revision-Date: 2011-01-17 22:26+0100\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-01-19 22:31+0100\n"
+"PO-Revision-Date: 2011-01-19 22:33+0100\n"
 "Last-Translator: Samuel Rodriguez Sevilla <laparca@laparca.es>\n"
 "Language-Team: Evalues <laparca@laparca.es>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-KeywordsList: _;gettext;gettext_noop\n"
-"X-Poedit-Basepath: .\n"
+"X-Poedit-KeywordsList: _;gettext;gettext_noop;__\n"
+"X-Poedit-Basepath: /Users/laparca/Projects/cracker/v3/controller/app\n"
 "X-Poedit-Language: Spanish\n"
 "X-Poedit-Country: SPAIN\n"
 "X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-SearchPath-0: views/layouts\n"
+"X-Poedit-SearchPath-1: views/crackers\n"
+"X-Poedit-SearchPath-2: controllers\n"
+"X-Poedit-SearchPath-3: .\n"
 
-#: /views/crackers/submit.ctp:3
+#: webroot/test.php:88
+msgid "Debug setting does not allow access to this url."
+msgstr "Las opciones de depuración no permiten acceder a esta url."
+
+#: views/layouts/cracker.ctp:16
+msgid "Overview"
+msgstr "Resumen"
+
+#: views/layouts/cracker.ctp:17
+msgid "Queue"
+msgstr "Cola"
+
+#: views/layouts/cracker.ctp:18
+#: views/crackers/submit.ctp:61
 msgid "Submit"
 msgstr "Enviar"
 
-#: /webroot/test.php:88
-msgid "Debug setting does not allow access to this url."
-msgstr "Las opciones de depuración no permiten acceder a esta url."
+#: views/layouts/cracker.ctp:19
+msgid "Output"
+msgstr "Salida"
+
+#: views/layouts/cracker.ctp:20
+msgid "Stats"
+msgstr "Estadísticas"
+
+#: views/layouts/cracker.ctp:21
+msgid "Settings"
+msgstr "Opciones"
+
+#: views/crackers/submit.ctp:12
+msgid "Algorithm"
+msgstr "Algoritmo"
+
+#: views/crackers/submit.ctp:17
+msgid "Hash Values"
+msgstr "Resúmenes"
+
+#: views/crackers/submit.ctp:21
+msgid "Lowercase letters"
+msgstr "Letras minúsculas"
+
+#: views/crackers/submit.ctp:22
+msgid "Uppercase letters"
+msgstr "Letras mayúsculas"
+
+#: views/crackers/submit.ctp:23
+msgid "Numbers"
+msgstr "Números"
+
+#: views/crackers/submit.ctp:24
+msgid "Common symbols"
+msgstr "Símbolos comunes"
+
+#: views/crackers/submit.ctp:25
+msgid "Rare symbols"
+msgstr "Símbolos raros"
+
+#: views/crackers/submit.ctp:26
+msgid "Space"
+msgstr "Espacio"
+
+#: views/crackers/submit.ctp:27
+msgid "Newline"
+msgstr "Nueva línea"
+
+#: views/crackers/submit.ctp:37
+msgid "Max Length"
+msgstr "Longitud máxima"
+
+#: views/crackers/submit.ctp:41
+msgid "15 minutes"
+msgstr "15 minutos"
+
+#: views/crackers/submit.ctp:42
+msgid "30 minutes"
+msgstr "30 minutos"
+
+#: views/crackers/submit.ctp:43
+msgid "1 hour"
+msgstr "1 hora"
+
+#: views/crackers/submit.ctp:44
+msgid "2 hours"
+msgstr "2 horas"
+
+#: views/crackers/submit.ctp:45
+msgid "5 hours"
+msgstr "5 horas"
+
+#: views/crackers/submit.ctp:46
+msgid "12 hours"
+msgstr "12 horas"
+
+#: views/crackers/submit.ctp:47
+msgid "1 day"
+msgstr "1 día"
+
+#: views/crackers/submit.ctp:48
+msgid "1 week"
+msgstr "1 semana"
+
+#: views/crackers/submit.ctp:49
+msgid "Never"
+msgstr "Nunca"
+
+#: views/crackers/submit.ctp:50
+msgid "Expiration"
+msgstr "Caducidad"
+
+#: views/crackers/submit.ctp:55
+msgid "Idle"
+msgstr "Ocioso"
+
+#: views/crackers/submit.ctp:56
+msgid "Normal"
+msgstr "Normal"
+
+#: views/crackers/submit.ctp:57
+msgid "Urgent"
+msgstr "Urgente"
+
+#: views/crackers/submit.ctp:58
+msgid "Priority"
+msgstr "Prioridad"
 
