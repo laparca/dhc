@@ -1,3 +1,9 @@
 body {
-	background: red;
+	border: 0;
+	padding: 0;
+	margin: 0;
+}
+#header {
+	background: #1E389E url(../img/head.png) no-repeat;
+	height: 200px;
 }

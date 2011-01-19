@@ -3,6 +3,7 @@
 	<head>
 		<title><?php echo $title_for_layout?></title>
 		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
+		<?php echo $this->Html->charset('UTF-8');?>
 		<?php echo $scripts_for_layout . "\n";?>
 		<?php echo $this->Html->css('dhc') . "\n";?>
 	</head>

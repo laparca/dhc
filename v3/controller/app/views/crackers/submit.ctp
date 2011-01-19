@@ -1,7 +1,7 @@
 <?php
 echo $this->Form->create('Crackers');
 
-echo $this->Form->input('Algorithm', array(
+echo $this->Form->input('alg', array(
 	'options' => array(
 		'md4'      => 'MD4',
 		'md5'      => 'MD5',
@@ -12,14 +12,31 @@ echo $this->Form->input('Algorithm', array(
 	'label' => __('Algorithm', true)
 ));
 
-echo $this->Form->input('Hash Values', array(
+echo $this->Form->input('hash', array(
 	'type'  => 'textarea',
 	'label' => __('Hash Values', true)
 ));
 
-echo $this->Form->input('Max Length', array('label' => __('Max Length', true)));
+$checks =  array(
+	'lower' => __('Lowercase letters', true),
+	'upper' => __('Uppercase letters', true),
+	'nums'  => __('Numbers', true),
+	'somesymbols' => __('Common symbols', true),
+	'allsymbols' => __('Rare symbols', true),
+	'space' => __('Space', true),
+	'newline' => __('Newline', true)
+);
 
-echo $this->Form->input('Expiration', array(
+foreach($checks as $name => $title) {
+	echo $this->Form->input("$name", array(
+		'type' => 'checkbox',
+		'label' => "$title"
+	));
+}
+
+echo $this->Form->input('len', array('label' => __('Max Length', true)));
+
+echo $this->Form->input('exp', array(
 	'options' => array(
 		15 => __('15 minutes', true),
 		30 => __('30 minutes', true),
@@ -33,7 +50,7 @@ echo $this->Form->input('Expiration', array(
 	'label' => __('Expiration', true)
 ));
 
-echo $this->Form->input('Priority', array(
+echo $this->Form->input('pri', array(
 	'options' => array(
 		0 => __('Idle', true),
 		5 => __('Normal', true),
