@@ -36,15 +36,14 @@
 
 class CrackersController extends AppController {
 	var $name = 'Crackers';
-	var $uses = array('Stat');
-	var $helpers = array('Html', 'Form');
+	var $uses = array('Stat', 'Crack', 'Hash', 'WorkUnit');
+	var $helpers = array('Html', 'Form', 'Session');
 	
 	function index() {
 		
 	}
 	
 	function queue() {
-		
 	}
 	
 	function overview() {
@@ -59,135 +58,138 @@ class CrackersController extends AppController {
 	}
 	
 	function submit() {
-		
-	}
-	
-	/**
-	* Stores a new has in the database
-	*/
-	function add() {
-		$alg = $_POST['alg'];
-		$hashes = explode("\n", $_POST['hash']);
-		$len = intval($_POST['len']);
-		$exp = intval($_POST['exp']);
-		$pri = intval($_POST['pri']);
-		
-		//Should never have any angle brackets but make sure
-		for($i=0; $i<count($hashes); $i++)
-			$hashes[$i] = strip_tags($hashes[$i]);
-		
-		//Validate input
-		$bOK = true;
-		if($pri < 0 || $pri > 10)
-		{
-			$bOK = false;
-			echo "Invalid priority level<br/>";
-		}
-		if($exp != 0)
-			$exp = time() + 60*$exp;
-		if($exp == 0)
-			$exp = time() + 10*365*24*60*60;
-		if($len < 0 || $len > 32)
-		{
-			$bOK = false;
-			echo "Invalid length<br/>";
-		}
-		$hash_lengths = array(
-			'md5' => 32,
-			'md4' => 32,
-			'ntlm' => 32,
-			'sha1' => 40,
-			'sha256' => 64,
-			'md5crypt' => -1	/* TODO: do something here */
-			);
-		$hashlen = $hash_lengths[$alg];
-		if($alg != 'md5crypt')
-		{
-			//Check length against array
-			//TODO: handle md5crypt variable salt lengths later
-			foreach($hashes as $hash)
-			{			
-				$hash = trim($hash);
-				if(strlen($hash) != $hashlen)
+		if(!empty($this->data)) {
+			$alg = $this->data['Cracker']['alg'];
+			$hashes = explode("\n", $this->data['Cracker']['hashes']);
+			$len = intval($this->data['Cracker']['len']);
+			$exp = intval($this->data['Cracker']['exp']);
+			$pri = intval($this->data['Cracker']['pri']);
+
+			//Should never have any angle brackets but make sure
+			for($i=0; $i<count($hashes); $i++)
+				$hashes[$i] = strip_tags($hashes[$i]);
+					//Validate input
+			$bOK = true;
+			if($pri < 0 || $pri > 10)
+			{
+				$bOK = false;
+				$this->set('priError', __("Invalid priority level", true));
+			}
+			if($exp != 0)
+				$exp = time() + 60*$exp;
+			if($exp == 0)
+				$exp = time() + 10*365*24*60*60;
+			if($len < 0 || $len > 32)
+			{
+				$bOK = false;
+				$this->set('lenError', __("Invalid length", true));
+			}
+			$hash_lengths = array(
+				'md5' => 32,
+				'md4' => 32,
+				'ntlm' => 32,
+				'sha1' => 40,
+				'sha256' => 64,
+				'md5crypt' => -1	// TODO: do something here
+				);
+			$hashlen = $hash_lengths[$alg];
+			if($alg != 'md5crypt')
+			{
+				//Check length against array
+				//TODO: handle md5crypt variable salt lengths later
+				foreach($hashes as $hash)
 				{
-					$bOK = false;
-					$len = strlen($hash);
-					echo "Invalid hash length $len on hash $hash (expected $hashlen)<br/>";
+					$hash = trim($hash);
+					if(strlen($hash) != $hashlen)
+					{
+						$bOK = false;
+						$len = strlen($hash);
+						$error_msg = __("Invalid hash length %d on hash %s (expected %d)", true);
+						$this->set('hashesError', sprintf($error_msg, $len, $hash, $hashlen));
+					}
 				}
 			}
-		}
-		if(!isset($hash_lengths[$alg]))
-		{
-			echo "Invalid hash algorithm";
-			$bOK = false;
-		}
-		
-		//No batch cracking of md5crypt allowed since it's salted (we gain nothing)
-		if($alg == 'md5crypt' && count($hashes) != 1)
-		{
-			echo "Batch cracking of md5crypt is not possible.";
-			$bOK = false;
-		}
-		
-		//GPUs have limited memory!
-		if(count($hashes) > 128)
-		{
-			echo "The current implementation is limited to 128 simultaneous hashes.";
-			$bOK = false;
-		}
-		
-		if($bOK)
-		{
-			$alg = mysql_real_escape_string($alg);
-						
-			//Set charset
-			//lower upper nums symbols space newline other
-			$cset = '';
-			if($_POST['lower'] == 'on')
-				$cset .= 'a';
-			if($_POST['upper'] == 'on')
-				$cset .= 'A';
-			if($_POST['nums'] == 'on')
-				$cset .= '1';
-			if($_POST['somesymbols'] == 'on')
-				$cset .= '!';
-			if($_POST['allsymbols'] == 'on')
-				$cset .= '>';
-			if($_POST['space'] == 'on')
-				$cset .= 's';
-			if($_POST['newline'] == 'on')
-				$cset .= 'n';
-				
-			//Set next WU
-			$nwu = $cset[0];
-			if($nwu == 's')
-				$nwu = ' ';
-			if($nwu == 'n')
-				$nwu = '\n';
-			
-			//Insert the crack
-			$tm = time();
-			$q = 'INSERT INTO `cracks` (`algorithm`,`charset`,`maxlen`,`nextwu`,`started`,`expiration`,`priority`, `active`, `updated`) VALUES(';
-			$q .= "'$alg', '$cset', '$len', '$nwu', '$tm', '$exp', '$pri', '1', '$tm'";
-			$q .= ')';
-			dbquery($q);
-			$crack = mysql_insert_id();
-			
-			//Add hashes
-			foreach($hashes as $hash)
+			if(!isset($hash_lengths[$alg]))
 			{
-				//Sanitize input
-				$hash = mysql_real_escape_string(trim($hash));
-				
-				//Create a new hash associated with this crack
-				$q = 'INSERT INTO `hashes` (`crack`, `hash`, `collision`, `active`) VALUES(';
-				$q .= "'$crack', '$hash', '', '1'";
-				$q .= ')';
-				dbquery($q);
+				$this->set('algError', __('Invalid hash algorithm', true));
+				$bOK = false;
 			}
+
+			//No batch cracking of md5crypt allowed since it's salted (we gain nothing)
+			if($alg == 'md5crypt' && count($hashes) != 1)
+			{
+				$this->set('algError', __("Batch cracking of md5crypt is not possible.", true));
+				$bOK = false;
+			}
+
+			//GPUs have limited memory!
+			if(count($hashes) > 128)
+			{
+				$this->set('hashesError', __("The current implementation is limited to 128 simultaneous hashes."));
+				$bOK = false;
+			}
+
+			if($bOK)
+			{
+				$alg = mysql_real_escape_string($alg);
+				$character_set = array(
+					'lower' => 'a',
+					'upper' => 'A',
+					'nums' => '1',
+					'somesymbols' => '!',
+					'allsymbols' => '>',
+					'space' => 's',
+					'newline' => 'n'
+				);
+
+				$cset = '';
+				foreach($this->data['Cracker']['chset'] as $ch) {
+					if(isset($character_set[$ch]))
+						$cset .= $character_set[$ch];
+				}
+
+				//Set next WU
+				$nwu = $cset[0];
+				if($nwu == 's')
+					$nwu = ' ';
+				if($nwu == 'n')
+					$nwu = '\n';
+
+				$ins_hashes = array();
+				foreach($hashes as $hash)
+				{
+					//Sanitize input
+					$hash = mysql_real_escape_string(trim($hash));
+
+					$ins_hashes[] = array(
+						'hash' => $hash,
+						'collision' => '',
+						'active' => '1');
+				}
+
+
+				$tm = time();
+				$this->Crack->saveAll(array(
+					'Crack' => array(
+						'algorithm' => $alg,
+						'charset' => $cset,
+						'maxlen' => $len,
+						'nextwu' => $nwu,
+						'started' => $tm,
+						'expiration' => $exp,
+						'priority' => $pri,
+						'active' => '1',
+						'updated' => $tm
+					),
+					'Hash' => $ins_hashes
+				));
+				
+				$this->Session->setFlash(__('Information saved', true));
+			}
+
 		}
 	}
-	
+		
 	function output() {
 		
 	}
