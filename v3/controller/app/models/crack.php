@@ -36,9 +36,6 @@
 
 class Crack extends AppModel {
 	var $name = 'Crack';
-	var $hasMany = array(
-		'crack' => 'Crack',
-		'Hashes'  => 'Hash'
-	);
+	var $hasMany = array('WorkUnit', 'Hash');
 }
 ?>

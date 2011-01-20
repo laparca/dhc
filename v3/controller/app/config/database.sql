@@ -22,7 +22,7 @@ CREATE TABLE IF NOT EXISTS `stats` (
 	`speed`       FLOAT        NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
-CREATE TABLE IF NOT EXISTS `workunits` (
+CREATE TABLE IF NOT EXISTS `work_units` (
 	`id`          INT(10)      NOT NULL AUTO_INCREMENT PRIMARY KEY,
 --	`crack`       INT(11)      NOT NULL,
 	`crack_id`    INT(10)      NOT NULL,
