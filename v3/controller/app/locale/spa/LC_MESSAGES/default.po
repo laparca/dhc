@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Distributed Hash Cracker\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-01-20 23:57+0100\n"
-"PO-Revision-Date: 2011-01-21 00:00+0100\n"
+"POT-Creation-Date: 2011-01-21 16:38+0100\n"
+"PO-Revision-Date: 2011-01-21 20:32+0100\n"
 "Last-Translator: Samuel Rodriguez Sevilla <laparca@laparca.es>\n"
 "Language-Team: Evalues <laparca@laparca.es>\n"
 "MIME-Version: 1.0\n"
@@ -19,32 +19,32 @@ msgstr ""
 "X-Poedit-SearchPath-2: controllers\n"
 "X-Poedit-SearchPath-3: .\n"
 
-#: controllers/crackers_controller.php:103
+#: controllers/crackers_controller.php:77
 msgid "Invalid priority level"
 msgstr "Prioridad inválida"
 
-#: controllers/crackers_controller.php:112
+#: controllers/crackers_controller.php:86
 msgid "Invalid length"
 msgstr "Longitud inválida"
 
-#: controllers/crackers_controller.php:134
+#: controllers/crackers_controller.php:108
 #, php-format
 msgid "Invalid hash length %d on hash %s (expected %d)"
 msgstr "El resumen de longitud %d de %s es inválido (se espera tamaño %d)"
 
-#: controllers/crackers_controller.php:141
+#: controllers/crackers_controller.php:115
 msgid "Invalid hash algorithm"
 msgstr "Algoritmo inválido"
 
-#: controllers/crackers_controller.php:148
+#: controllers/crackers_controller.php:122
 msgid "Batch cracking of md5crypt is not possible."
 msgstr "El procesado por lotes no es posible con md5crypt"
 
-#: controllers/crackers_controller.php:155
+#: controllers/crackers_controller.php:129
 msgid "The current implementation is limited to 128 simultaneous hashes."
 msgstr "La implementación actual está limitada a 128 resúmenes simultáneos"
 
-#: controllers/crackers_controller.php:214
+#: controllers/crackers_controller.php:188
 msgid "Information saved"
 msgstr "Datos salvados"
 
@@ -76,6 +76,59 @@ msgstr "Estadísticas"
 #: views/layouts/cracker.ctp:21
 msgid "Settings"
 msgstr "Opciones"
+
+#: views/crackers/output.ctp:5
+#: views/crackers/queue.ctp:5
+msgid "Alg"
+msgstr "Alg"
+
+#: views/crackers/output.ctp:6
+#: views/crackers/queue.ctp:6
+msgid "Charset"
+msgstr "Juego de caracteres"
+
+#: views/crackers/output.ctp:7
+#: views/crackers/queue.ctp:7
+msgid "Hash"
+msgstr "Resumen"
+
+#: views/crackers/output.ctp:21
+msgid "Found"
+msgstr "Encontrado"
+
+#: views/crackers/output.ctp:21
+msgid "Time expired"
+msgstr "Tiempo excedido"
+
+#: views/crackers/output.ctp:21
+msgid "Search space exhausted"
+msgstr "Espacio de búsqueda insuficiente"
+
+#: views/crackers/queue.ctp:8
+msgid "Max length"
+msgstr "Longitud máxima"
+
+#: views/crackers/queue.ctp:9
+msgid "Next WU"
+msgstr "Siguiente WU"
+
+#: views/crackers/queue.ctp:10
+msgid "Started"
+msgstr "Iniciado"
+
+#: views/crackers/queue.ctp:11
+#: views/crackers/submit.ctp:48
+msgid "Expiration"
+msgstr "Caducidad"
+
+#: views/crackers/queue.ctp:12
+#: views/crackers/submit.ctp:63
+msgid "Priority"
+msgstr "Prioridad"
+
+#: views/crackers/queue.ctp:13
+msgid "Progress"
+msgstr "Progreso"
 
 #: views/crackers/submit.ctp:10
 msgid "Algorithm"
@@ -121,10 +174,6 @@ msgstr "Nueva línea"
 msgid "Max Length"
 msgstr "Longitud máxima"
 
-#: views/crackers/submit.ctp:48
-msgid "Expiration"
-msgstr "Caducidad"
-
 #: views/crackers/submit.ctp:51
 msgid "15 minutes"
 msgstr "15 minutos"
@@ -160,10 +209,6 @@ msgstr "1 semana"
 #: views/crackers/submit.ctp:59
 msgid "Never"
 msgstr "Nunca"
-
-#: views/crackers/submit.ctp:63
-msgid "Priority"
-msgstr "Prioridad"
 
 #: views/crackers/submit.ctp:66
 msgid "Idle"
