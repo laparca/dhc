@@ -45,32 +45,6 @@ class CrackersController extends AppController {
 	
 	function queue() {
 		$this->set('cracks', $this->Crack->findAllByActive(1));
-		/*
-		//Process rows
-		$r = dbquery("SELECT * FROM `cracks` WHERE `active` = '1'");
-		while($row = mysql_fetch_object($r))
-		{
-			$time = time();
-			$rows .= '<tr id=\'' . $row->hash . '\'>';
-			$rows .= '<td><a href=\'?page=queue&op=cancel&id=' . $row->id . '\'>[Cancel]</a></td>';
-			$rows .= '<td>' . $row->algorithm . '</td>';
-			$rows .= '<td>' . $row->charset . '</td>';
-
-			$hashes = '';
-			$s = dbquery('SELECT `hash` FROM `hashes` WHERE `crack` = \'' . $row->id . '\' AND `collision` = \'\'');
-			while($hash = mysql_fetch_object($s))
-				$hashes .= $hash->hash . "\n";		
-
-			$rows .= '<td>' . $hashes . '</td>';
-			$rows .= '<td>' . $row->maxlen . '</td>';
-			$rows .= '<td>' . $row->nextwu . '</td>';
-			$rows .= '<td>' . date('Hi Ymd', $row->started) . '</td>';
-			$rows .= '<td>' . date('Hi Ymd', $row->expiration) . '</td>';
-			$rows .= '<td>' . $row->priority . '</td>';
-			$frac=GetStatsPercentage($row->id);
-			$rows .= "<td><img src='index.php?action=ajax&page=progress&percentage=$frac' title='$frac% complete'/></td>";
-			$rows .= "</tr>\n";
-			*/
 	}
 	
 	function overview() {
@@ -218,11 +192,11 @@ class CrackersController extends AppController {
 	}
 		
 	function output() {
-		
+		$this->set('hashes', $this->Hash->findAllByActive(0, array(), array('Hash.id' => 'DESC')));
 	}
 	
 	function stats() {
-		
+		$this->set('', $this->Stat->findAll())
 	}
 	
 	function beforeFilter() {

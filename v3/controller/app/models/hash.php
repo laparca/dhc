@@ -36,5 +36,6 @@
 
 class Hash extends AppModel {
 	var $name = 'Hash';
+	var $belongsTo = 'Crack';
 }
 ?>
