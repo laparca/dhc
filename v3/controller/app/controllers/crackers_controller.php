@@ -196,7 +196,12 @@ class CrackersController extends AppController {
 	}
 	
 	function stats() {
-		$this->set('', $this->Stat->findAll())
+		$this->set('stats', $this->Stat->find('all', array(
+			'order' => array(
+				'Stat.device' => 'ASC',
+				'Stat.updated' => 'DESC'
+			)
+		)));
 	}
 	
 	function beforeFilter() {
