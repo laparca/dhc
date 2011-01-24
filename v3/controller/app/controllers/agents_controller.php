@@ -45,8 +45,11 @@ class AgentsController extends AppController {
 		
 		$now = time();
 		
+		$alglist = explode(',', $this->params['url']['accept-algorithms']);
+		
 		// TODO: need to block Workunit, Crack and Hash?
 		
+		// Look for all expired Workunits
 		$result = $this->Workunit->find('all', 
 			array(
 				'conditions' => array('Workunit.expiration <' => "$now"),
@@ -54,6 +57,13 @@ class AgentsController extends AppController {
 			)
 		);
 		
+		foreach($result as $workunit) {
+			if($workunit['Crack']['algorithm'] in $alglist) {
+				// A expired WU with a compatible algorithm found!
+				
+				break;
+			}
+		}
 		$this->set('test', $result);
 	}
 	
