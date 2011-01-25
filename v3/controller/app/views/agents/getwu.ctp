@@ -1,17 +1,18 @@
 <?php
-print_r($test);
+//print_r($test);
+//print_r($info);
 ?>
-
-
 <workunit>
-	<id><?php echo $wuid ?></id>
-	<algorithm><?php echo $crack->algorithm ?></algorithm>
-	<charset><?php echo $crack->charset ?></charset>
-$s = dbquery("SELECT * FROM `hashes` WHERE `crack` = '$cid'");
-while($h = mysql_fetch_object($s))
-	<?php foreach(): ?>
-		<hash id='<?php echo $h->id ?>'><?php echo $h->hash ?></hash>
+	<id><?php echo $info['id'] ?></id>
+	<algorithm><?php echo $info['algorithm'] ?></algorithm>
+	<charset><?php echo $info['charset'] ?></charset>
+	<?php foreach($info['hashes'] as $idx => $hash): ?>
+		<?php if(is_array($hash)) : ?>
+			<hash id='<?php echo $hash['id'] ?>'><?php echo $hash['hash'] ?></hash>
+		<?php else : ?>
+			<hash id='<?php echo $idx ?>'><?php echo $hash ?></hash>
+		<?php endif; ?>
 	<?php endforeach; ?>
-	<start><?php echo $wu->start ?></start>
-	<end><?php echo $wu->end ?></end>
+	<start><?php echo $info['start'] ?></start>
+	<end><?php echo $info['end'] ?></end>
 </workunit>
