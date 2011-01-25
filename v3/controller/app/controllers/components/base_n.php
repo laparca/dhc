@@ -1,5 +1,5 @@
 <?php
-class BaseN extends Object {
+class BaseNComponent extends Object {
 	/*!
 	* @brief Parses a base-N object out of a string and a reverse character set
 	*
