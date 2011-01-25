@@ -36,7 +36,7 @@
 
 class AgentsController extends AppController {
 	var $name = 'Agents';
-	var $uses = array('Workunit');
+	var $uses = array('Workunit', 'Hash', 'Crack');
 	
 	function getwu() {
 		$hostname = mysql_real_escape_string($this->params['url']['hostname']);
@@ -56,15 +56,58 @@ class AgentsController extends AppController {
 				'order'      => array('Workunit.expiration ASC')
 			)
 		);
-		
+
+		$orphaned_found = false;
+
 		foreach($result as $workunit) {
 			if($workunit['Crack']['algorithm'] in $alglist) {
 				// A expired WU with a compatible algorithm found!
-				
+				$this->WorkUnit->updateAll(
+					array(
+						'WorkUnit.hostname' => '$hostname',
+						'WorkUnit.devtype' => '$type',
+						'WorkUnit.devid' => '$num',
+						'WorkUnit.expiration' => time() + 120 /* two minutes */
+					),
+					array('WorkUnit.id' => $workunit['WorkUnit']['id'])
+				);
+
+				$this->set('info', array(
+					'id' => $workunit['WorkUnit']['id'],
+					'algorithm' => $workunit['Crack']['algorithm'],
+					'charset' => $workunit['Crack']['charset'],
+					'start' => $workunit['WorkUnit']['start'],
+					'end' => $workunit['WorkUnit']['end'],
+					'hashes' => $this->Hash->find('list', array(
+						'fields' => array('Hash.id', 'Hash.hash'),
+						'conditions' => array('Hash.cracker_id' => $workunit['Crack']['id'])
+					))
+				));
+
+				$orphaned_found = true;
 				break;
 			}
 		}
-		$this->set('test', $result);
+
+		if(!$orphaned_found) {
+			$crack = $this->Crack->find('first', array(
+				'conditions' => array(
+					'Crack.active' => 1,
+					'Crack.algorithm' => $alglist
+				),
+				'order' => array(
+					'Crack.priority DESC',
+					'Crack.started ASC'
+				)
+			));
+
+			if(count($crack['Crack']) < 1) {
+				$this->render(); // <nowork reason='idle'></nowork>
+			}
+
+			
+		}
+		//$this->set('test', $result);
 	}
 	
 	function submitwu() {
