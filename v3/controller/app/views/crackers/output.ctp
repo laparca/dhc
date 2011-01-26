@@ -4,7 +4,7 @@
 			<th></th>
 			<th><?php __('Alg') ?></th>
 			<th><?php __('Charset') ?></th>
-			<th><?php __('Hash')</th>
+			<th><?php __('Hash') ?></th>
 			<th>State</th>
 			<th>Max length</th>
 			<th>Value</th>
