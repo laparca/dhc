@@ -246,7 +246,11 @@ bool ControllerLink::GetWorkUnit(WorkUnit& wu, const vector<string>& alglist)
 			{
 				wu.m_start = txt;
 				if(txt.length() >= MAX_BASEN_LENGTH - 1)
-					ThrowError("Start guess too long");
+				{
+					string err = "Start guess too long: ";
+					err += txt;
+					ThrowError(err);
+				}
 			}
 			else if(type == "end")
 			{
