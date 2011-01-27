@@ -11,7 +11,7 @@ class BaseNComponent extends Object {
 	function make($str, $rcharset)
 	{
 		$ret = array();
-		for($i=0; $i<strlen($str); $i++)
+		for($i = 0; $i < strlen($str); $i++)
 			$ret[$i] = $rcharset[$str[$i]];
 		return $ret;
 	}
@@ -35,8 +35,8 @@ class BaseNComponent extends Object {
 		//Too much? Can't possibly fit, saturate and quit
 		if($maxplace > $len)
 		{
-			for($i=0; $i<$len; $i++)
-				$num[$i] = $base-1;
+			for($i = 0; $i < $len; $i++)
+				$num[$i] = $base - 1;
 			return $num;
 		}
 
@@ -46,7 +46,7 @@ class BaseNComponent extends Object {
 		//Handle carries
 		$bOverflow = false;
 		$pvalue = 1;
-		for($i=$len-1; $i>=0; $i--)
+		for($i = $len - 1; $i >= 0; $i--)
 		{
 			//Less than base? We're done
 			if($num[$i] < $base)

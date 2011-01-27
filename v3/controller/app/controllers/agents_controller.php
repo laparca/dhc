@@ -150,7 +150,7 @@ class AgentsController extends AppController {
 			//$cid = $crack->id;
 			$bSaturated = true;
 			$nwu = array();
-			for($i=0; $i<count($nend); $i++)
+			for($i = 0; $i < count($nend); $i++)
 			{
 				if($nend[$i] != $base-1)
 					$bSaturated = false;
@@ -158,7 +158,7 @@ class AgentsController extends AppController {
 			if($bSaturated)
 			{
 				//If we saturated, bump length and do {0...0}.
-				for($i=0; $i<1 + count($nend); $i++)
+				for($i = 0; $i < 1 + count($nend); $i++)
 					$nwu[$i] = 0;
 
 				//If we saturated and are at the end of the search space, mark the crack as exhausted.
@@ -169,8 +169,6 @@ class AgentsController extends AppController {
 					$crack['Crack']['updated'] = time();
 					foreach($crack['Hash'] as $hash)
 						$hash['active'] = 0;
-					//dbquery("UPDATE cracks SET `active` = '0', `updated` = '$now' WHERE `id` = '$cid' LIMIT 1");
-					//dbquery("UPDATE `hashes` SET `active` = '0' WHERE `crack` = '$cid'");
 				}
 			}
 			else
@@ -187,7 +185,7 @@ class AgentsController extends AppController {
 
 			//Insert the new WU into the table
 			$now = time();
-			$exp = $now + 120;	//TODO: is 2 minute expiration reasonable?
+			//$exp = $now + 120;	//TODO: is 2 minute expiration reasonable?
 			$workunit = array('WorkUnit' => array(
 				'crack_id' => $crack['Crack']['id'],
 				'hostname' => $hostname,
@@ -196,7 +194,7 @@ class AgentsController extends AppController {
 				'start' => $start,
 				'end' => $end,
 				'started' => time(),
-				'expiration' => time() + 120
+				'expiration' => time() + 120 //TODO: is 2 minute expiration reasonable?
 			));
 
 			$this->Crack->save($crack);
@@ -237,15 +235,10 @@ class AgentsController extends AppController {
 		}
 
 		//Get the crack ID
-		//$r = dbquery("SELECT * FROM `workunits` WHERE `id` = '$id' LIMIT 1");
 		$workunit = $this->WorkUnit->findById($id);
-		//if(mysql_num_rows($r) != 1)		//Report OK since the crack was cancelled
-		//	die("ok");
-		if(empty($workunit)) {
-			//$this-render('error');
-			return;
-		}
-		//$wu = mysql_fetch_object($r);
+
+		if(empty($workunit)) return;
+
 		$cid = $workunit['Crack']['id'];
 
 		$this->Stats->deleteOld();
@@ -281,54 +274,21 @@ class AgentsController extends AppController {
 						'Hash.id' => $hid
 					)
 				);
-				//dbquery("UPDATE `hashes` SET `collision` = '$collision', `active` = '0' WHERE `id` = '$hid' LIMIT 1");
 			}
 			$update_crack['Crack.updated'] = $now;
-			/*
-			$this->Crack->updateAll(
-				array(
-					'Crack.updated' => $now
-				),
-				array(
-					'Crack.id' => $cid
-				)
-			);
-			*/
-			//dbquery("UPDATE `cracks` SET `updated` = '$now' WHERE `id` = '$cid'");
 		}
 
 		$active_hash = $this->Hash->find('all', array('conditions' => array('Hash.active' => 1, 'Hash.crack_id' => $cid)));
 		if(empty($active_hash)) {
 			$update_crack['Crack.active'] = 0;
-			/*
-			$this->Crack->updateAll(
-				array(
-					'Crack.active' => 0
-				),
-				array(
-					'Crack.id' => $cid
-				)
-			);
-			*/
 		}
 
 		if(!empty($update_crack))
 			$this->Crack->updateAll($update_crack, array('Crack.id' => $cid));
-		/*
-		$r = dbquery("SELECT * FROM `hashes` WHERE `active` = '1' AND `crack` = '$cid'");
-		if(mysql_num_rows($r) == 0)
-		{
-			//No hashes left? Close the crack
-			dbquery("UPDATE `cracks` SET `active` = '0' WHERE `id` = '$cid'");
-		}*/
 
 		//Delete the work unit AFTER updating the crack in case of a server segfault or something
 		//Repeating a WU is better than missing one
-		//dbquery("DELETE FROM `workunits` WHERE `id` = '$id' LIMIT 1");
 		$this->WorkUnit->delete($id);
-
-		//Show status
-		//echo "ok";
 
 		//dbquery("UNLOCK TABLES");
 	}
