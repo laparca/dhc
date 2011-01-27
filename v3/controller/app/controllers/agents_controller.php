@@ -37,7 +37,7 @@
 class AgentsController extends AppController {
 	var $name = 'Agents';
 	var $uses = array('WorkUnit', 'Hash', 'Crack');
-	var $components = array('BaseN');
+	var $components = array('BaseN', 'Stats');
 	var $helpers = array('Xml');
 	
 	function getwu() {
@@ -219,12 +219,12 @@ class AgentsController extends AppController {
 	
 	function submitwu() {
 		//dbquery("LOCK TABLES cracks WRITE, workunits WRITE, stats WRITE, history WRITE, hashes WRITE");
+		$dt = floatval($this->params['url']["dt"]);
+		$speed = floatval($this->params['url']["speed"]);
 
 		$id = intval($this->params['url']["wuid"]);
 		$collisions = intval($this->params['url']["collisions"]);
-		
-		
-		
+
 		$hashes = array();
 		$cleartext = array();
 		for($i=0; $i<$collisions; $i++)
@@ -239,47 +239,27 @@ class AgentsController extends AppController {
 		//if(mysql_num_rows($r) != 1)		//Report OK since the crack was cancelled
 		//	die("ok");
 		if(empty($workunit)) {
-			$this-render('error');
+			//$this-render('error');
 			return;
 		}
 		//$wu = mysql_fetch_object($r);
-		$cid = $wu->crack;
+		$cid = $wu['WorkUnit']['crack'];
 
-		//Clean out stats not updated in 2 mins
-		$now = time();
-		$exp = $now - 120;
-		dbquery("DELETE FROM `stats` WHERE `updated` < '$exp'");
-		$exp2 = $now - 900;
-		dbquery("DELETE FROM `history` WHERE `time` < '$exp2'");
+		$this->Stats->deleteOld();
 
 		//Get stats
-		$dt = floatval($_GET["dt"]);
-		$speed = floatval($_GET["speed"]);
-		$host = mysql_real_escape_string($wu->hostname);
-		$type = mysql_real_escape_string($wu->devtype);
-		$dev = $wu->devid;
+		$host = mysql_real_escape_string($wu['WorkUnit']['hostname']);
+		$type = mysql_real_escape_string($wu['WorkUnit']['devtype']);
+		$dev = $wu['WorkUnit']['devid'];
 
-		//See if we already have history for this timestamp
-		//TODO: Make this more efficient
-		$r = dbquery("SELECT * FROM `history` WHERE `time` = '$now' LIMIT 1");
-		if(mysql_num_rows($r) == 0)
-		{	
-			$fspeed = 0;
-			$r = dbquery("SELECT * FROM stats");
-			while($line = mysql_fetch_object($r))
-			{
-				$fspeed += $line->speed;
-			}
+		$this->Stats->updateHistory();
 
-			//Add to global stats
-			dbquery("INSERT INTO `history` VALUES('$now', '$fspeed')");
-		}
-
-		//Delete all old stats for our current device
-		dbquery("DELETE FROM `stats` WHERE `device` = '$host-$type-$dev'");
-
-		//Add us to stats
-		dbquery("INSERT INTO `stats` VALUES('$now', '$host-$type-$dev', '$dt', '$speed')");
+		$this->Stats->addStat(array(
+			'updated' => time(),
+			'device' => "$host-$type-$dev",
+			'time' => $dt,
+			'speed' => $speed
+		));
 
 		//Update the crack
 		if($collisions > 0)
@@ -288,9 +268,26 @@ class AgentsController extends AppController {
 			{
 				$hid = $hashes[$i];
 				$collision = $cleartext[$i];
-				dbquery("UPDATE `hashes` SET `collision` = '$collision', `active` = '0' WHERE `id` = '$hid' LIMIT 1");
+				$this->Hash->updateAll(
+					array(
+						'Hash.collision' => "'$collision'",
+						'Hash.active' => 0
+					),
+					array(
+						'Hash.id' => $hid
+					)
+				);
+				//dbquery("UPDATE `hashes` SET `collision` = '$collision', `active` = '0' WHERE `id` = '$hid' LIMIT 1");
 			}
-			dbquery("UPDATE `cracks` SET `updated` = '$now' WHERE `id` = '$cid'");
+			$this->Crack->updateAll(
+				array(
+					'Crack.updated' => $now
+				),
+				array(
+					'Crack.id' => $cid
+				)
+			);
+			//dbquery("UPDATE `cracks` SET `updated` = '$now' WHERE `id` = '$cid'");
 		}
 
 		$r = dbquery("SELECT * FROM `hashes` WHERE `active` = '1' AND `crack` = '$cid'");
@@ -302,12 +299,13 @@ class AgentsController extends AppController {
 
 		//Delete the work unit AFTER updating the crack in case of a server segfault or something
 		//Repeating a WU is better than missing one
-		dbquery("DELETE FROM `workunits` WHERE `id` = '$id' LIMIT 1");
+		//dbquery("DELETE FROM `workunits` WHERE `id` = '$id' LIMIT 1");
+		$this->WorkUnit->delete($id);
 
 		//Show status
-		echo "ok";
+		//echo "ok";
 
-		dbquery("UNLOCK TABLES");
+		//dbquery("UNLOCK TABLES");
 	}
 }
 ?>
