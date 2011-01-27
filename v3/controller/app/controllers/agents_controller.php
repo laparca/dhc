@@ -243,14 +243,14 @@ class AgentsController extends AppController {
 			return;
 		}
 		//$wu = mysql_fetch_object($r);
-		$cid = $wu['WorkUnit']['crack'];
+		$cid = $workunit['Crack']['id'];
 
 		$this->Stats->deleteOld();
 
 		//Get stats
-		$host = mysql_real_escape_string($wu['WorkUnit']['hostname']);
-		$type = mysql_real_escape_string($wu['WorkUnit']['devtype']);
-		$dev = $wu['WorkUnit']['devid'];
+		$host = mysql_real_escape_string($workunit['WorkUnit']['hostname']);
+		$type = mysql_real_escape_string($workunit['WorkUnit']['devtype']);
+		$dev = $workunit['WorkUnit']['devid'];
 
 		$this->Stats->updateHistory();
 
@@ -262,6 +262,7 @@ class AgentsController extends AppController {
 		));
 
 		//Update the crack
+		$update_crack = array();
 		if($collisions > 0)
 		{
 			for($i=0; $i<$collisions; $i++)
@@ -279,6 +280,8 @@ class AgentsController extends AppController {
 				);
 				//dbquery("UPDATE `hashes` SET `collision` = '$collision', `active` = '0' WHERE `id` = '$hid' LIMIT 1");
 			}
+			$update_crack['Crack.updated'] = $now;
+			/*
 			$this->Crack->updateAll(
 				array(
 					'Crack.updated' => $now
@@ -287,15 +290,34 @@ class AgentsController extends AppController {
 					'Crack.id' => $cid
 				)
 			);
+			*/
 			//dbquery("UPDATE `cracks` SET `updated` = '$now' WHERE `id` = '$cid'");
 		}
 
+		$active_hash = $this->Hash->find('all', array('conditions' => array('Hash.active' => 1, 'Hash.crack_id' => $cid)));
+		if(empty($active_hash)) {
+			$update_crack['Crack.active'] = 0;
+			/*
+			$this->Crack->updateAll(
+				array(
+					'Crack.active' => 0
+				),
+				array(
+					'Crack.id' => $cid
+				)
+			);
+			*/
+		}
+
+		if(!empty($update_crack))
+			$this->Crack->updateAll($update_crack, array('Crack.id' => $cid));
+		/*
 		$r = dbquery("SELECT * FROM `hashes` WHERE `active` = '1' AND `crack` = '$cid'");
 		if(mysql_num_rows($r) == 0)
 		{
 			//No hashes left? Close the crack
 			dbquery("UPDATE `cracks` SET `active` = '0' WHERE `id` = '$cid'");
-		}
+		}*/
 
 		//Delete the work unit AFTER updating the crack in case of a server segfault or something
 		//Repeating a WU is better than missing one

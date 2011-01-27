@@ -1,8 +1,8 @@
 <?php
 class StatsComponent extends Object {
 	function startup(&$controller) {
-		$this->Stat = $this->Common->getModel('Stat');
-		$this->History = $this->Common->getModel('History');
+		$this->Stat = ClassRegistry::init('Stat');
+		$this->History = ClassRegistry::init('History');
 	}
 	
 	function deleteOld() {
@@ -31,7 +31,7 @@ class StatsComponent extends Object {
 				)
 			);
 			foreach($stats as $id => $speed) {
-				$fpseed += $speed;
+				$fspeed += $speed;
 			}
 
 			//Add to global stats

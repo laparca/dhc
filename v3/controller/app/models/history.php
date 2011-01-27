@@ -36,5 +36,6 @@
 
 class History extends AppModel {
 	var $name = 'History';
+	var $useTable = 'history';
 }
 ?>
