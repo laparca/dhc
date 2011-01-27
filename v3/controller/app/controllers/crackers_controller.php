@@ -60,6 +60,8 @@ class CrackersController extends AppController {
 	
 	function submit() {
 		if(!empty($this->data)) {
+			$this->set('test', $this->data);
+
 			$alg = $this->data['Cracker']['alg'];
 			$hashes = explode("\n", $this->data['Cracker']['hashes']);
 			$len = intval($this->data['Cracker']['len']);

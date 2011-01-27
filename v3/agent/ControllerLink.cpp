@@ -210,7 +210,9 @@ bool ControllerLink::GetWorkUnit(WorkUnit& wu, const vector<string>& alglist)
 						wu.m_charset += '\n';
 						break;
 					default:
-						ThrowCustomError("Unrecognized charset abbreviation in work unit");
+						string err = "Unrecognized charset abbreviation in work unit: ";
+						err += code;
+						ThrowCustomError(err.c_str());
 					}
 				}
 			}

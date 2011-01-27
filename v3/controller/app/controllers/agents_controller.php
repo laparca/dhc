@@ -41,6 +41,8 @@ class AgentsController extends AppController {
 	var $helpers = array('Xml');
 	
 	function getwu() {
+		$this->layout = 'xml';
+		
 		$hostname = mysql_real_escape_string($this->params['url']['hostname']);
 		$type = mysql_real_escape_string($this->params['url']['type']);
 		$num = intval($this->params['url']['num']);
@@ -209,7 +211,6 @@ class AgentsController extends AppController {
 				'hashes' => $crack['Hash']
 			));
 		}
-		$this->layout = 'xml';
 	}
 	
 	
@@ -218,6 +219,8 @@ class AgentsController extends AppController {
 	
 	
 	function submitwu() {
+		$this->layout = 'empty';
+
 		//dbquery("LOCK TABLES cracks WRITE, workunits WRITE, stats WRITE, history WRITE, hashes WRITE");
 		$dt = floatval($this->params['url']["dt"]);
 		$speed = floatval($this->params['url']["speed"]);

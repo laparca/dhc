@@ -69,4 +69,9 @@ echo $this->Form->input('pri', array(
 ));
 
 echo $this->Form->end(__('Submit', true));
+
+if(isset($test)) {
+	echo "<br/>Debug:<br/>";
+	print_r($test);
+}
 ?>
