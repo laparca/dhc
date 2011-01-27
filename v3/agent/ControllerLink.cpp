@@ -115,7 +115,7 @@ bool ControllerLink::GetWorkUnit(WorkUnit& wu, const vector<string>& alglist)
 	}
 	
 	//Format our request
-	string request = g_server + "?action=getwu&version=3.2&hostname=" + g_hostname + "&type=" + m_type + "&num=" + m_num + "&accept-algorithms=" + algs;
+	string request = g_server + "agents/getwu?version=3.2&hostname=" + g_hostname + "&type=" + m_type + "&num=" + m_num + "&accept-algorithms=" + algs;
 		
 	//Send to the server
 	string recvdata;
@@ -295,7 +295,7 @@ void ControllerLink::SubmitResults(WorkUnit& wu)
 	//Format our request
 	//TODO: URLencode collision
 	//TODO: See if we should use POST data for this
-	string request = g_server + "?action=submitwu&version=3.2&wuid=" + wu.m_id + "&dt=" + wu.m_dt + "&speed=" + wu.m_speed;
+	string request = g_server + "agents/submitwu?version=3.2&wuid=" + wu.m_id + "&dt=" + wu.m_dt + "&speed=" + wu.m_speed;
 	
 	//Add collisions
 	char sbuf[512];
