@@ -201,7 +201,10 @@ bool ControllerLink::GetWorkUnit(WorkUnit& wu, const vector<string>& alglist)
 						wu.m_charset += "1234567890";
 						break;
 					case '!':
-						wu.m_charset += "`~!@#$%^&*()-=_+[]\\{}|;':\",./<>?";
+						wu.m_charset += "!@#$%^&*-=_+\\;:,./?";
+						break;
+					case '>':
+						wu.m_charset += "~`\"'()[]{}|<>";
 						break;
 					case 's':
 						wu.m_charset += ' ';
