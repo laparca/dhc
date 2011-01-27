@@ -186,7 +186,7 @@ int main(int argc, char* argv[])
 			cout << "No server specified on command line, using default" << endl;
 			g_server = "http://localhost/cracker/";
 		}
-		if(g_server[g_sever.size() - 1] != '/') {
+		if(g_server[g_server.size() - 1] != '/') {
 			g_server += "/";
 		}
 	
