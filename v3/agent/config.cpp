@@ -3,7 +3,7 @@
 * Distributed Hash Cracker v3.0                                               *
 *                                                                             *
 * Copyright (c) 2009 RPISEC.                                                  *
-* Copyright (C) 2010 Samuel Rodríguez Sevilla
+* Copyright (C) 2010 Samuel Rodriguez Sevilla                                 *
 * All rights reserved.                                                        *
 *                                                                             *
 * Redistribution and use in source and binary forms, with or without modifi-  *
@@ -32,88 +32,46 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.                *
 *                                                                             *
 ******************************************************************************/
-#ifndef MD4_H
-#define MD4_H
 
-#include "Algorithm.h"
-#include "ExecutorFactory.h"
 #include "debug.h"
+#include <string>
+#include <vector>
+using namespace std;
 
-class md4: public Algorithm {
-public:
-	string GetName()
-	{
-		return string("md4");
-	}
-	int HashLength()
-	{
-		return 16;
-	}
-	int  InputLength()
-	{
-		return 16;
-	}
-	void ExecuteCPU() {}
+/*!
+ * @file config.cpp
+ * @brief This file sets de values of global variables
+ */
 
-#ifdef CUDA_ENABLED
-	void ExecuteGPU(WorkUnit& wu, Device* pDevice, CudaContext* pContext)
-	{
-		DO_ENTER("md4", "ExecuteGPU");
-		
-		Module *hashmod;
-		CudaKernel *hashker;
-		unsigned int nTargetHashes = wu.m_hashvalues.size();
-		
-		/* Loads the ptx code into memory and creates the module */
-		hashmod = new Module("md4", ReadPtx("md4"), *pContext);
-		
-		/* Identify the function to use */
-		string func = "md4";
+/* create unused names */
+#define UNUSED UNUSED_(__COUNTER__)
+#define UNUSED_(counter) UNUSED__(counter)
+#define UNUSED__(counter) UNUSED_ ## counter
 
-		if(wu.m_start.length() <= 12)						//If we are cracking a weak algorithm, switch to
-		{																// the cryptanalytic attack when possible
-			func = "md4_fast";
-		}
-		
-		if(wu.m_hashvalues.size() > 1)
-			func = func + "BatchKernel";
-		else
-			func = func + "Kernel";
-		
-		/* Load the function */
-		hashker = hashmod->GetKernel(func.c_str());
+/* register a path inside the ConfigDirectories vector */
+#define REGISTER_CONFIG_PATH(path) static _register_config_path UNUSED(path);
 
-		//Perform cryptanalytic attacks on weak algorithms
-		if(wu.m_algorithm == "md4_fast")
-		{
-			for(unsigned int i=0; i<nTargetHashes; i++)
-				MD4MeetInTheMiddlePreprocessing(wu.m_hashvalues[i]);
-		}		
 
-		executor_parameters parameters;
-		parameters["hashmod"] = &hashmod;
-		parameters["hashker"] = &hashker;
-		
-		Executor *exec = ExecutorFactory::Get("BasicExecutor");
-		exec->Execute(this, wu, pDevice, pContext, parameters);
-		
-		delete hashker;
-		delete hashmod;
-	}
-#endif
-	virtual bool IsGPUCapable()
-	{
-#ifdef CUDA_ENABLED
-		return true;
-#else
-		return false;
-#endif
-	}
-	virtual bool IsCPUCapable()
-	{
-		return false;
+/*!
+ * @brief List of directories where the cracker looks for plugins and other files
+ */
+vector<string> ConfigDirectories;
+
+/*!
+ * @brief Used to register paths inside ConfigDirectories
+ */
+struct _register_config_path {
+ 	_register_config_path(string str) {
+		ConfigDirectories.push_back(str);
 	}
 };
 
+REGISTER_CONFIG_PATH("./")
+REGISTER_CONFIG_PATH("ptx/");
+REGISTER_CONFIG_PATH("/usr/lib/cracker/ptx/");
 
-#endif
+/*!
+ * @brief Sets the debug level if debug is active
+ */
+INIT_LOG(DEBUG);
+

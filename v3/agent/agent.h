@@ -85,8 +85,8 @@ void DoThrowError(const char* err, const char* sys_err, const char* file, int li
 #include "Thread.h"
 #include "Mutex.h"
 
-// Configuration directories (see main.cpp)
-extern string ConfigDirectories[];
+// Configuration directories (see config.cpp)
+extern vector<string> ConfigDirectories;
 
 /*!
 	@brief A compute device (GPU / cpu core)

@@ -3,7 +3,7 @@
 * Distributed Hash Cracker v3.0                                               *
 *                                                                             *
 * Copyright (c) 2009 RPISEC.                                                  *
-* Copyright (C) 2010 Samuel Rodríguez Sevilla
+* Copyright (C) 2010 Samuel Rodriguez Sevilla                                 *
 * All rights reserved.                                                        *
 *                                                                             *
 * Redistribution and use in source and binary forms, with or without modifi-  *
@@ -32,88 +32,46 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.                *
 *                                                                             *
 ******************************************************************************/
-#ifndef MD4_H
-#define MD4_H
+#ifndef __PLUGIN_LOADER_H__
+#define __PLUGIN_LOADER_H__
 
-#include "Algorithm.h"
-#include "ExecutorFactory.h"
-#include "debug.h"
+#include <string>
+using namespace std;
 
-class md4: public Algorithm {
+/*!
+ * @file PluginLoader.h
+ *
+ * @brief Adds methods for plugin load.
+ */
+ 
+/* TODO añadir metodos para buscar todos los ficheros posibles que sean plugin.
+ * TODO cargar cada plugin e instanciar sus facilidades.
+ */
+/**
+ * @class PluginLoader
+ * @brief Finds and loads the plugins installed on the predefined directories
+ *
+ * To load a plugin requiere, first of all, look into all the posible
+ * directories where they can be allocated (the list of directories is the global
+ * variable @ConfigDirectories@ in config.cpp).
+ *
+ * Each plugin file has the .aplug.so and is loaded using ldopen (UNIX/Linux
+ * only for now).
+ */
+class PluginLoader
+{
 public:
-	string GetName()
-	{
-		return string("md4");
-	}
-	int HashLength()
-	{
-		return 16;
-	}
-	int  InputLength()
-	{
-		return 16;
-	}
-	void ExecuteCPU() {}
-
-#ifdef CUDA_ENABLED
-	void ExecuteGPU(WorkUnit& wu, Device* pDevice, CudaContext* pContext)
-	{
-		DO_ENTER("md4", "ExecuteGPU");
-		
-		Module *hashmod;
-		CudaKernel *hashker;
-		unsigned int nTargetHashes = wu.m_hashvalues.size();
-		
-		/* Loads the ptx code into memory and creates the module */
-		hashmod = new Module("md4", ReadPtx("md4"), *pContext);
-		
-		/* Identify the function to use */
-		string func = "md4";
-
-		if(wu.m_start.length() <= 12)						//If we are cracking a weak algorithm, switch to
-		{																// the cryptanalytic attack when possible
-			func = "md4_fast";
-		}
-		
-		if(wu.m_hashvalues.size() > 1)
-			func = func + "BatchKernel";
-		else
-			func = func + "Kernel";
-		
-		/* Load the function */
-		hashker = hashmod->GetKernel(func.c_str());
-
-		//Perform cryptanalytic attacks on weak algorithms
-		if(wu.m_algorithm == "md4_fast")
-		{
-			for(unsigned int i=0; i<nTargetHashes; i++)
-				MD4MeetInTheMiddlePreprocessing(wu.m_hashvalues[i]);
-		}		
-
-		executor_parameters parameters;
-		parameters["hashmod"] = &hashmod;
-		parameters["hashker"] = &hashker;
-		
-		Executor *exec = ExecutorFactory::Get("BasicExecutor");
-		exec->Execute(this, wu, pDevice, pContext, parameters);
-		
-		delete hashker;
-		delete hashmod;
-	}
-#endif
-	virtual bool IsGPUCapable()
-	{
-#ifdef CUDA_ENABLED
-		return true;
-#else
-		return false;
-#endif
-	}
-	virtual bool IsCPUCapable()
-	{
-		return false;
-	}
+	/**
+	 * @brief Loads all the plugins installed
+	 */
+	static void Load();
+	
+private:
+	/**
+	 * @brief Try to load the plugin in the file @file@
+	 */
+	static void Load(string file);
 };
 
-
 #endif
+

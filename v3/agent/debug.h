@@ -42,7 +42,31 @@
 #define DEBUG    4
 
 #ifdef _DEBUG
-#   define B_LOG(level, i, str)  do { if((level) <= _log_level) cout << "[" << i << "] " << (str) << endl; } while(0)
+
+#define _CODE(code) \
+do { code } while(0)
+
+#define _LOCKED_CODE(code) \
+_CODE(MutexLock _log_locker(_log_mutex); code)
+
+#define B_BEGIN(level, type) \
+if((level) <= _log_level) cout << "<message type=\"" << type << "\" thread=\"" << (int) Thread::Self()<< "\">" << endl
+
+#define B_ENTER(level, class, method) \
+_LOCKED_CODE(if((level) <= _log_level) cout << "<message type=\"ENTER\" thread=\"" << (int) Thread::Self()<< "\" class=\"" << class << "\" method=\"" << method << "\">" << endl;)
+
+
+#define B_END(level) \
+if((level) <= _log_level) cout << "</message thread=\"" << (int) Thread::Self()<< "\">" << endl
+
+	
+#   define B_LOG(level, i, str)                     \
+_LOCKED_CODE(                                       \
+	B_BEGIN(level, i);                               \
+	if((level) <= _log_level) cout << str << endl; \
+	B_END(level);                                    \
+)
+
 #   define DO_ENTER(class, str)     _local_method_log(class, str)
 
 #   define DO_ERROR(str)            B_LOG(ERROR, "ERROR", str)
@@ -51,7 +75,16 @@
 #   define DO_LOG(str)              B_LOG(LOG, "LOG", str)
 #   define DO_DEBUG(str)            B_LOG(DEBUG, "DEBUG", str)
 
-#   define INIT_LOG(lvl)            unsigned int _log_level = (lvl)
+#   define INIT_LOG(lvl)            Mutex _log_mutex; unsigned int _log_level = (lvl)
+
+#include "Mutex.h"
+#include "Thread.h"
+
+extern Mutex _log_mutex;
+
+#include <string>
+#include <iostream>
+using namespace std;
 
 extern unsigned int _log_level;
 
@@ -60,12 +93,14 @@ class _local_method_log
 public:
 	_local_method_log(string cl, string method) : m_cl(cl), m_method(method)
 	{
-		B_LOG(DEBUG, "ENTER", m_cl + "::" + m_method);
+		//B_LOG(DEBUG, "ENTER", m_cl + "::" + m_method);
+		B_ENTER(DEBUG, cl, method);
 	}
 	
 	~_local_method_log()
 	{
-		B_LOG(DEBUG, "EXIT", m_cl + "::" + m_method);
+		//B_LOG(DEBUG, "EXIT", m_cl + "::" + m_method);
+		_LOCKED_CODE(B_END(DEBUG););
 	}
 private:
 	string m_cl;

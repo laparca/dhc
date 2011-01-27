@@ -3,7 +3,7 @@
 * Distributed Hash Cracker v3.0                                               *
 *                                                                             *
 * Copyright (c) 2009 RPISEC.                                                  *
-* Copyright (C) 2010 Samuel Rodríguez Sevilla
+* Copyright (C) 2010 Samuel Rodriguez Sevilla                                 *
 * All rights reserved.                                                        *
 *                                                                             *
 * Redistribution and use in source and binary forms, with or without modifi-  *
@@ -32,88 +32,101 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.                *
 *                                                                             *
 ******************************************************************************/
-#ifndef MD4_H
-#define MD4_H
-
-#include "Algorithm.h"
+#include "Plugin.h"
+#include "PluginLoader.h"
+#include "AlgorithmFactory.h"
 #include "ExecutorFactory.h"
 #include "debug.h"
+#include <dlfcn.h>
+#include <sys/types.h>
+#include <dirent.h>
+#include <vector>
+#include <string>
 
-class md4: public Algorithm {
-public:
-	string GetName()
-	{
-		return string("md4");
-	}
-	int HashLength()
-	{
-		return 16;
-	}
-	int  InputLength()
-	{
-		return 16;
-	}
-	void ExecuteCPU() {}
+using namespace std;
 
-#ifdef CUDA_ENABLED
-	void ExecuteGPU(WorkUnit& wu, Device* pDevice, CudaContext* pContext)
+extern vector<string> ConfigDirectories;
+
+void PluginLoader::Load()
+{
+	DO_ENTER("PluginLoader", "Load");
+	
+	for (vector<string>::iterator dir_it = ConfigDirectories.begin() ; dir_it != ConfigDirectories.end(); ++dir_it)
 	{
-		DO_ENTER("md4", "ExecuteGPU");
-		
-		Module *hashmod;
-		CudaKernel *hashker;
-		unsigned int nTargetHashes = wu.m_hashvalues.size();
-		
-		/* Loads the ptx code into memory and creates the module */
-		hashmod = new Module("md4", ReadPtx("md4"), *pContext);
-		
-		/* Identify the function to use */
-		string func = "md4";
+		DIR* dir;
+		struct dirent* ent;
 
-		if(wu.m_start.length() <= 12)						//If we are cracking a weak algorithm, switch to
-		{																// the cryptanalytic attack when possible
-			func = "md4_fast";
-		}
-		
-		if(wu.m_hashvalues.size() > 1)
-			func = func + "BatchKernel";
-		else
-			func = func + "Kernel";
-		
-		/* Load the function */
-		hashker = hashmod->GetKernel(func.c_str());
+		DO_MESSAGE(string("Opening ") << *dir_it);
+		dir = opendir(dir_it->c_str());
 
-		//Perform cryptanalytic attacks on weak algorithms
-		if(wu.m_algorithm == "md4_fast")
+		/* No directory? Try next */
+		if(dir == NULL) continue;
+
+		while((ent = readdir(dir)) != NULL)
 		{
-			for(unsigned int i=0; i<nTargetHashes; i++)
-				MD4MeetInTheMiddlePreprocessing(wu.m_hashvalues[i]);
-		}		
-
-		executor_parameters parameters;
-		parameters["hashmod"] = &hashmod;
-		parameters["hashker"] = &hashker;
-		
-		Executor *exec = ExecutorFactory::Get("BasicExecutor");
-		exec->Execute(this, wu, pDevice, pContext, parameters);
-		
-		delete hashker;
-		delete hashmod;
+			string file_name(ent->d_name);
+			string file_ext(".aplug.so");
+			if(file_name.size() > file_ext.size() && file_name.substr(file_name.size() - file_ext.size(), file_ext.size()) == file_ext)
+			{
+				PluginLoader::Load(*dir_it + file_name);
+			}
+		}
+		closedir(dir);
 	}
-#endif
-	virtual bool IsGPUCapable()
+}
+
+typedef PluginFactory* ptrPluginFactory;
+typedef ptrPluginFactory (*GetPluginFactory_t)();
+
+void PluginLoader::Load(string file)
+{
+	DO_ENTER("PluginLoader", "Load");
+	DO_MESSAGE(string("Try to load ") << file);
+	void *handle;
+	
+	handle = dlopen(file.c_str(), RTLD_NOW );
+	if(handle == NULL) {
+		DO_MESSAGE(string("Library cannot be opened"));
+		return;
+	}
+
+	void *func = dlsym(handle, "GetPluginFactory");
+	if(func == NULL)
 	{
-#ifdef CUDA_ENABLED
-		return true;
-#else
-		return false;
-#endif
+		DO_MESSAGE(string("No GetPluginFactory in plugin"));
 	}
-	virtual bool IsCPUCapable()
+	else
 	{
-		return false;
+		DO_MESSAGE(string("GetPluginFactory found! :-)"));
+		
+		GetPluginFactory_t GetPluginFactory = (GetPluginFactory_t)func;
+
+		PluginFactory* factory = GetPluginFactory();
+
+		DO_MESSAGE(string("Author name: ") << factory->GetAuthorName());
+		vector<PluginFacility*> facilities = factory->GetFacilities();
+
+		for(vector<PluginFacility*>::iterator it = facilities.begin(); it != facilities.end(); ++it)
+		{
+			DO_MESSAGE(string("Facility name   : ") << (*it)->GetName());
+			DO_MESSAGE(string("Facility version: ") << (*it)->GetVersion());
+			DO_MESSAGE(string("Facility type   : ") << ((*it)->GetType() == FACILITY_ALGORITHM? "Algorithm" : "Executor"));
+
+			switch((*it)->GetType())
+			{
+				case FACILITY_ALGORITHM:
+					AlgorithmFactory::RegisterAlgorithm((Algorithm *)(*it)->GetInstance());
+					break;
+				case FACILITY_EXECUTOR:
+					ExecutorFactory::Register((Executor *)(*it)->GetInstance());
+					break;
+			}
+		}
+
+		delete factory;
 	}
-};
-
-
-#endif
+	/* The handle must be opened because if it gets closed frees the plugin
+	 * memory and then it becomes unreachable.
+	 */
+	//dlclose(handle);
+}

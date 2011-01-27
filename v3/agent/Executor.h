@@ -73,21 +73,21 @@ typedef map<string, void*>::iterator executor_parameters_iterator;
 class Executor
 {
 public:
+#ifdef CUDA_ENABLED
 	/*!
 	 * @brief Executes an Algorithm into the GPU
 	 */
 	virtual void Execute(Algorithm *alg, WorkUnit& wu, Device* pDevice, CudaContext* pContext, executor_parameters& parameters) = 0;
-	
+	void operator()(Algorithm *alg, WorkUnit& wu, Device* pDevice, CudaContext* pContext, executor_parameters& parameters)
+	{
+		Execute(alg, wu, pDevice, pContext, parameters);
+	}
+#endif
 	/*!
 	 * @brief Returns the Executor name
 	 * @return The name of the Executor
 	 */
 	virtual string GetName() = 0;
-	
-	void operator()(Algorithm *alg, WorkUnit& wu, Device* pDevice, CudaContext* pContext, executor_parameters& parameters)
-	{
-		Execute(alg, wu, pDevice, pContext, parameters);
-	}
 };
 
 
