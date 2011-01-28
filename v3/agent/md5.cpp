@@ -33,6 +33,8 @@
 *                                                                             *
 ******************************************************************************/
 #include "md5.h"
+#include "ExecutorFactory.h"
+#include "debug.h"
 
 string md5::GetName()
 {
