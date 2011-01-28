@@ -91,7 +91,7 @@ void md5::ExecuteGPU(WorkUnit& wu, Device* pDevice, CudaContext* pContext)
 }
 #endif
 
-virtual bool md5::IsGPUCapable()
+bool md5::IsGPUCapable()
 {
 #ifdef CUDA_ENABLED
 	return true;
@@ -100,7 +100,7 @@ virtual bool md5::IsGPUCapable()
 #endif
 }
 
-virtual bool md5::IsCPUCapable()
+bool md5::IsCPUCapable()
 {
 	return true;
 }
