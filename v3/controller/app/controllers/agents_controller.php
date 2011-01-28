@@ -259,8 +259,11 @@ class AgentsController extends AppController {
 
 		$this->Stats->updateHistory();
 
+		$now = time();
+		
+		
 		$this->Stats->addStat(array(
-			'updated' => time(),
+			'updated' => $now,
 			'device' => "$host-$type-$dev",
 			'time' => $dt,
 			'speed' => $speed
