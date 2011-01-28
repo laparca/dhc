@@ -35,35 +35,21 @@
 #ifndef MD5_H
 #define MD5_H
 
+#include "Plugin.h"
 #include "Algorithm.h"
 
 class md5: public Algorithm {
 public:
-	string GetName()
-	{
-		return string("md5");
-	}
-	int HashLength()
-	{
-		return 16;
-	}
-	int  InputLength()
-	{
-		return 16;
-	}
-	void ExecuteCPU() {}
-	void ExecuteGPU() {}
+	string GetName();
+	int HashLength();
+	int  InputLength();
+	void ExecuteCPU();
+#ifdef CUDA_ENABLED
+	void ExecuteGPU();
+#endif
+	virtual bool IsGPUCapable();
+	virtual bool IsCPUCapable();
 
-	virtual bool IsGPUCapable()
-	{
-		return true;
-	}
-	virtual bool IsCPUCapable()
-	{
-		return true;
-	}
-
-	void Prepare(WorkUnit & wo) {}
 };
 
 #endif

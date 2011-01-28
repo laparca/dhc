@@ -153,3 +153,4 @@ ENDIF()
 ###############################################################################
 # Default Plugins Section
 ADD_LIBRARY(DummyPlug.aplug SHARED DummyPlugin.cpp)
+ADD_LIBRARY(md5.aplug SHARED md5.cpp)
