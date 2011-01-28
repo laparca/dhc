@@ -200,6 +200,15 @@ class AgentsController extends AppController {
 			$this->Crack->save($crack);
 			$this->WorkUnit->save($workunit);
 			
+			$this->log( "\n" . 
+				"id        = " . $this->WorkUnit->id . "\n" .
+				'algorithm = ' . $crack['Crack']['algorithm'] . "\n" .
+				'charset   = ' . $crack['Crack']['charset'] . "\n" .
+				'start     = ' . $workunit['WorkUnit']['start'] . "\n" .
+				'end       = ' . $workunit['WorkUnit']['end'] . "\n" .
+				'hashes    = ' . $crack['Hash'], 'debug'
+			);
+			
 			$this->set('info', array(
 				'id' => $this->WorkUnit->id,
 				'algorithm' => $crack['Crack']['algorithm'],
@@ -291,6 +300,7 @@ class AgentsController extends AppController {
 		$this->WorkUnit->delete($id);
 
 		//dbquery("UNLOCK TABLES");
+		$this->layout = 'empty';
 	}
 }
 ?>

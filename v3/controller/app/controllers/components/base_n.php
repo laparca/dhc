@@ -1,4 +1,20 @@
 <?php
+	function array2string($arr) {
+		$str = "";
+		if(is_array($arr)) {
+			$str .= "( ";
+			foreach($arr as $idx => $value) {
+				$str .= "[$idx] = " . array2string($value) . " ";
+			}
+			$str .= ") ";
+		}
+		else
+		{
+			$str .= $arr . ", ";
+		}
+		return $str;
+	}
+
 class BaseNComponent extends Object {
 	/*!
 	* @brief Parses a base-N object out of a string and a reverse character set
@@ -16,6 +32,7 @@ class BaseNComponent extends Object {
 		return $ret;
 	}
 
+	
 	/*!
 	* @brief Adds an integer to a base-N object (using ripple carry)
 	*
@@ -27,6 +44,9 @@ class BaseNComponent extends Object {
 	*/
 	function add($num, $base, $add)
 	{
+		$this->log("num  = " . array2string($num), 'debug');
+		$this->log("base = $base", 'debug');
+		$this->log("add  = $add", 'debug');
 		$len = count($num);
 
 		//Get number of digits required to add this number
@@ -37,6 +57,7 @@ class BaseNComponent extends Object {
 		{
 			for($i = 0; $i < $len; $i++)
 				$num[$i] = $base - 1;
+			$this->log("Saturate: " . array2string($num), 'debug');
 			return $num;
 		}
 
@@ -75,6 +96,7 @@ class BaseNComponent extends Object {
 		}
 
 		//Done
+		$this->log("return: " . array2string($num), 'debug');
 		return $num;
 	}
 
