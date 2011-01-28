@@ -55,7 +55,7 @@ void md5::ExecuteCPU()
 }
 
 #ifdef CUDA_ENABLED
-void md5::ExecuteGPU()
+void md5::ExecuteGPU(WorkUnit& wu, Device* pDevice, CudaContext* pContext)
 {
 	DO_ENTER("md5", "ExecuteGPU");
 		

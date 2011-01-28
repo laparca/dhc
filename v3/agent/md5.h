@@ -45,7 +45,7 @@ public:
 	int  InputLength();
 	void ExecuteCPU();
 #ifdef CUDA_ENABLED
-	void ExecuteGPU();
+	void ExecuteGPU(WorkUnit& wu, Device* pDevice, CudaContext* pContext);
 #endif
 	virtual bool IsGPUCapable();
 	virtual bool IsCPUCapable();
