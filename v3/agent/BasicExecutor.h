@@ -45,7 +45,9 @@
 class BasicExecutor: public Executor
 {
 public:
+#ifdef CUDA_ENABLED
 	void Execute(Algorithm *alg, WorkUnit& wu, Device* pDevice, CudaContext* pContext, executor_parameters& parameters);
+#endif
 	string GetName();
 };
 

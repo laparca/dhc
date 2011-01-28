@@ -54,6 +54,8 @@ public:
 		return 16;
 	}
 	void ExecuteCPU() {}
+
+#ifdef CUDA_ENABLED
 	void ExecuteGPU(WorkUnit& wu, Device* pDevice, CudaContext* pContext)
 	{
 		DO_ENTER("md4", "ExecuteGPU");
@@ -98,7 +100,7 @@ public:
 		delete hashker;
 		delete hashmod;
 	}
-
+#endif
 	virtual bool IsGPUCapable()
 	{
 #ifdef CUDA_ENABLED

@@ -1,0 +1,92 @@
+# LANGUAGE translation of CakePHP Application
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"POT-Creation-Date: 2011-01-18 08:00+0100\n"
+"PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
+"Last-Translator: NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: /views/crackers/submit.ctp:12
+msgid "Algorithm"
+msgstr ""
+
+#: /views/crackers/submit.ctp:17
+msgid "Hash Values"
+msgstr ""
+
+#: /views/crackers/submit.ctp:20
+msgid "Max Length"
+msgstr ""
+
+#: /views/crackers/submit.ctp:24
+msgid "15 minutes"
+msgstr ""
+
+#: /views/crackers/submit.ctp:25
+msgid "30 minutes"
+msgstr ""
+
+#: /views/crackers/submit.ctp:26
+msgid "1 hour"
+msgstr ""
+
+#: /views/crackers/submit.ctp:27
+msgid "2 hours"
+msgstr ""
+
+#: /views/crackers/submit.ctp:28
+msgid "5 hours"
+msgstr ""
+
+#: /views/crackers/submit.ctp:29
+msgid "12 hours"
+msgstr ""
+
+#: /views/crackers/submit.ctp:30
+msgid "1 day"
+msgstr ""
+
+#: /views/crackers/submit.ctp:31
+msgid "1 week"
+msgstr ""
+
+#: /views/crackers/submit.ctp:32
+msgid "Never"
+msgstr ""
+
+#: /views/crackers/submit.ctp:33
+msgid "Expiration"
+msgstr ""
+
+#: /views/crackers/submit.ctp:38
+msgid "Idle"
+msgstr ""
+
+#: /views/crackers/submit.ctp:39
+msgid "Normal"
+msgstr ""
+
+#: /views/crackers/submit.ctp:40
+msgid "Urgent"
+msgstr ""
+
+#: /views/crackers/submit.ctp:41
+msgid "Priority"
+msgstr ""
+
+#: /views/crackers/submit.ctp:44
+msgid "Submit"
+msgstr ""
+
+#: /webroot/test.php:88
+msgid "Debug setting does not allow access to this url."
+msgstr ""
+

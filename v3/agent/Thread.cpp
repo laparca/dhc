@@ -95,3 +95,14 @@ void Thread::WaitUntilTermination()
 	pthread_join(m_hThread,NULL);
 #endif
 }
+
+ZTHREAD Thread::Self()
+{
+#if WINDOWS
+	return GetCurrentThreadId();
+#elif UNIX
+	return pthread_self();
+#else
+	throw "No suported";
+#endif
+}

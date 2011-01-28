@@ -1,0 +1,224 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Distributed Hash Cracker\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-01-21 16:38+0100\n"
+"PO-Revision-Date: 2011-01-21 20:32+0100\n"
+"Last-Translator: Samuel Rodriguez Sevilla <laparca@laparca.es>\n"
+"Language-Team: Evalues <laparca@laparca.es>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-KeywordsList: _;gettext;gettext_noop;__\n"
+"X-Poedit-Basepath: /Users/laparca/Projects/cracker/v3/controller/app\n"
+"X-Poedit-Language: Spanish\n"
+"X-Poedit-Country: SPAIN\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-SearchPath-0: views/layouts\n"
+"X-Poedit-SearchPath-1: views/crackers\n"
+"X-Poedit-SearchPath-2: controllers\n"
+"X-Poedit-SearchPath-3: .\n"
+
+#: controllers/crackers_controller.php:77
+msgid "Invalid priority level"
+msgstr "Prioridad inválida"
+
+#: controllers/crackers_controller.php:86
+msgid "Invalid length"
+msgstr "Longitud inválida"
+
+#: controllers/crackers_controller.php:108
+#, php-format
+msgid "Invalid hash length %d on hash %s (expected %d)"
+msgstr "El resumen de longitud %d de %s es inválido (se espera tamaño %d)"
+
+#: controllers/crackers_controller.php:115
+msgid "Invalid hash algorithm"
+msgstr "Algoritmo inválido"
+
+#: controllers/crackers_controller.php:122
+msgid "Batch cracking of md5crypt is not possible."
+msgstr "El procesado por lotes no es posible con md5crypt"
+
+#: controllers/crackers_controller.php:129
+msgid "The current implementation is limited to 128 simultaneous hashes."
+msgstr "La implementación actual está limitada a 128 resúmenes simultáneos"
+
+#: controllers/crackers_controller.php:188
+msgid "Information saved"
+msgstr "Datos salvados"
+
+#: webroot/test.php:88
+msgid "Debug setting does not allow access to this url."
+msgstr "Las opciones de depuración no permiten acceder a esta url."
+
+#: views/layouts/cracker.ctp:16
+msgid "Overview"
+msgstr "Resumen"
+
+#: views/layouts/cracker.ctp:17
+msgid "Queue"
+msgstr "Cola"
+
+#: views/layouts/cracker.ctp:18
+#: views/crackers/submit.ctp:71
+msgid "Submit"
+msgstr "Enviar"
+
+#: views/layouts/cracker.ctp:19
+msgid "Output"
+msgstr "Salida"
+
+#: views/layouts/cracker.ctp:20
+msgid "Stats"
+msgstr "Estadísticas"
+
+#: views/layouts/cracker.ctp:21
+msgid "Settings"
+msgstr "Opciones"
+
+#: views/crackers/output.ctp:5
+#: views/crackers/queue.ctp:5
+msgid "Alg"
+msgstr "Alg"
+
+#: views/crackers/output.ctp:6
+#: views/crackers/queue.ctp:6
+msgid "Charset"
+msgstr "Juego de caracteres"
+
+#: views/crackers/output.ctp:7
+#: views/crackers/queue.ctp:7
+msgid "Hash"
+msgstr "Resumen"
+
+#: views/crackers/output.ctp:21
+msgid "Found"
+msgstr "Encontrado"
+
+#: views/crackers/output.ctp:21
+msgid "Time expired"
+msgstr "Tiempo excedido"
+
+#: views/crackers/output.ctp:21
+msgid "Search space exhausted"
+msgstr "Espacio de búsqueda insuficiente"
+
+#: views/crackers/queue.ctp:8
+msgid "Max length"
+msgstr "Longitud máxima"
+
+#: views/crackers/queue.ctp:9
+msgid "Next WU"
+msgstr "Siguiente WU"
+
+#: views/crackers/queue.ctp:10
+msgid "Started"
+msgstr "Iniciado"
+
+#: views/crackers/queue.ctp:11
+#: views/crackers/submit.ctp:48
+msgid "Expiration"
+msgstr "Caducidad"
+
+#: views/crackers/queue.ctp:12
+#: views/crackers/submit.ctp:63
+msgid "Priority"
+msgstr "Prioridad"
+
+#: views/crackers/queue.ctp:13
+msgid "Progress"
+msgstr "Progreso"
+
+#: views/crackers/submit.ctp:10
+msgid "Algorithm"
+msgstr "Algoritmo"
+
+#: views/crackers/submit.ctp:23
+msgid "Hash Values"
+msgstr "Resúmenes"
+
+#: views/crackers/submit.ctp:30
+msgid "Character set"
+msgstr "Juego de caracteres"
+
+#: views/crackers/submit.ctp:32
+msgid "Lowercase letters"
+msgstr "Letras minúsculas"
+
+#: views/crackers/submit.ctp:33
+msgid "Uppercase letters"
+msgstr "Letras mayúsculas"
+
+#: views/crackers/submit.ctp:34
+msgid "Numbers"
+msgstr "Números"
+
+#: views/crackers/submit.ctp:35
+msgid "Common symbols"
+msgstr "Símbolos comunes"
+
+#: views/crackers/submit.ctp:36
+msgid "Rare symbols"
+msgstr "Símbolos raros"
+
+#: views/crackers/submit.ctp:37
+msgid "Space"
+msgstr "Espacio"
+
+#: views/crackers/submit.ctp:38
+msgid "Newline"
+msgstr "Nueva línea"
+
+#: views/crackers/submit.ctp:43
+msgid "Max Length"
+msgstr "Longitud máxima"
+
+#: views/crackers/submit.ctp:51
+msgid "15 minutes"
+msgstr "15 minutos"
+
+#: views/crackers/submit.ctp:52
+msgid "30 minutes"
+msgstr "30 minutos"
+
+#: views/crackers/submit.ctp:53
+msgid "1 hour"
+msgstr "1 hora"
+
+#: views/crackers/submit.ctp:54
+msgid "2 hours"
+msgstr "2 horas"
+
+#: views/crackers/submit.ctp:55
+msgid "5 hours"
+msgstr "5 horas"
+
+#: views/crackers/submit.ctp:56
+msgid "12 hours"
+msgstr "12 horas"
+
+#: views/crackers/submit.ctp:57
+msgid "1 day"
+msgstr "1 día"
+
+#: views/crackers/submit.ctp:58
+msgid "1 week"
+msgstr "1 semana"
+
+#: views/crackers/submit.ctp:59
+msgid "Never"
+msgstr "Nunca"
+
+#: views/crackers/submit.ctp:66
+msgid "Idle"
+msgstr "Ocioso"
+
+#: views/crackers/submit.ctp:67
+msgid "Normal"
+msgstr "Normal"
+
+#: views/crackers/submit.ctp:68
+msgid "Urgent"
+msgstr "Urgente"
+

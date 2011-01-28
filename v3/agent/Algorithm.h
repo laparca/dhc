@@ -87,11 +87,13 @@ public:
 	 *	if the system is not GPU accelerated.
 	 */
 	virtual void ExecuteCPU() = 0;
+#ifdef CUDA_ENABLED
 	/*!
 	 *	@brief Executes the GPU version of the algorithm.
 	 *	@param pDevice Information about the GPU device
 	 */
 	virtual void ExecuteGPU(WorkUnit& wu, Device* pDevice, CudaContext* pContext) = 0;
+#endif
 	/*!
 	 *	@brief Returns if the algorithm can use GPU capabilities
 	 *	@return Tue if the Algorithm can use a GPU

@@ -112,6 +112,9 @@ ADD_EXECUTABLE(agent
 	UnitTesting.cpp
 	XmlParser.cpp
 	sha256.cpp
+	config.cpp
+	PluginLoader.cpp
+	Mutex.cpp
 	
 	${ASM_OUTPUTS}
 	${CUDA_OUTPUTS}
@@ -139,3 +142,15 @@ ELSE()
 			m pthread dl curl)
 	ENDIF()
 ENDIF()
+
+
+
+
+
+
+
+
+###############################################################################
+# Default Plugins Section
+ADD_LIBRARY(DummyPlug.aplug SHARED DummyPlugin.cpp)
+ADD_LIBRARY(md5.aplug SHARED md5.cpp)

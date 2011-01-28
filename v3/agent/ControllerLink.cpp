@@ -115,7 +115,7 @@ bool ControllerLink::GetWorkUnit(WorkUnit& wu, const vector<string>& alglist)
 	}
 	
 	//Format our request
-	string request = g_server + "?action=getwu&version=3.2&hostname=" + g_hostname + "&type=" + m_type + "&num=" + m_num + "&accept-algorithms=" + algs;
+	string request = g_server + "agents/getwu?version=3.2&hostname=" + g_hostname + "&type=" + m_type + "&num=" + m_num + "&accept-algorithms=" + algs;
 		
 	//Send to the server
 	string recvdata;
@@ -201,7 +201,10 @@ bool ControllerLink::GetWorkUnit(WorkUnit& wu, const vector<string>& alglist)
 						wu.m_charset += "1234567890";
 						break;
 					case '!':
-						wu.m_charset += "`~!@#$%^&*()-=_+[]\\{}|;':\",./<>?";
+						wu.m_charset += "!@_-?#$";
+						break;
+					case '>':
+						wu.m_charset += "`~%^&*()=+[]\\{}|;':\",./<>";
 						break;
 					case 's':
 						wu.m_charset += ' ';
@@ -210,7 +213,9 @@ bool ControllerLink::GetWorkUnit(WorkUnit& wu, const vector<string>& alglist)
 						wu.m_charset += '\n';
 						break;
 					default:
-						ThrowCustomError("Unrecognized charset abbreviation in work unit");
+						string err = "Unrecognized charset abbreviation in work unit: ";
+						err += code;
+						ThrowCustomError(err.c_str());
 					}
 				}
 			}
@@ -241,7 +246,11 @@ bool ControllerLink::GetWorkUnit(WorkUnit& wu, const vector<string>& alglist)
 			{
 				wu.m_start = txt;
 				if(txt.length() >= MAX_BASEN_LENGTH - 1)
-					ThrowError("Start guess too long");
+				{
+					string err = "Start guess too long: ";
+					err += txt;
+					ThrowError(err.c_str());
+				}
 			}
 			else if(type == "end")
 			{
@@ -295,7 +304,7 @@ void ControllerLink::SubmitResults(WorkUnit& wu)
 	//Format our request
 	//TODO: URLencode collision
 	//TODO: See if we should use POST data for this
-	string request = g_server + "?action=submitwu&version=3.2&wuid=" + wu.m_id + "&dt=" + wu.m_dt + "&speed=" + wu.m_speed;
+	string request = g_server + "agents/submitwu?version=3.2&wuid=" + wu.m_id + "&dt=" + wu.m_dt + "&speed=" + wu.m_speed;
 	
 	//Add collisions
 	char sbuf[512];

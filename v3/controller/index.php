@@ -1,74 +1,55 @@
 <?php
-/******************************************************************************
-*                                                                             *
-* Distributed Hash Cracker v3.0                                               *
-*                                                                             *
-* Copyright (c) 2009 RPISEC.                                                  *
-* All rights reserved.                                                        *
-*                                                                             *
-* Redistribution and use in source and binary forms, with or without modifi-  *
-* cation, are permitted provided that the following conditions are met:       *
-*                                                                             *
-*    * Redistributions of source code must retain the above copyright notice  *
-*      this list of conditions and the following disclaimer.                  *
-*                                                                             *
-*    * Redistributions in binary form must reproduce the above copyright      *
-*      notice, this list of conditions and the following disclaimer in the    *
-*      documentation and/or other materials provided with the distribution.   *
-*                                                                             *
-*    * Neither the name of RPISEC nor the names of its contributors may be    *
-*      used to endorse or promote products derived from this software without *
-*      specific prior written permission.                                     *
-*                                                                             *
-* THIS SOFTWARE IS PROVIDED BY RPISEC "AS IS" AND ANY EXPRESS OR IMPLIED      *
-* WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF        *
-* MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN     *
-* NO EVENT SHALL RPISEC BE HELD LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,  *
-* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED    *
-* TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR      *
-* PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF      *
-* LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING        *
-* NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS          *
-* SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.                *
-*                                                                             *
-*******************************************************************************/
+/**
+ * Requests collector.
+ *
+ *  This file collects requests if:
+ *	- no mod_rewrite is avilable or .htaccess files are not supported
+ *  - requires App.baseUrl to be uncommented in app/config/core.php
+ *	- app/webroot is not set as a document root.
+ *
+ * PHP versions 4 and 5
+ *
+ * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
+ * Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ *
+ * Licensed under The MIT License
+ * Redistributions of files must retain the above copyright notice.
+ *
+ * @copyright     Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @link          http://cakephp.org CakePHP(tm) Project
+ * @package       cake
+ * @since         CakePHP(tm) v 0.2.9
+ * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
+ */
+/**
+ *  Get Cake's root directory
+ */
+	define('APP_DIR', 'app');
+	define('DS', DIRECTORY_SEPARATOR);
+	define('ROOT', dirname(__FILE__));
+	define('WEBROOT_DIR', 'webroot');
+	define('WWW_ROOT', ROOT . DS . APP_DIR . DS . WEBROOT_DIR . DS);
+/**
+ * This only needs to be changed if the "cake" directory is located
+ * outside of the distributed structure.
+ * Full path to the directory containing "cake". Do not add trailing directory separator
+ */
+	if (!defined('CAKE_CORE_INCLUDE_PATH')) {
+		define('CAKE_CORE_INCLUDE_PATH', ROOT);
+	}
 
-/*!
-	@file index.php
-	
-	@brief Master dispatcher for the controller
-*/
-
-//Sanity check
-if(PHP_INT_SIZE < 8)
-{
-	die("The current version of the controller requires a 64-bit version of PHP.");
-}
-
-//Not configured yet? Go to setup script
-if( !file_exists("config.php") || trim(file_get_contents("config.php")) == '' )
-{
-	header ("Location: setup.php");
-	exit();
-}
-
-include 'config.php';
-include 'header.php';
-
-//Agent interface
-if($action == 'getwu' || $action=='submitwu')
-{
-	include 'controller.php';
-}
-
-else if($action == 'ajax')
-{
-	include 'ajaxserver.php';
-}
-
-//Human interface
-else
-{
-	include 'ui.php';
-}
-?>
+/**
+ * Set the include path or define app and core path
+ */
+	if (function_exists('ini_set')) {
+		ini_set('include_path',
+			ini_get('include_path') . PATH_SEPARATOR . CAKE_CORE_INCLUDE_PATH
+			. PATH_SEPARATOR . ROOT . DS . APP_DIR . DS
+		);
+		define('APP_PATH', null);
+		define('CORE_PATH', null);
+	} else {
+		define('APP_PATH', ROOT . DS . APP_DIR . DS);
+		define('CORE_PATH', CAKE_CORE_INCLUDE_PATH . DS);
+	}
+	require APP_DIR . DS . WEBROOT_DIR . DS . 'index.php';
