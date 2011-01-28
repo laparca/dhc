@@ -3,14 +3,21 @@
 		$str = "";
 		if(is_array($arr)) {
 			$str .= "( ";
+			$first = true;
 			foreach($arr as $idx => $value) {
-				$str .= "[$idx] = " . array2string($value) . " ";
+				if($first) {
+					$first = false;
+				}
+				else {
+					$str .= ", ";
+				}
+			$str .= "[$idx] = " . array2string($value);
 			}
 			$str .= ") ";
 		}
 		else
 		{
-			$str .= $arr . ", ";
+			$str .= $arr;
 		}
 		return $str;
 	}

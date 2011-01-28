@@ -243,9 +243,11 @@ class AgentsController extends AppController {
 			$cleartext[$i] = mysql_real_escape_string($this->params['url']["cleartext$i"]);
 		}
 
+		$this->log("Requesting WorkUnit with id = $id", 'debug');
 		//Get the crack ID
 		$workunit = $this->WorkUnit->findById($id);
 
+		$this->log("WorkUnit = " . array2string($workunit), 'debug');
 		if(empty($workunit)) return;
 
 		$cid = $workunit['Crack']['id'];
@@ -300,7 +302,9 @@ class AgentsController extends AppController {
 
 		//Delete the work unit AFTER updating the crack in case of a server segfault or something
 		//Repeating a WU is better than missing one
+		$this->log("Trying to delete WorkUnit id = $id", 'debug');
 		$this->WorkUnit->delete($id);
+		$this->log('Victory xD', 'debug');
 
 		//dbquery("UNLOCK TABLES");
 		$this->layout = 'empty';
