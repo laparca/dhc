@@ -39,31 +39,16 @@
 
 class md5crypt: public Algorithm {
 public:
-	string GetName()
-	{
-		return string("md5crypt");
-	}
-	int HashLength()
-	{
-		return 16;
-	}
-	int  InputLength()
-	{
-		return 32;
-	}
-	void ExecuteCPU() {}
-	void ExecuteGPU() {}
+		string GetName();
+		int HashLength();
+		int  InputLength();
+		void ExecuteCPU();
+	#ifdef CUDA_ENABLED
+		void ExecuteGPU(WorkUnit& wu, Device* pDevice, CudaContext* pContext);
+	#endif
+		virtual bool IsGPUCapable();
+		virtual bool IsCPUCapable();
 
-	virtual bool IsGPUCapable()
-	{
-		return true;
-	}
-	virtual bool IsCPUCapable()
-	{
-		return false;
-	}
-
-	void Prepare(WorkUnit & wo) {}
 };
 
 #endif

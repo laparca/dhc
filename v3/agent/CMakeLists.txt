@@ -111,7 +111,6 @@ ADD_EXECUTABLE(agent
 	Thread.cpp
 	UnitTesting.cpp
 	XmlParser.cpp
-	sha256.cpp
 	config.cpp
 	PluginLoader.cpp
 	Mutex.cpp
@@ -153,4 +152,8 @@ ENDIF()
 ###############################################################################
 # Default Plugins Section
 ADD_LIBRARY(DummyPlug.aplug SHARED DummyPlugin.cpp)
-ADD_LIBRARY(md5.aplug SHARED md5.cpp)
+ADD_LIBRARY(md5.aplug       SHARED md5.cpp)
+ADD_LIBRARY(md5crypt.aplug  SHARED md5crypt.cpp)
+ADD_LIBRARY(sha1.aplug      SHARED sha1.cpp)
+ADD_LIBRARY(sha256.aplug    SHARED sha256.cpp)
+ADD_LIBRARY(ntlm.aplug      SHARED ntlm.cpp)

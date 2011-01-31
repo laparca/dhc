@@ -39,31 +39,15 @@
 
 class sha1: public Algorithm {
 public:
-	string GetName()
-	{
-		return string("sha1");
-	}
-	int HashLength()
-	{
-		return 20;
-	}
-	int  InputLength()
-	{
-		return 20;
-	}
-	void ExecuteCPU() {}
-	void ExecuteGPU() {}
-
-	virtual bool IsGPUCapable()
-	{
-		return true;
-	}
-	virtual bool IsCPUCapable()
-	{
-		return false;
-	}
-
-	void Prepare(WorkUnit & wo) {}
+		string GetName();
+		int HashLength();
+		int  InputLength();
+		void ExecuteCPU();
+	#ifdef CUDA_ENABLED
+		void ExecuteGPU(WorkUnit& wu, Device* pDevice, CudaContext* pContext);
+	#endif
+		virtual bool IsGPUCapable();
+		virtual bool IsCPUCapable();
 };
 
 #endif

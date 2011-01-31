@@ -39,31 +39,15 @@
 
 class sha256: public Algorithm {
 public:
-	string GetName()
-	{
-		return string("sha256");
-	}
-	int HashLength()
-	{
-		return 32;
-	}
-	int  InputLength()
-	{
-		return 32;
-	}
-	void ExecuteCPU();
-	void ExecuteGPU();
-	
-	virtual bool IsGPUCapable()
-	{
-		return true;
-	}
-	virtual bool IsCPUCapable()
-	{
-		return false;
-	}
-	
-	void Prepare(WorkUnit & wo) {}
+		string GetName();
+		int HashLength();
+		int  InputLength();
+		void ExecuteCPU();
+	#ifdef CUDA_ENABLED
+		void ExecuteGPU(WorkUnit& wu, Device* pDevice, CudaContext* pContext);
+	#endif
+		virtual bool IsGPUCapable();
+		virtual bool IsCPUCapable();
 };
 
 #endif
