@@ -105,6 +105,10 @@ bool md5crypt::IsCPUCapable()
 	return false;
 }
 
+#ifdef BEGIN_PLUGIN
 BEGIN_PLUGIN("Samuel Rodriguez Sevilla")
 	ADD_ALGORITHM(md5crypt, "md5crypt", 1)
 END_PLUGIN()
+#else
+#   warning "Plugin facility not found"
+#endif

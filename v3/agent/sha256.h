@@ -35,6 +35,7 @@
 #ifndef SHA256_H
 #define SHA256_H
 
+#include "Plugin.h"
 #include "Algorithm.h"
 
 class sha256: public Algorithm {

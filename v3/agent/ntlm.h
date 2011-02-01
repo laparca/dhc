@@ -35,6 +35,7 @@
 #ifndef NTLM_H
 #define NTLM_H
 
+#include "Plugin.h"
 #include "Algorithm.h"
 
 class ntlm: public Algorithm {
