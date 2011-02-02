@@ -46,7 +46,7 @@ Aunque no es propósito del presente proyecto de fin de carrera implementar todo
 
 Este ataque a los sistemas de resúmenes consiste en que dado un mensaje $M$ cualquiera y su resumen $H$, de longitud $L$ bits, se puede hallar un mensaje $M’$ probando combinaciones aleatorias en aproximadamente $2^{L/2}$ intentos (en caso de que la función resumen sea uniformemente distribuida).
 
-El principio de funcionamiento de este algoritmo se basa en el estudio estadístico sobre la coincidencia de que dos personas cumplan años el mismo día. A pesar de lo que pueda creerse, la probabilidad de que se encuentre coincidencia crece rápidamente, como puede comprobarse en la Figura 2.Este mismo principio es aplicable a las funciones resumen, como puede comprobarse en (HashFunction Balance andItsImpactonBirthdayAttacks, MihirBellareandTadayoshiKohno).
+El principio de funcionamiento de este algoritmo se basa en el estudio estadístico sobre la coincidencia de que dos personas cumplan años el mismo día. A pesar de lo que pueda creerse, la probabilidad de que se encuentre coincidencia crece rápidamente, como puede comprobarse en la Figura 2. Este mismo principio es aplicable a las funciones resumen, como puede comprobarse en \cite{Bellare04hashfunction}.
 
 En el caso de las funciones resumen hay que tener en cuenta la distribución que hacen éstas de los datos de entrada ya que las funciones no uniformes serán en las que es más sencillo encontrar colisiones (se puede centrar la búsqueda en los cúmulos). Esto supone que en lugar de tener probar   combinaciones aleatorias diferentes podríamos reducir el número intentos.
  

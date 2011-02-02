@@ -7,6 +7,7 @@ INCLUDE(UseLATEX.CMAKE)
 SET(LATEX_OUTPUT_PATH "out")
 
 ADD_LATEX_DOCUMENT(Document.tex
+	BIBFILES bibliografia.bib
 	INPUTS ch1.tex ch2.tex ch3.tex ch4.tex
 	IMAGES evolucion-gpu.png
 	DEFAULT_PDF
