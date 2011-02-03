@@ -1,40 +1,48 @@
-\chapter{Antecedentes}
+\chapter{Funciones resumen}
 
-Los sistemas destinados a ocultar o proteger información llevan usándose desde tiempos de la antigua Roma y de antes. Igualmente se ha ido creando sistemas para poder acceder a dicha información.
+Los sistemas destinados a ocultar o proteger información llevan usándose desde tiempos de la antigua Roma \cite{Luciano87cryptology:from} e incluso antes. Paralelamente se ha tratado siempre de crear las técnicas necesarias para poder acceder a dicha información sin ser el destinatario legítimo de la misma. Esto ha creado la necesidad de mejorar constantemente los mecanismos de cifrado para evitar que la información protegida no pueda ser utilizada salvo por aquellos a la que está destinada.
 
-En la actualidad hay una gran cantidad de sistemas para la protección de información y se utilizarán unos u otros dependiendo de lo que se pretenda hacer. En general se podría decir que hay:
+En la actualidad hay una gran cantidad de sistemas para la protección de información y se utilizarán unos u otros dependiendo de lo que se pretenda hacer. Concretamente existen 3 grandes grupos de mecanismos de seguridad:
 \begin{itemize}
-	\item Sistemas de cifrado de clave simétrica.
-	\item Sistemas de cifrado de clave asimétrica.
-	\item Sistemas de un solo sentido o funciones resúmenes.	
+	\item Sistemas de cifrado de clave simétrica, que son aquellos que utilizan una clave para cifrar la información y esta clave debe ser conocida por todos aquellos que quieran tener acceso a información.
+	\item Sistemas de cifrado de clave asimétrica, que utiliza dos juegos de claves, una pública y conocida por todo el mundo y otra privada que solo su propietario posee.
+	\item Sistemas de un solo sentido o funciones resúmenes (también conocidas como funciones \emph{hash}).
 \end{itemize}
 
-Las funciones resumen que son las que nos interesan para el presento proyecto fin de carrera son aquellas que cumplen que:
+Las funciones resumen, que son las que nos interesan para el presento proyecto fin de carrera, son aquellas que cumplen las siguientes características:
 
 \begin{itemize}
-	\item Son fáciles de calcular en un sentido, pero que es muy complicado hallar su inversa y
-	\item Que dada una entrada de longitud arbitraria siempre producirán una salida de longitud fija.	
+	\item Son fáciles de calcular en un sentido, pero es muy complicado hallar su inversa y
+	\item Que dada una entrada de longitud arbitraria siempre producirán una salida de longitud fija.
 \end{itemize}
 
-Este tipo de funciones son ampliamente utilizadas en el mundo de la seguridad como sistema para el almacenamiento de claves privadas, la generación de claves de sesión o la firma digital de documentos (por poner algunos ejemplos). Al ser ampliamente utilizadas es importante disponer de mecanismos para comprobar su fortaleza.
+Este tipo de funciones son ampliamente utilizadas en el mundo de la seguridad como sistema para el almacenamiento de contraeñas de usuario, la generación de claves de sesión o la firma digital de documentos (por poner algunos ejemplos). Al ser ampliamente utilizadas es importante disponer de mecanismos para comprobar la fortaleza del mecanismo de funcionamiento como la fortaleza de la clave elegida.
 
 A causa de su gran uso es necesario disponer de sistemas que comprueben la fortaleza de las contraseñas elegidas por los usuarios o de las claves de sesión que pueda generar un sistema de seguridad. El primer caso es importante para garantizar la seguridad de las organizaciones, impidiendo que los usuarios elijan contraseñas que puedan ser adivinadas o quebrantadas por posibles atacantes dando acceso a la información privada de ésta con los consiguientes problemas por posibles copias y/o borrados de información. El segundo caso es importante para garantizar que los sistemas seguros sean capaces de generar claves suficientemente robustas para impedir ataques externos.
 
-Existe gran cantidad de formas de comprobar la fortaleza de este tipo de algoritmos. La más sencilla de todas es el uso de mecanismos de fuerza bruta. Éstos consisten en probar todas las combinaciones posibles de entradas para generar resúmenes y éstos se cotejan con un resumen conocido previamente. El mayor problema de estos sistemas es que son muy lentos, pero es fácil calcular de antemano el tiempo que tardarán en dar una solución:
+\section{Comprobación de funciones resumen y contraseñas}
 
-$$ T_{max}=t\sum^n_{i=1}k^i $$
+Existen dos formas básicas para comprobar la fortaleza de los mecanismos de seguridad. El primero es buscar debilidades en la propia función resumen que se va a utilizar. El segundo mecanismo es comprobar la calidad de la clave utilizada. Para este último caso lo más sencillo es utilizar un de mecanismo de fuerza bruta. Éste tipo de comprobación consisten en probar todas las combinaciones posibles entradas para generar resúmenes y éstos se cotejan con un resumen conocido previamente.
+
+El mayor problema de los sitemas de fuerza bruta es que al tener que hacer muchas comprobaciones el tiempo que tardan en obtener una solución es muy elevado. Por este motivo es importante poder predecir el tiempo que dedicarán previamente para comprobar si vale o no la pena intentar realizar una comprobación de éste tipo.
+
+Para poder calcular el tiempo que se necesitará para poder poder hacer una comprobación de fuerza bruta empezaremos por el caso genera. En éste, el tiempo máximo (el que recorre todas la combinaciones posibles) es de:
+
+$$ T_{max}=t\sum^n_{i=m}k^i $$
  
-Dónde $n$ es la longitud máxima de la entrada y $k$ es el número de símbolo posibles del alfabeto a utilizar. Finalmente $t$ representa el tiempo de cómputo de la función resumen.
+Donde $m$ es la longitud mínima d ela entrada, $n$ es la longitud máxima y $k$ es el número de símbolos posibles del alfabeto a utilizar. Finalmente $t$ representa el tiempo de cómputo de la función resumen.
 
 Utilizando este sistema como referencia de peor caso es fácil medir las mejoras aportadas por otros algoritmos. De este modo, y tomando como referencia el trabajo realizado en este proyecto final de carrera, el simple uso de la paralelización utilizando un sistema de $C$ procesadores homogéneos nos proporciona unos tiempos de:
 
-$$ T_{max}=t\sum^n_{i=1}\frac{k^i}{C} $$
- 
-Y en caso de que se trate de un sistema heterogéneo con $m$ tipos de procesadores distintos y $C_j$ procesadores para cada tipo que tardan $t_j$ segundos en computar la función resumen:
+$$ T_{max}=t\sum^n_{i=m}\frac{k^i}{C} $$
 
-$$ T_{max}=\frac{\sum^n_{i=1}k^i}{\sum^m_{j=1}\frac{C_j}{t_j}}$$
+En la actualidad, gracias a los avances en las cumincaciones y a los disntintos preocesadores es normal disponer de sistemas distribuidos heterogéneos. Éstos pueden contar con unas cuantas máquinas o cientos de miles. Para este tipo de casos es necesario disponer de una función general que tenga en cuenta la velocidad de cálculo en cada tipo de procesador en que vaya a ejecutarse la función resumen. Si disponemos de $p$ tipos de procesadores distintos y $C_j$ procesadores para cada tipo que tardan $t_j$ segundos en computar la función resumen ($1 \leq j \leq p$):
+
+$$ T_{max}=\frac{\sum^n_{i=m}k^i}{\sum^p_{j=1}\frac{C_j}{t_j}}$$
  
 Con esta información  se puede calcular cuál debe ser el tamaño del sistema a utilizar para poder comprobar la fortaleza de una contraseña en un tiempo determinado.
+
+Por ejemplo, si dispusieramos de un sistema que utilizara 2 tipos de procesadores diferentes para calcular una función resumen y que el primer procesador puede hacer una media de 25 millones de resúmenes por segundo y el segundo procesador puede hacer 1250 millones de resúmenes por segundo (éste caso se aproxima al uso de CPU+GPU). De cada procesador se dispone de 4 unidades. Además, nuestra clave está entre 6 y 8 caracteres de longitud y solo vamos a considerar letras minúsuclas y números lo que supone 36 símbolos de entrada. Esto supone que el tiempo máximo que tardará el sistema en comprobar todas las combinaciones en las condiciones expuestas es de casi 9,5 horas.
 
 Es fácil comprobar que utilizando sistemas de fuerza bruta para comprobar resúmenes se resuelve de forma lineal con respecto al número de procesadores.
 
@@ -42,46 +50,26 @@ A parte de los sistemas de fuerza bruta, existen muchas técnicas que han surgid
 
 Aunque no es propósito del presente proyecto de fin de carrera implementar todos los sistemas de comprobación conocidos sí es importante tenerlos en cuenta para poder hacer comparaciones y valoraciones con respecto a las soluciones implementadas.
 
-\section{Ataque de cumpleaños}
+\subsection{Ataque de cumpleaños}
 
-Este ataque a los sistemas de resúmenes consiste en que dado un mensaje $M$ cualquiera y su resumen $H$, de longitud $L$ bits, se puede hallar un mensaje $M’$ probando combinaciones aleatorias en aproximadamente $2^{L/2}$ intentos (en caso de que la función resumen sea uniformemente distribuida).
+Este ataque a los sistemas de resúmenes consiste en que dado un mensaje $M$ cualquiera y una función resumen $H$, que genera resúmenes de longitud $L$ bits, se puede hallar un mensaje $M’$ probando combinaciones aleatorias en aproximadamente $2^{L/2}$ intentos \cite{website:wastahf} (en caso de que la función resumen sea uniformemente distribuida).
 
-El principio de funcionamiento de este algoritmo se basa en el estudio estadístico sobre la coincidencia de que dos personas cumplan años el mismo día. A pesar de lo que pueda creerse, la probabilidad de que se encuentre coincidencia crece rápidamente, como puede comprobarse en la Figura 2. Este mismo principio es aplicable a las funciones resumen, como puede comprobarse en \cite{Bellare04hashfunction}.
+El principio de funcionamiento de este algoritmo se basa en el estudio estadístico sobre la coincidencia de que dos personas cumplan años el mismo día. A pesar de lo que pueda creerse, la probabilidad de que se encuentre coincidencia crece rápidamente, como puede comprobarse en la figura \ref{fig:Birthday}. Este mismo principio es aplicable a las funciones resumen, como puede comprobarse en \cite{Bellare04hashfunction}.
 
 En el caso de las funciones resumen hay que tener en cuenta la distribución que hacen éstas de los datos de entrada ya que las funciones no uniformes serán en las que es más sencillo encontrar colisiones (se puede centrar la búsqueda en los cúmulos). Esto supone que en lugar de tener probar   combinaciones aleatorias diferentes podríamos reducir el número intentos.
  
 \begin{figure}
 	\centering
-	\includegraphics[width=0.7\textwidth]{happybirthday.pdf}
+	\includegraphics[width=0.7\textwidth]{images/happybirthday.pdf}
 	\caption{Probabilidad de encontrar dos personas nacidas el mismo día con respecto al tamaño del grupo}\label{fig:Birthday}
 \end{figure}
 
-%Figura 2. Probabilidad de encontrar dos personas nacidas el mismo día con respecto al tamaño del grupo
-
 Estas características del sistema del cumpleaños lo convierten en un sistema ideal para sustituir a los mecanismos de fuerza bruta convencionales, pero hay que tener en cuenta que se debe considerar el tiempo de crear los mensajes a probar (dependiendo de su longitud podría hacer al sistema igual de rápido que uno de fuerza bruta).
 
-\section{Tablas arcoiris}
+\subsection{Tablas arcoiris}
 
 Ataques a SHA1
 Ver: primeros usos de GPU fuera del ámbito de los gráficos: http://www.kriptopolis.org/amd-stream-processor
 Ver: artículo de distributedhash cracker: http://rpisec.net/documents/show/3
 
-\section{Uso de GPU en computación}
 
-Desde hace bastante tiempo se lleva usando las capacidades de las tarjetas gráficas para realizar computación. Concretamente se han utilizado para la realización de efectos sobre texturas y polígonos con la tecnología denominada shaders. Estos shaders son pequeños programas que transforman la forma de verse los puntos o como se transforman los polígonos y que se han estado ejecutando en las GPUs para mejorar su rendimiento.
-
-A partir de esta tecnología y tras numerosas especulaciones sobre las capacidades de las tarjetas gráficas para realizar cálculos más genéricos, las compañías empezaron a abrir sus sistemas para permitir cargar códigos orientados a cualquier tipo de cálculo matemático.
-
-En el año XXXX la compañía ATI (en la actualizad AMD) anuncia la comercialización de YYYYYYYYYY, el primer sistema de cálculo basado en tarjetas gráficas.
-
-La compañía nVidia publica en XXXXX las bibliotecas CUDA que permite usar sus tarjetas gráficas para cálculo y, además, comercializa la arquitectura Tesla que, como en el caso de ATI, es un sistema específico de cálculo basado en tarjetas gráficas.
-
-En base a esta popularización del cómputo con tarjetas gráficas y por  su utilizad en los sistemas  de consumo, Apple publica un borrador de OpenCl. OpenCl es  el primer estándar creado específicamente para cómputo distribuido, orientado principalmente a GPUs, y que ofrece una interfaz común para todo tipo de tarjetas gráficas y otros sistemas de cálculo (como multinúcleo, FPGAs, procesadores CELL, etc.). Esta tecnología solo se incluye de serie en el sistema operativo Apple Mac OS X 10.6 y se está portando a otras plataformas.
-
-El mecanismo más eficiente para aprovechar las capacidades de una tarjeta gráfica es utilizar la API del fabricante ya que éste está optimizado para aprovechar mejor la arquitectura. Esto supone que en casos en los que la eficiencia es algo absolutamente crítico sea mejor opción frente al uso de la biblioteca OpenCl.
-
-Estos sistemas están teniendo mucha relevancia debido a su alto rendimiento, especialmente en aplicaciones científicas. Además, se han realizado avances en el desarrollo de aplicaciones específicas de ruptura de contraseñas.
-
-En la actualidad la computación con tarjetas gráficas está empezando a utilizarse en todo tipo de cálculos, tanto para investigaciones científicas como para herramientas de usuario como descompresores de vídeo y audio, filtros gráficos en herramientas de diseño o videojuegos. Esto significa que es una tecnología apoyada por la industria y que se va a disponer de soporte y documentación para realizar desarrollos con la misma.
-
-Se puede comprobar, además, como en el año 2008 empezaron a surgir los primeros sistemas orientados a la seguridad informática que se apoyaban en el uso de tarjetas gráficas para realizar dicha función. Un ejemplo de esto lo podemos ver en la referencia que hacen en kriptopolis sobre una herramienta de Elcomsoft a fecha de 2 de octubre de 2008.
