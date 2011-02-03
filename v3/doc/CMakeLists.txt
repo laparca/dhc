@@ -9,24 +9,24 @@ SET(LATEX_OUTPUT_PATH "out")
 SET(LATEX_PLOTS_IMAGES)
 
 
-FILE(GLOB LATEX_PLOTS "images/*plot")
-FOREACH(plot ${LATEX_PLOTS})
-	STRING(REGEX REPLACE "plot" "pdf" PLOT_OUT ${plot})
-	MESSAGE(STATUS "Plot found ${PLOT_OUT}")
-	ADD_CUSTOM_COMMAND(TARGET Document
-		COMMAND ${CMAKE_COMMAND} -E chdir images 
-		COMMAND ${CMAKE_COMMAND} -E gnuplot ${plot}
-		DEPENDS ${plot}
-	)
-	SET(LATEX_PLOTS_IMAGES ${LATEX_PLOTS_IMAGES} ${PLOT_OUT})
-ENDFOREACH(plot)
+#FILE(GLOB LATEX_PLOTS "images/*plot")
+#FOREACH(plot ${LATEX_PLOTS})
+#	STRING(REGEX REPLACE "plot" "pdf" PLOT_OUT ${plot})
+#	MESSAGE(STATUS "Plot found ${PLOT_OUT}")
+#	ADD_CUSTOM_COMMAND(TARGET Document
+#		COMMAND ${CMAKE_COMMAND} -E chdir images 
+#		COMMAND ${CMAKE_COMMAND} -E gnuplot ${plot}
+#		DEPENDS ${plot}
+#	)
+#	SET(LATEX_PLOTS_IMAGES ${LATEX_PLOTS_IMAGES} ${PLOT_OUT})
+#ENDFOREACH(plot)
 
-MESSAGE(STATUS "Plots ${LATEX_PLOTS_IMAGES}")
+#MESSAGE(STATUS "Plots ${LATEX_PLOTS_IMAGES}")
 
 ADD_LATEX_DOCUMENT(Document.tex
 	BIBFILES bibliografia.bib
 	INPUTS ch1.tex ch2.tex ch3.tex ch4.tex
 	IMAGE_DIRS images
-	IMAGES evolucion-gpu.png ${LATEX_PLOTS_IMAGES}
+	IMAGES evolucion-gpu.png
 	DEFAULT_PDF
 	USE_METAPOST)

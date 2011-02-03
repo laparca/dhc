@@ -494,13 +494,19 @@ MACRO(LATEX_PROCESS_IMAGES dvi_outputs pdf_outputs)
 
 
 		IF(${extension} STREQUAL ".plot")
-			STRING(REGEX REPLACE "plot" "pdf" PLOT_OUT ${plot})
-			MESSAGE(STATUS "Plot found ${PLOT_OUT}")
-			ADD_CUSTOM_COMMAND(TARGET Document
-				COMMAND ${CMAKE_COMMAND} -E chdir images 
-				COMMAND ${CMAKE_COMMAND} -E gnuplot ${plot}
-				DEPENDS ${plot}
-			)
+			#MESSAGE(STATUS "Tratando fichero de Plot ${file}")
+			STRING(REGEX REPLACE "plot" "pdf" PLOT_OUT ${file})
+			GET_FILENAME_COMPONENT(file_name ${file} NAME)
+			ADD_CUSTOM_COMMAND(OUTPUT ${PLOT_OUT}
+		    	COMMAND ${CMAKE_COMMAND} -E chdir images gnuplot ${file_name}
+		    	DEPENDS ${file}
+		    )
+		  	SET(file ${PLOT_OUT})
+			#ADD_CUSTOM_COMMAND(TARGET Document
+			#	COMMAND ${CMAKE_COMMAND} -E chdir images 
+			#	COMMAND ${CMAKE_COMMAND} -E gnuplot ${plot}
+			#	DEPENDS ${plot}
+			#)
 		ENDIF()
 		
       # Do conversions for dvi.
