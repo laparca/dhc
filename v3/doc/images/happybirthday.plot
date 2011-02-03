@@ -1,10 +1,11 @@
 set terminal pdf
 set output 'happybirthday.pdf'
+set encoding utf8
 
 p(x) = (x==0)? 1 : p(int(x)-1.0)*(366.0-int(x))/365.0
 pi(x) = 1 - p(x)
 
-set xrange [0:100]
+set xrange [0:99]
 set xlabel "Número de individuos"
 set ylabel "Probabilidad de colisión"
 unset key
