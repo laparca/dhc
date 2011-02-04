@@ -58,8 +58,13 @@ El principio en el que se base este ataque se encuentra en un problema de teorí
 
 El funcionamiento general es el siguiente:
 
-$$P(1, n) = 1$$
-$$P(i, n) = P(i-1, n)\frac{n-i+1}{n}$$ 
+$$
+P(i, n) = \left\{
+	\begin{array}{l l}
+		1                        & \mbox{si $i = 1$}\\
+		P(i-1, n)\frac{n-i+1}{n} & \mbox{si $i > 1$}
+	\end{array} \right.
+$$
 
 Donde $P(i, n)$ es la probabilidad de que para una población final de $n$ elementos (365 en el caso de los cumpleaños) y disponiendo de $i$ elementos seleccionados aleatoriamente dos individuos no coincidan. Por ejemplo, si tomamos tres individuos aleatoriamente el primero de ellos habrá nacido un día cualquiera del año (la probabilidad de que dos individuos no cumplan años el mismo día es del 100\% ó $365/365$), el segundo habrá nacido uno de los restantes días ($364/365$) y el tercero igual ($353/365$). La probabilidad total será el producto de las probabilidades; en este caso concreto es de $0.9945$.
 
