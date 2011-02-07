@@ -33,7 +33,17 @@ Para desarrollar este proyecto se ha hecho uso de la tecnología CUDA de NVIDIA 
 
 A la hora de desarrollar en una nueva arquitectura es importante conocer las características de la misma. Estas características pueden ir desde cómo se gestiona la memoria, qué instrucciones posee, etc.
 
-En el caso concreto de la arquitectura CUDA hay que tener muy en cuenta la organización de la memoria (figura \ref{fig:memcuda}) ya que el buen uso de ésta influirá de forma muy significativa en el rendimiento de los programas. Esta arquitectura es la misma que la de las tarjetas gráficas y se puede representar como una pirámide de tiempos dependiendo del tipo de memoria a la que se vaya a acceder.
+\subsection{Arquitectura}
+
+Las tarjetas gráficas NVIDA disponen de una gran cantidad de unidades aritmetico-lógicas (figura~\ref{fig:cudaorggpu}) para poder realizar una mayor cantidad de cálculos por ciclo de reloj~\cite{nvidia:cuda_c_programming_guide}. Gracias a ésto las tareas que hacen usos de cálculos intensivos pueden verse muy beneficiadas. Por otra parte, las GPU disponen también de un gran número de unidades de control lo que permite disponer de una gran número de tareas en paralelo. La combinación de las dos características anteriores es lo que dota a las tarjetas gráficas de una gran capacidad para ejecutar algoritmos en paralelo.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.7\textwidth]{images/MemoriaCuda.pdf}
+	\caption{Comparativa CPU vs GPU}\label{fig:cudaorggpu}
+\end{figure}
+
+Además de como está organizada la GPU, es importante tener en cuenta como se organiza la memoria (figura \ref{fig:memcuda}) ya que el buen uso de ésta influirá de forma muy significativa en el rendimiento de los programas. Esta arquitectura es la misma que la de las tarjetas gráficas y se puede representar como una pirámide de tiempos dependiendo del tipo de memoria a la que se vaya a acceder.
 
 \begin{figure}
 	\centering
@@ -41,8 +51,18 @@ En el caso concreto de la arquitectura CUDA hay que tener muy en cuenta la organ
 	\caption{Jerarquía de memoria en CUDA}\label{fig:memcuda}
 \end{figure}
 
-Para el código CUDA la memoria del sistema es inaccesible por lo que solo puede hacer uso de la memoria que se encuentra en la propia unidad de cómputo (normalmente en la tarjeta gráfica). Esto supone que antes de realizar operaciones sobre memoria en CUDA hay que reservar la memoria e inicializarla desde el programa principal (la parte que no se encontrará en la GPU). Esta inicialización suele realizarse en tres tiempos. En un primer momento se preparan los datos que se pasarán a la GPU, seguidamente se reserva la memoria en la tarjeta gráfica y por último se copian los datos a la tarjeta gráfica para poder ser usados desde la parte que será ejecutada en la GPU.
+La memoria de sistema es la que se encuentra en el equipo sin contar la que aporta la tarjeta gráfica. Los programas de ordenador puede hacer uso de ésta de forma sencilla, pero los programas que se ejecutan dentro de la GPU no puede acceder a ella. Por otro lado, tanto la memoria global como la memoria de textura se encuentra en la tarjeta gráfica y servirán de soporte de los datos que requieran los programas que se hallen en ésta. La principal diferencia entre ambas reside en el modo a través del cual se accede a ellas. La memoria global funciona igual que la memoria de sistema para un programa normal (a partir de un puntero se accede a la misma), mientras que la memoria de textura se accede haciendo uso de un sistema especial que añade funcionalidades como interpolado. La ventaja de la memoria de textura es que dispone de un acceso más rápido lo que la convirte en muy una opción muy atractiva para cierto tipo de cálculos.
+
+Por último, los registros de la GPU dispone de un acceso muy rápido por lo que es recomendable hacer uso de los mismos siempre que sea posible.
+
+La optimización del uso de la memoria es fundamenta para mejorar el rendimiento de las aplicaciones CUDA ya que si se trabaja con una cantidad muy grande de datos se puede perder una parte importante de tiempo realizando copias de memoria. Por este motivo hay que realizar un buen estudio sobre el uso que se va a realizar de la memoria.
+
+\subsection{Modo de desarrollo}
+
+Para el código que se ejecuta en la tarjeta gráfica, la memoria del sistema es inaccesible por lo que sólo puede hacer uso de la memoria que se encuentra en la propia unidad de cómputo. Esto supone que antes de realizar operaciones sobre memoria en CUDA hay que reservar la memoria e inicializarla desde el programa principal (la parte que no se cuentra en la GPU). Esta inicialización suele realizarse en tres tiempos. En un primer momento se preparan los datos que se pasarán a la GPU, seguidamente se reserva la memoria en la tarjeta gráfica y por último se copian los datos a la tarjeta gráfica para poder ser usados desde la parte que será ejecutada en la GPU.
+
 Por otra parte es importante tener en cuenta que una vez se disponen de los datos sobre la memoria de la tarjeta gráfica es importante estudiar si conviene utilizarlos desde dicho punto o si es preferible realizar una copia a registros de procesador que serán mucho más rápidos. Hay que tener en cuenta que la tarjeta gráfica provee de una gran cantidad de registros (hasta 16.384 en el caso de las NVIDIA Tesla) para poder acelerar los cálculos por lo que hay que se deberá hacer uso de los mismos en la medida de lo posible para acelerar la velocidad de ejecución de los códigos que se alojen en la GPU.
+
 Por norma general, siempre que se hace un código que vaya a ser alojado en una GPU se realizará el siguiente proceso (figura \ref{fig:procejecuda}):
 
 \begin{itemize}
@@ -50,7 +70,6 @@ Por norma general, siempre que se hace un código que vaya a ser alojado en una 
 	\item Una vez que ya se tiene la memoria iniciada se procede a realizar los cálculos oportunos.
 	\item Finalmente se preparan los resultados para ser volcados a la memoria global de la tarjeta gráfica y que de este modo puedan ser leídos por la aplicación.
 \end{itemize}
- 
 
 \begin{figure}
 	\centering
@@ -59,6 +78,16 @@ Por norma general, siempre que se hace un código que vaya a ser alojado en una 
 \end{figure}
 
 Además de todo lo dicho, CUDA ofrece dos formas distintas para realizar el desarrollo. En la primera forma, la más sencilla, CUDA se encarga de realizar las llamadas al código que se alojará en la GPU de forma transparente de tal forma que no tendremos que preocuparnos de configurar muchos de los parámetros de los que dispone el sistema. Este mecanismo es muy útil y permite un desarrollo rápido de funciones así. Por otro lado estaría el sistema completo con el que debe utilizarse la API de CUDA y que permite un nivel más alto de granularidad. Con este sistema nosotros deberemos de realizar a mano la carga del código en la GPU, seleccionar la GPU de todas las posibles, etc.
+
+Hay técnicas más avanzadas para optimizar el uso de la arquitectura CUDA (figura~\ref{fig:cudaejecavanzada}). Éstas consisten en el uso de streams, por un lado y, si es posible, la reutilización de resultados previos. Los streams son un mecanismo de comunicación con la tarjeta gráfica que permte tener varios canales de comunicaciones asociados con una llamada a una función. Cuando se utiliza streams se puede disponer de dos canales, mientras se está ejecutando una función por el primer canal ya se puede utilizar el segundo canal para cargar los datos de la siguiente ejecución; ésto permite obtimizar el uso de los tiempo muerto de la CPU y se ahorra la esperar de la carga desde memoria de sistema a la memoria de la tarjeta gráfica.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.7\textwidth]{images/proc_ejec1.pdf}
+	\caption{Ejecución optimizando las cominicaciones}\label{fig:cudaejecavanzada}
+\end{figure}
+
+La reutilización de los valores previos es muy útil cuando se utilizan funcione de la forma $f(x) = af(x-1)+b$ ya que evita tener que realizar transpasos de memoria en exceso. Si ya diponemos del resultado de la próxima ejecución en memoria simplemente lo dejamos ahí y lo utilizamos en lugar de copiarlo a memoria de sistema para después cargarlo a la memoria de la tarjeta gráfica.
 
 \section{Instalación del entorno}
 
