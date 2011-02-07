@@ -80,7 +80,7 @@ En el caso de las funciones resumen hay que tener en cuenta la distribución que
 
 Estas características del sistema del cumpleaños lo convierten en un sistema ideal para sustituir a los mecanismos de fuerza bruta convencionales, pero hay que tener en cuenta que se debe considerar el tiempo de crear los mensajes a probar (dependiendo de su longitud podría hacer al sistema igual de rápido que uno de fuerza bruta) y el tamaño de la muestra; el principal problema del ataque de cumpleaños es que debe trabajar sobre todas las posibles combinaciones existentes lo que puede suponer un problema en casos en los que sepamos que hay una gran cantidad de restricciones. Por ejemplo, en el caso expuesto al inicio de la sección en el que se tardaba 9,5 horas en completar la búsqueda se tardaría cerca de 8.217,73 años utilizando este mecanismo. Esto significa que hay que estudiar el problema para poder descubrir las debilidades locales (en el caso de las contraseñas puede ser la longitud, el conjunto de caracteres posibles, etc.).
 
-\subsection{Tablas arcoiris}
+\subsection{Tablas arcoíris}
 
 Las tablas arcoíris son una técnica por la que se toma un conjunto de entradas y sobre cada una de éstas se realizan un proceso iterativo de resúmenes que van tomando el último resumen realizado para hacer uno nuevo hasta obtener un elemento que consideraremos terminal. Se puede considerar este proceso como una tabla en el que la primera columna son las distintas entradas que se han elegido y cada columna $C_j$, para $j>1$, representa el resumen de la columna anterior ($C_j = H(C_{j-1})$, ver figura \ref{fig:arcoiris}). La tabla arcoíris consiste en tomar la primera y última columnas.
 
