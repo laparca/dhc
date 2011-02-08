@@ -1,5 +1,7 @@
 \chapter{Distributed Hash Cracker}
 
+Distributed Hash Cracker, en adelante DHC, es un software que permite determinar la palabra utilizada en una función resumen para devolver un determinado resumen. Para ello hace uso de un sistema de fuerza bruta~\cite{dhc:paper}. Éste software se encontraba alojado en la página \url{http://rpisec.net/}, pero por cuestiones desconocidas a desaparecido dejando de tener soporte.
+
 Para la implementación del sistema distribuido se ha utilizado un software ya existente y libre al que se ha ido modificando para que sea ajuste del mejor modo posible a las necesidades del presente proyecto fin de carrera.
 
 El software utilizado ha sidoDistributed Hash Cracker (en adelante DHC) que se encuentra en http://rpisec.net/projects/show/hash-cracker y que dispone de licencia BSD. Esta herramienta está programada en C++ y ensamblador y es capaz de distribuir el trabajo entre un conjunto de máquinas (denominados agentes por dicho software). Los agentes se encargan de procesar tareas criptográficas tanto en CPU como en GPU dependiendo de los algoritmos implementados en cada caso.

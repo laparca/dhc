@@ -6,6 +6,7 @@ Por otra parte la potencia de las CPUs se ha incrementando, lo que ha supuesto l
 
 \begin{itemize}
 	\item Se ha incrementado el número de bits del resumen para disminuir la posibilidad de colisiones.
+	
 	\item Se procura mejorar la técnica de generación del resumen para garantizar que los resúmenes sean lo más aleatorios posibles, utilizando procesos que impidan determinar el mensaje a partir del resumen y que garanticen estar normalmente\footnote{Si los resúmenes generados no tuviesen una distribución normal esto supondría que habría grupos de resúmenes y facilitaría ataques contra éstos pues sería más fácil determinar de dónde podrían proceder.} distribuidos. 
 \end{itemize}
 
@@ -27,8 +28,26 @@ En la actualizadad, mientras con una CPU se podía conseguir hasta 80 millones d
 
 Si consideramos el hecho de que en la actualidad casi todos los nuevos equipos que se venden en el mercado disponen de aceleradoras gráficas y que es muy fácil crear una red de ordenadores zombis se debe considerar la mejora de los mecanismos de contraseña una prioridad por parte de las organizaciones. Por este motivo es importante disponer de herramientas que permitan comprobar la fortaleza de las contraseñas y evaluar la dificultad de realizar ataques a los distintos algoritmos de resumen existentes y en experimentación.
 
+\section{Motivación}
+
+Como ya se ha comentado, 
 \section{Objetivos}
-El presente proyecto final de carrera nace con el objetivo de aprovechar las nuevas arquitecturas gráficas en el entorno de la auditoría de seguridad informática. Igualmente se ha pretendido utilizar un modelo distribuido para mejorar la escalabilidad del sistema y así disponer de una herramienta potente que pueda ser ampliada según la necesidad del momento.
+
+Para poder comprobar la fortaleza de una cotraseña dada y para poder evaluar la resistencia frente a ataques de fuerza bruta de diferentes tipos de funciones resumen hace falta diponer de una herramienta adecuada. Para este fin existe una gran cantidad de herramientas, principalmente destinadas a la recuperación de contraseñas extraviadas, pero que su código es cerrado y su precio elevado. Aunque el precio puede no resultar un problema importante, consideramos que el uso de aplicaciones que no suministran su código fuente no es recomendable en el ámbito de la seguridad informática ya que es importante poder saber qué es lo que la herramienta hace y eso solo se puede determinar de forma fehaciente si ésta es de código abierto. Por otra parte, también es recomendable que la herramienta se software libre porque así, en caso de que el fabricante deje de dar soporte a la misma, tendríamos permiso para poder realizar modificaciones eliminando de este modo la dependencia con el vendendor.
+
+El presente proyecto final de carrera nace con el objetivo de aprovechar las nuevas arquitecturas gráficas en el entorno de la auditoría de seguridad informática, especialmente en el ámbito de las funciones resumen. Igualmente se ha pretendido utilizar un modelo distribuido para mejorar la escalabilidad del sistema y así disponer de una herramienta potente que pueda ser ampliada según la necesidad del momento.
+
+En concreto, se desea disponer de un sistema que:
+
+\begin{itemize}
+	\item Sea distribuido para aprovechar los recursos existentes en una red de ordenadores de forma sencilla.
+	
+	\item Permita ofrecer una alto grado de escalabilidad.
+	
+	\item Facilite su mantenimiento y mejora constante, con la posibilidad de añadir funcionalidades que inicialmente no estuvieran previstas desde el inicio.
+	
+	\item Se pueda administrar de forma sencilla.
+\end{itemize}
 
 \section{Estructura del documento}
 
