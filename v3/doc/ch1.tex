@@ -30,7 +30,9 @@ Si consideramos el hecho de que en la actualidad casi todos los nuevos equipos q
 
 \section{Motivación}
 
-Como ya se ha comentado, es importante garantizar la calidad de los algoritmos y contraseñas dentro de las organizaciones. Por este motivo nace este proyecto fin de carrera que pretende ser el inicio de una herramienta versátil, sencilla y atractiva que permita ofrecer a las distintas organizaciones un mecanismo para fortalecer su seguridad.
+Como ya se ha comentado, es importante garantizar la calidad de los algoritmos y contraseñas dentro de las organizaciones. Por este motivo nace este proyecto fin de carrera que pretende ser el inicio de una herramienta versátil, sencilla y atractiva que permita ofrecer a las distintas organizaciones un mecanismo para fortalecer su seguridad. Por otra parte, el estudio del uso de tarjetas gráficas fuera del ámbito de los videojuegos y del diseño gráfico es de gran interés por la alta capacidad de cómputo que ofrecen éstas. De este modo se pretende garantizar que la amortización de los equipos informáticos es máxima ya que el aprovechamiento de los mismo será mayor. Hay que recordar que en la actualidad todos los ordenadores disponen de tarjetas gráficas con aceleración 3D y de las 3 grandes marcas del mercado (Intel, AMD y NVIDIA), dos de ellas ofrecen desde hace unos años la capacidad de ejecutar código de usuario en las mismas. En el caso de Intel, no se ofrece el uso de su GPU para cálculo, pero si permiten programar utilizando OpenCl (ver el capítulo~\ref{cap3}) para sus procesadores.
+
+Por otra parte, la popularización de \emph{frameworks} orientados a MVC han revolucionado el mundo de la programación web. Ejemplos de ello los tenemos en Ruby on Rails, DJango o CakePHP. Lo interesante de estos \emph{frameworks} es que mejoran sustancialmente las tareas de mantenimiento de los programas web ofreciendo una serie de pautas tanto en la nomenclatura de variables y tablas de las bases de datos como en la organización que deben tener los ficheros de código fuente.
 
 \section{Objetivos}
 
@@ -38,17 +40,30 @@ Para poder comprobar la fortaleza de una contraseña dada y para poder evaluar l
 
 El presente proyecto final de carrera nace con el objetivo de aprovechar las nuevas arquitecturas gráficas en el entorno de la auditoría de seguridad informática, especialmente en el ámbito de las funciones resumen. Igualmente se ha pretendido utilizar un modelo distribuido para mejorar la escalabilidad del sistema y así disponer de una herramienta potente que pueda ser ampliada según la necesidad del momento.
 
-En concreto, se desea disponer de un sistema que:
+En concreto, los objetivos que se pretenden alcanzar con la realización de este proyecto son:
 
-\begin{itemize}
-	\item Sea distribuido para aprovechar los recursos existentes en una red de ordenadores de forma sencilla.
+\begin{description}
+
+	\item[Estudio de las distintas técnicas de evaluación de contraseñas.] Para poder garantizar la calidad de cualquier solución planteada para la evaluación de contraseñas es necesario disponer de una base suficiente sobre el tema. De este modo será más sencillo determinar si el trabajo realizado es correcto o no.
 	
-	\item Permita ofrecer una alto grado de escalabilidad.
+	\item[Aprendizaje de programación con GPU.] Esto permitirá hacer uso de un elemento de gran potencia que se encuentra hoy día en todos los ordenadores comercializados. Además, las GPU ofrecen unas características ideales para la ejecución de una gran cantidad de tareas en paralelo lo que las hace muy atractivas para realizar tareas que de otro modo podrían tardar muchísimo.
 	
-	\item Facilite su mantenimiento y mejora constante, con la posibilidad de añadir funcionalidades que inicialmente no estuvieran previstas desde el inicio.
+	\item[Utilizar nuevas técnicas de distribución de tareas.] A lo largo de la carrera se ha tratado en muchas ocasiones los sistemas distribuidos y cómo estos distribuyen su carga de trabajo entre una red de ordenadores. En este punto se pretende experimentar con algunas técnicas no tratadas o con mecanismos diferentes a los vistos.
 	
-	\item Se pueda administrar de forma sencilla.
-\end{itemize}
+	\item[Aplicar técnicas de usabilidad.] Un apartado importante de toda aplicación es la facilidad con la que esta se maneje y el grado de satisfacción del usuario de la misma. Por este motivo es importante dedicar un esfuerzo en el diseño de la interfaz y así mejorar la experiencia del usuario.
+	
+	\item[Ofrecer una buen grado de escalabilidad.] Gracias a esto se pretende conseguir que el sistema desarrollado puede crecer con el tiempo de forma sencilla introduciendo nuevos ordenadores. De este modo se reducirían los costes al no tener que comprar grandes sistemas exclusivamente para este propósito.
+	
+	\item[Garantizar que la herramienta desarrollada sea mantenible.] Para ello es necesario hacer un buen uso de los comentarios y se debe garantizar que estén bien documentados los aspectos más importantes de diseño de la herramienta. De este modo se conseguirá que en un futuro cualquier persona puede realizar modificaciones sobre la misma en caso de fallos.
+	
+	\item[Implementar un sistema de extensiones.] Con esto se pretende que la herramienta pueda ver ampliada su funcionalidad sin necesidad de que deba ser compilada nuevamente. Para ser más exactos, lo que se pretende es que durante el inicio de la ejecución de la herramienta esta busque en el sistema extensiones que le añadan funcionalidades.
+	
+	\item[Crear un mecanismo sencillo de administración.] De este modo se pretende mejorar el tiempo requerido para la realización de las tareas relacionadas con la aplicación.
+	
+	\item[Desarrollo de una interfaz web.] En la actualidad casi todos los equipos informáticos se encuentran conectados sino a Internet sí a una red de ordenadores. Por norma general los cortafuegos empresariales filtran el tráfico que circula por la red, pero permiten el uso de Web lo que convierte a a la Web casi en el medio exclusivo para usarlo como protocolo para la administración remota.
+	
+	\item[Uso de los \emph{frameworks} MVC.] Con esto se pretende garantizar la mantenibilidad de la solución web anteriormente comentada. Además, el uso de \emph{frameworks} ya existentes facilitan el mantenimiento de la aplicación ya que solo habrá que dedicar esfuerzo al desarrollo de la herramienta y en caso de mejoras en el \emph{framework} éstas se pueden ver inmediatamente reflejadas en la aplicación sin apenas tener que realizar cambios (en muchos casos no es necesario realizar cambio alguno).
+\end{description}
 
 \section{Estructura del documento}
 
@@ -57,7 +72,7 @@ Para facilitar la búsqueda a través del este documento, se provee de la siguie
 \begin{description}
 	\item[\ref{cap2}. Funciones resumen:] introducción a las funciones resumen y a los tipos de ataques que existen sobre ellas.
 	\item[\ref{cap3}. Desarrollo con tarjetas gráficas:] se introduce la historia del desarrollo con tarjetas gráficas y a cómo se programa utilizando CUDA, el API de NVIDIA.
-	\item[\ref{cap4}. Distributed Hash Cracker:] la chicha del PFC
+	\item[\ref{cap4}. Mejora de una aplicación distribuida:] la chicha del PFC
 	\item[\ref{cap5}. Conclusiones:]
 	\item[\ref{cap6}. Trabajos futuros:]
 \end{description}
