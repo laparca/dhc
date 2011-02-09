@@ -1,4 +1,83 @@
-\chapter{Entorno de desarrollo} 
+\chapter{Entorno de desarrollo}
+
+Para el desarrollo del proyecto se ha hecho uso de una gran cantidad de herramientas y tecnologías que es importante ver para poder comprender mejor el modo de desarrollo.
+
+\section{CMake}
+
+CMake es una herramienta para la construcción de fichero Makefile. El mayor inconveniente que hay a la hora de utilizar ficheros Makefile es que es complicado mantenerlos y aún más crear versiones para diferentes sistemas operativos. Este último punto se debe a que puede variar sutilmente algunas de las reglas de para crear el fichero y que dependiendo del sistema operativo se puedan necesitar unas u otras librerías. Además, utilizando ficheros Makefile es complicado realizar comprobaciones sobre el sistema, com puedan ser comprobar si está o no instalada una biblioteca en concreto.
+
+Existen varias soluciones para la generación de ficheros Makefile, entre ellas destaca GNU Autotools. Ésta es probablemente una de las herramientas más famosas en el mundo del software libre por ser la que se utiliza dentro del proyecto GNU. Desgraciadamente Autotools es una herramienta complicada de utilizar lo que nos hizo decantarnos por CMake.
+
+CMake utiliza una sintaxis sencilla para definir las reglas de comprobación, asignación de dependencias y cualquier cosa que tenga que ver con el proceso de generación del proyecto.
+
+\section{Git}
+
+Una parte muy importante de todo proyecto es la gestión de los ficheros que se están utilizando. En el caso de un proyecto software el control de los cambios es fundamental para evitar problemas.
+
+Git es un sistema de control de versiones desarrollador por Linus Torvalds para el núcleo Linux. Sus principales características son:
+
+\begin{itemize}
+	\item Es un sistema distribuido, lo que evita la necesidad de disponer siempre de un servidor central al que enviar los cambios, como sucede con otros sistemas como CVS o Subversion.
+	
+	\item Facilita la creación de ramas (\emph{branch}) de desarrollo y la fusión de éstas (\emph{merge}) cuando es necesario de forma rápida y sencilla.
+	
+	\item Facilita disponer de copias de seguridad distribuyéndolas entre varios equipos, al menos en el uso que se ha dado para este proyecto final de carrera.
+\end{itemize}
+
+Durante el desarrollo del proyecto se ha utilizado varias ramas para controlar las distintas partes. Concretamente se ha utilizado:
+
+\begin{description}
+	\item[master] Mantiene el código que ha se ha comprobado que funciona correctamente. No se puede incorporar nada a esta rama directamente, sino que hay que desarrollar primero en otra rama, comprobar correcto funcionamiento de los cambios y luego se realiza la mezcla de los cambios con master.
+	
+	\item[ldopen] En esta rama se realizaron los cambios para soportar plugins. La nomenclatura de ldopen proviene de la llamda a sistema utilizada para poder desarrollar esta funcionalidad.
+	
+	\item[nuevaweb] Aquí se encuentra todo el código de pruebas del nuevo controlador desarrollado así como cambios sobre los agentes para soportar la nueva arquitectura.
+	
+	\item[fixcompiling] Cambios realizados para que la compilación en el sistema operativo Mac OS X funcionara correctamente.
+\end{description}
+
+\section{Redmine}
+
+Redmine es un gestor de proyectos realizado en Ruby on Rails. Permite la asignación de tareas, calendarios, documentación y otras muchas funcionalidades más a través de plugins. Como la mayoría de las herramientas utilizadas es software libre.
+
+Esta herramienta ha sido de utilidad para poder controlar los problemas que han ido surgiendo y que no quedaran pendientes.
+
+\section{CUDA}
+
+Como no, se ha hecho uso de las herramientas de NVIDIA para compilar el proyecto. El \emph{framework} CUDA trae las bibliotecas básicas necesarias para poder comunicarse con la tarjeta gráfica y las herramientas de compilación.
+
+\section{Apache}
+
+Para poder hacer uso del controlador es necesario disponer de un servidor web con soporte de PHP. En este caso se ha utilizado el servidor web Apache en su versión 2 por ser el más popular, disponer de una abundante documentación y ser software libre.
+
+Cualquier distribución de GNU/Linux puede instalar este servidor web con unos pocos clicks de ratón o en su defecto un único comando. en el caso de las distribuciones basadas en Debian solo hace falta ejecutar el siguiente comando:
+
+\begin{verbatim}
+$ sudo apt-get install apache2
+\end{verbatim}
+
+\section{Gimp}
+
+Gimp es una herramienta de retoque fotográfico de una gran calidad y que desde hace muchos años se la considera el Photoshop del software libre.
+
+Para las imágenes utilizadas en la web se ha utilizado Gimp por ser una herramienta potente y fácil de utilizar.
+
+\section{\LaTeX}
+
+Es una de las herramientas más extendidas para la creación de textos científicos. \LaTeX son un conjunto de reglas para la herramienta \TeX creada por Donald E. Knuth. Su diseño está pensado para no tener que prestar demasiada atención a detalles de presentación para centrar el esfuerzo en el contenido. Es muy parecido a lo que ahora se hace en web con HTML+CSS.
+
+La memoria de este proyecto final de carrera ha sido escrito utilizando \LaTeX por las ventajas que ofrece frente a otros sistemas como Microsoft Word o LibreOffice. Entre estas ventajas podemos destacar que al almacenar solo ficheros de texto es más sencillo realizar un control de versiones sobre las modificaciones, lo que resulta más complicado utilizando ficheros binarios.
+
+\section{GnuPlot}
+
+GnuPlot es una herramienta para la generación de gráficas de funciones. Ha sido utilizada para la gráfica de la distribución de la paradoja del cumpleaños.
+
+\section{LibreOffice}
+
+LibreOffice es una herramienta que ha nacido a partir del código de OpenOffice.org. Su creación viene motivada a que los desarrolladores de OpenOffice.org estaban a disgusto con las políticas empresariales de Oracle.
+
+Todas los diagramas que aparecen en la memoria ha sido realizadas con la aplicación de dibujo de LibreOffice.
+
 \section{Instalación del entorno}
 
 Una vez que se conoce como es la arquitectura, será necesario instalar el entorno CUDA en el sistema para poder utilizarlo. NVIDIA nos provee de 3 partes distintas:

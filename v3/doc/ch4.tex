@@ -1,10 +1,10 @@
 \chapter{Mejora de la aplicación}\label{cap4}
 
-Para la realización de este proyecto fin de carrera se decidió buscar herramientas que hicieran uso de tarjetas gráficas para comprobar contraseñas. Tras una busqueda exhaustiva se determiní que la aplicación \emph{Distributed Hash Cracker} era la más completa y, lo más importante, la única que disponía de una licencia abierta que nos permitía poder realizar cambios sobre ella.
+Para la realización de este proyecto fin de carrera se decidió buscar herramientas que hicieran uso de tarjetas gráficas para comprobar contraseñas. Tras una búsqueda exhaustiva se determina que la aplicación \emph{Distributed Hash Cracker} era la más completa y, lo más importante, la única que disponía de una licencia abierta que nos permitía poder realizar cambios sobre ella.
 
-Como ya se mencionó en la introducción, el uso de software libre es muy importante para la seguridad por el hecho de que al disponer del código fuente se pueden realizar auditorías sobre el mismo. Además, en caso de que la empresa que desarrolla el software dejase de darle soporte siempre cabría la posibilidad de que otra empresa pudiera ofrecer dicho soporte. Por otra parte, el software libre no solo tiene ventajas en la seguridad, sino que ofrece la garantía de que si la empresa deja de desarrolla dicho software o ésta desapareciese siempre quedaría el software a disposición del público pudiendo tomar otro el relevo sobre el mantenimiento sin que puedan realizarse acciones legales contra éste por infracción de derechos de autor. En este punto se debe mencionar que hay que obedecer siempre los terminos de la licencia del software y, en especial, el Real Decreto Legislativo 1/1996, de 12 de abril, por el que se aprueba el Texto Refundido de la Ley de Propiedad Intelectual, que es la ley que regula los derechos de autor en España.
+Como ya se mencionó en la introducción, el uso de software libre es muy importante para la seguridad por el hecho de que al disponer del código fuente se pueden realizar auditorías sobre el mismo. Además, en caso de que la empresa que desarrolla el software dejase de darle soporte siempre cabría la posibilidad de que otra empresa pudiera ofrecer dicho soporte. Por otra parte, el software libre no solo tiene ventajas en la seguridad, sino que ofrece la garantía de que si la empresa deja de desarrolla dicho software o ésta desapareciese siempre quedaría el software a disposición del público pudiendo tomar otro el relevo sobre el mantenimiento sin que puedan realizarse acciones legales contra éste por infracción de derechos de autor. En este punto se debe mencionar que hay que obedecer siempre los términos de la licencia del software y, en especial, el Real Decreto Legislativo 1/1996, de 12 de abril, por el que se aprueba el Texto Refundido de la Ley de Propiedad Intelectual, que es la ley que regula los derechos de autor en España.
 
-\emph{Distributed Hash Cracker}, en adelante DHC, es un software que permite determinar la palabra utilizada en una función resumen para devolver un determinado resumen. Para ello hace uso de un sistema de fuerza bruta~\cite{dhc:paper}. Éste software se encontraba alojado en la página \url{http://rpisec.net/}, pero por cuestiones desconocidas a desaparecido dejando de tener soporte. Esto nos a animado a realizar las modificaciones que necesitabamos para conseguir una aplicación completa y, especialmente, más fácil de mantener y que permitiera añadir funcionalidades de forma sencilla.
+\emph{Distributed Hash Cracker}, en adelante DHC, es un software que permite determinar la palabra utilizada en una función resumen para devolver un determinado resumen. Para ello hace uso de un sistema de fuerza bruta~\cite{dhc:paper}. Éste software se encontraba alojado en la página \url{http://rpisec.net/}, pero por cuestiones desconocidas a desaparecido dejando de tener soporte. Esto nos a animado a realizar las modificaciones que necesitábamos para conseguir una aplicación completa y, especialmente, más fácil de mantener y que permitiera añadir funcionalidades de forma sencilla.
 
 DHC es un software que se distribuía bajo licencia BSD\footnote{La licencia libre BSD permite realizar modificaciones sobre el software siempre y cuando se mantenga la mención de autoría en el mismo, pero no obliga a distribuir el código en caso de dar copias de la aplicación.}. Esta herramienta está programada en C++ y ensamblador y es capaz de distribuir el trabajo entre un conjunto de máquinas, denominadas agentes. Los agentes se encargan de procesar tareas criptográficas tanto en CPU como en GPU dependiendo de los algoritmos implementados en cada caso.
 
@@ -42,7 +42,7 @@ Por último se hace uso de una variación del lenguaje C creada por NVIDIA para 
 	\item Si utilizamos memoria que no pueda cambiar de valor dentro de la GPU utilizaremos la notación \_\_constant\_\_ y deberemos iniciar la memoria desde la CPU.
 \end{itemize}
 
-En caso de necesitar más detalles sobre la arquitectuar CUDA en~\cite{nvidia:cuda_c_programming_guide} se puede encontrar una guía completa sobre las peculiaridades de la implementación de C realizada por NVIDIA.
+En caso de necesitar más detalles sobre la arquitectura CUDA en~\cite{nvidia:cuda_c_programming_guide} se puede encontrar una guía completa sobre las peculiaridades de la implementación de C realizada por NVIDIA.
 
 \section{Estudio de DHC}
 
@@ -61,9 +61,9 @@ El controlador es la herramienta encargada de gestionar las tareas solicitadas, 
 	
 		\item Datos sobre los que realizar las comprobaciones. En el caso de las funciones resumen este dato se corresponde con el hash que queremos comprobar.
 	
-		\item Juego de caracteres a utilizar. Permite elegir si utilizar número y lentras minúsculas o mayúsculas. También permite seleccionar símbolos, espacio y retorno de carro.
+		\item Juego de caracteres a utilizar. Permite elegir si utilizar número y letras minúsculas o mayúsculas. También permite seleccionar símbolos, espacio y retorno de carro.
 	
-		\item Longitud máxima esperada. Ésta se utiliza para restrigir las pruebas, ya que consideramos que una cotraseña no va a exceder de los 8 caracteres no es necesario probar más allá.
+		\item Longitud máxima esperada. Ésta se utiliza para restringir las pruebas, ya que consideramos que una cotraseña no va a exceder de los 8 caracteres no es necesario probar más allá.
 	
 		\item Bloque de claves a comprobar. Esto es el conjunto de contraseñas que se van a probar indicadas por su posición inicial (el primer valor a probar) y final.
 	\end{itemize}
@@ -123,13 +123,13 @@ if(text.length() == 0)
   ThrowError("Empty hash");
 \end{lstlisting}
 
-El problema del código mostrado anteriormente es que requiere forzosamente que ante la cualquier cambio de un algoritmo, o ante la creación de un algoritmo nuevo, modificar ese código. De este modo no el código no aprovecha la capacidad de abstracción de que otorga el lenguaje C++ ya que podría haberse hecho esto de un modo más elegante como se comprobará más adelante. Además, la el código mosntrado anteriormente supone un problema para el mantenimiento ya que éste se encuentra en un fichero del código fuente, pero además, en otro completamente distinto también se hacen comprobaciones sobre los algoritmos por lo que hay que tener un buen conocimiento sobre la estructura interna del código y la organización de sus ficheros.
+El problema del código mostrado anteriormente es que requiere forzosamente que ante la cualquier cambio de un algoritmo, o ante la creación de un algoritmo nuevo, modificar ese código. De este modo no el código no aprovecha la capacidad de abstracción de que otorga el lenguaje C++ ya que podría haberse hecho esto de un modo más elegante como se comprobará más adelante. Además, la el código mostrado anteriormente supone un problema para el mantenimiento ya que éste se encuentra en un fichero del código fuente, pero además, en otro completamente distinto también se hacen comprobaciones sobre los algoritmos por lo que hay que tener un buen conocimiento sobre la estructura interna del código y la organización de sus ficheros.
 
 \section{Modificaciones realizadas a DHC}
 
 Como se ha podido ver en el apartado anterior DHC es una buena aplicación, pero tiene algunos fallo que podrían resolverse para mejorar la mantenibilidad de la solución. Esto ofrecería una esperanza de vida mayor al programa y lo convertiría en una herramienta mucho más útil a corto y largo plazo.
 
-Por los motivos anteriores se ha decidido realizar los cambios necesarios que conviertan a DHC en una herramienta más fácil de manejar, de mantener y que permita a cualquier programador añadir funcionalidades de forma sencilla sin requerir un alto grado de conocimiento del códgo del agente.
+Por los motivos anteriores se ha decidido realizar los cambios necesarios que conviertan a DHC en una herramienta más fácil de manejar, de mantener y que permita a cualquier programador añadir funcionalidades de forma sencilla sin requerir un alto grado de conocimiento del código del agente.
 
 \subsection{Diseño de API para algoritmos de codificación}
 
@@ -182,11 +182,11 @@ A la hora de implementar estas características hay que tener en cuenta que se p
 
 \subsection{Diseño de API para la estandarización de la ejecución de algoritmos}
 
-Una vez creado el API para algoritmos se puede comprobar que muchos algoritmos siempre siguen el mismo patron de ejecución. Esto supone tener que repetir constantemente el mismo código en los algoritmos cuando podríamos hacer uso de la reutilización para eliminar este inconveniente. Por este motivo se planteo diseñar un sistema que permitiera estandarizar la forma que tiene un algoritmo de ejecutarse de tal modo que solo tengamos que centrarnos en lo imprescindible de cada uno de ellos.
+Una vez creado el API para algoritmos se puede comprobar que muchos algoritmos siempre siguen el mismo patrón de ejecución. Esto supone tener que repetir constantemente el mismo código en los algoritmos cuando podríamos hacer uso de la reutilización para eliminar este inconveniente. Por este motivo se planteo diseñar un sistema que permitiera estandarizar la forma que tiene un algoritmo de ejecutarse de tal modo que solo tengamos que centrarnos en lo imprescindible de cada uno de ellos.
 
-La filosofía que se ha empleado es la misma que en el caso de los algortimos. En este caso se ha creado la clase \emph{Executor} que se encarga de definir las funcionalidades básicas que debe implementar un mecanismo de ejecución y por otro lado se dispone de la clase \emph{ExecutorFactory} que nos facilita el acceso a los mismos.
+La filosofía que se ha empleado es la misma que en el caso de los algoritmos. En este caso se ha creado la clase \emph{Executor} que se encarga de definir las funcionalidades básicas que debe implementar un mecanismo de ejecución y por otro lado se dispone de la clase \emph{ExecutorFactory} que nos facilita el acceso a los mismos.
 
-Con este sistema se obtiene un mecanismo muy interesante para la realización de pruebas de algoritmos sin tener que modificar el resto de algoritmos y, en caso de obtener un mecanismo suficientemente bueno y que puedar ser utilizado por más algoritmos, de organizar todos los algoritmos que deban ejecutarse de igual forma para reducir la cantidad de código duplicado facilitando el mantenimiento en caso de errores.
+Con este sistema se obtiene un mecanismo muy interesante para la realización de pruebas de algoritmos sin tener que modificar el resto de algoritmos y, en caso de obtener un mecanismo suficientemente bueno y que pueda ser utilizado por más algoritmos, de organizar todos los algoritmos que deban ejecutarse de igual forma para reducir la cantidad de código duplicado facilitando el mantenimiento en caso de errores.
 
 El código original de DHC utiliza el mismo mecanismo de ejecución para todos los algoritmos implementados. Esto está muy bien hasta cierto punto ya que restringe de forma muy clara la cantidad de mecanismos que pueden implementarse en el sistema. Gracias a la nueva API se permite implementar más algoritmos, no teniendo que restringirnos necesariamente a una forma concreta de hacer las cosas o a un tipo concreto de algoritmos (hasta el momento solo hay funciones resumen).
 
@@ -200,7 +200,7 @@ La ejecución con este mecanismo se complica un poco más (ver figura~\ref{fig:a
 
 Una de las principales ventajas que podemos comentar sobre este sistema es que ahora un algoritmo no tiene porque estar sujeto a un único modo de hacer las cosas. Se puede detectar si hay un \emph{Executor} en concreto y si no está se pude seleccionar otro. Así, en caso de que se retire uno por cuestiones de mantenimiento o depuración el sistema podría seguir funcionando (siempre que se implemente esta forma de trabajar).
 
-Por otra parte se permite, gracias a la arquitectura utilizada, la creación de proxys, objetos intermedios que capturan la funcionalidad expuesta para realizar operaciones de forma transparente. Por ejemplo, se podría disponer de un proxy para los algoritmos que permitiese hacer un seguimiento de las llamdas ejecutadas en caso de que el algoritmo no tuviese habilitada la generación de trazas de ejecución.
+Por otra parte se permite, gracias a la arquitectura utilizada, la creación de proxys, objetos intermedios que capturan la funcionalidad expuesta para realizar operaciones de forma transparente. Por ejemplo, se podría disponer de un proxy para los algoritmos que permitiese hacer un seguimiento de las llamadas ejecutadas en caso de que el algoritmo no tuviese habilitada la generación de trazas de ejecución.
 
 En la figura~\ref{fig:alg_ex_prox} puede verse como pueden interactuar entre sí los distintos elementos expuesto en este apartado. Como puede comprobarse, la versatilidad del nuevo sistema permite gran cantidad de configuraciones que pueden ser utilizadas siempre que sea necesario. Para comprender mejor la gráfica, los círculos representan algoritmos, las cajas son \emph{Executors} y las flechar son asociaciones de uso. Por ejemplo, \emph{MD5} usa \emph{BasicExecutor}.
 
@@ -212,11 +212,11 @@ En la figura~\ref{fig:alg_ex_prox} puede verse como pueden interactuar entre sí
 
 \subsection{Modificaciones para la mejora de la escalabilidad}
 
-Durante las primeras pruebas realizadas sobre DHC se noto que el tiempo de respuesta de la interfaz web podía verse seriamente comprometido si la velocidad utilizada por los agentes para solicitar tereas o devolver tareas es muy alta y si la distancia entre el agente y el controlador es grande. Este último punto se constató cuando se hicieron pruebas en las que el controlador se encuentraba en un servidor en Alemania y el agente se encuentraba en España. Sin duda la ralentización en este punto se debía a las latencias de la red por la espera de los asentimientos (paquetes ACK de la arquitectura IP). Estos retrasos pueden afectar de forma importante en la escalabilidad del sistema, por lo que se ha dedicido realizar cambios para eliminar en la medida de lo posible estos problemas.
+Durante las primeras pruebas realizadas sobre DHC se noto que el tiempo de respuesta de la interfaz web podía verse seriamente comprometido si la velocidad utilizada por los agentes para solicitar tareas o devolver tareas es muy alta y si la distancia entre el agente y el controlador es grande. Este último punto se constató cuando se hicieron pruebas en las que el controlador se encontraba en un servidor en Alemania y el agente se encontraba en España. Sin duda la ralentización en este punto se debía a las latencias de la red por la espera de los asentimientos (paquetes ACK de la arquitectura IP). Estos retrasos pueden afectar de forma importante en la escalabilidad del sistema, por lo que se ha decidido realizar cambios para eliminar en la medida de lo posible estos problemas.
 
 Cada agente de DHC se encuentra en un bucle en el que en cada iteración solicita una WU al controlador. En caso de que no haya ninguna tarea que pueda realizar el agente se procede a esperar 5 segundos. Este tiempo puede resultar insuficiente si el controlador tiene que hacer gran cantidad de cálculos o si el número de agentes es tal que saturen con peticiones al controlador (efecto DDoS). Por este motivo se ha diseñado un algoritmo que ajuste el tiempo de espera de forma dinámica para ajustarse mejor a las capacidades del controlador.
 
-El nuevo algoritmo tiene en cuenta el tiempo que tarda el controlador en dar una respuesta al ajente y si la respuesta dada contiene o no una WU. Con esto se pretende que el sistema se ajuste mejor a las condiciones ambientales del sistema.
+El nuevo algoritmo tiene en cuenta el tiempo que tarda el controlador en dar una respuesta al agente y si la respuesta dada contiene o no una WU. Con esto se pretende que el sistema se ajuste mejor a las condiciones ambientales del sistema.
 
 \subsubsection{Control del tiempo con respecto al tiempo de respuesta del controlador}
 
@@ -226,7 +226,7 @@ Por otra parte, en caso de que el tiempo disminuyese supondría justo lo contrar
 
 \subsubsection{Control del tiempo con respecto a las tareas recibidas}
 
-Aunque el ideal sería que el sistema pudiera estar contantemente funcionando, la realidad dista mucho de esto ya que es fácil que se de el caso de que no haya tareas que procesar o, que habiendolas, éstas no sean compatibles con los agentes libres.
+Aunque el ideal sería que el sistema pudiera estar constantemente funcionando, la realidad dista mucho de esto ya que es fácil que se de el caso de que no haya tareas que procesar o, que habiéndolas, éstas no sean compatibles con los agentes libres.
 
 Teniendo lo anterior en cuenta, es fácil considerar que si en un momento dado no hay tareas, la próxima vez que consultemos al agente éste siga sin disponer de trabajos que asignar. Como este caso puede darse de forma continuada durante muchas consultas creemos que tiene sentido considerar que cada vez que se haga una petición a un controlador y éste no tenga WUs la espera hasta la siguiente vez que solicite una tarea se vea incrementado hasta un tiempo máximo. 
 
@@ -240,7 +240,7 @@ La figura~\ref{fig:control_tiempo_espera} puede verse una explicación gráfica 
 	
 	\item[Tant:] es el tiempo que tardó el agente en responder en la anterior consulta.
 	
-	\item[MAX\_TESP:] representa el tiempo máximo que puede estar esperándo antes entre consultas al controlador.
+	\item[MAX\_TESP:] representa el tiempo máximo que puede estar esperando antes entre consultas al controlador.
 	
 	\item[MIN\_TESP:] es el tiempo mínimo entre llamadas al controlador.
 \end{description}
@@ -274,7 +274,7 @@ Además de lo anterior, los plugins deben contener una función llamda \emph{Get
 \begin{figure}
 	\centering
 	\includegraphics[width=0.7\textwidth]{images/plugins.pdf}
-	\caption{Control del tiempo de espera en las solicitudes}\label{fig:plugins}
+	\caption{Diseño del sistema de plugins}\label{fig:plugins}
 \end{figure}
 
 Como tener que memorizar todo el proceso de crear un plugin puede resultar muy complicado (intervienen muchas clases con dependencias entre ellas) se ha añadido una serie de macros de C que permiten simplificar en gran medida la creación de un plugin. Por ejemplo, para la creación del algoritmo que implementa SHA256 se ha creado una clase denominada sha256 que exportamos como algoritmo del siguiente modo:
@@ -288,7 +288,7 @@ END_PLUGIN()
 
 \subsection{Instalación de nuevos algoritmos}
 
-Esto podría apreciarse en el caso de que hubiese dos grupos de desarrollo y cada uno trabajase con una version del agente diferente. Si cada agente debe contener los algoritmos que utiliza puede darse un caso como el siguiente: el agente del equipo 1 implementa los algoritmos A, B y C; el agente del equipo 2 tiene los algoritmos B y D. Así que si estamos utilizando el agente del quipo 1 y tenemos que probar el algoritmo D tenemos que deshacernos de los algoritmos A y C.
+Esto podría apreciarse en el caso de que hubiese dos grupos de desarrollo y cada uno trabajase con una versión del agente diferente. Si cada agente debe contener los algoritmos que utiliza puede darse un caso como el siguiente: el agente del equipo 1 implementa los algoritmos A, B y C; el agente del equipo 2 tiene los algoritmos B y D. Así que si estamos utilizando el agente del equipo 1 y tenemos que probar el algoritmo D tenemos que deshacernos de los algoritmos A y C.
 
 Separando la lógica de los algoritmos fuera del agente conseguimos mayor independencia. En el caso anterior solo tendríamos que instalar el nuevo algoritmo D sin tener que preocuparnos por los algoritmos A, B y C.
 
@@ -296,9 +296,37 @@ Separando la lógica de los algoritmos fuera del agente conseguimos mayor indepe
 
 Puede darse el caso de que un algoritmo pase a un estado de obsolescencia. Esto podría deberse a que se disponga de un algoritmo más nuevo que haga el mismo trabajo. También podría ser que tras probar un algoritmo descubramos que éste introduce errores en el sistema. En estos casos la mejor solución es eliminarlos con un simple borrado de disco.
 
-Con el sistema tal y como venía era un problema solucionar esto, ya que se dependía del tiempo que pudera tardar el desarrollador en solucionar el problema.
+Con el sistema tal y como venía era un problema solucionar esto, ya que se dependía del tiempo que pueda tardar el desarrollador en solucionar el problema.
 
 \section{Nuevo controlador}
+
+Además de los cambios anteriores realizados al agente también se han realizado cambios en el controlador. Concretamente se ha rehecho completamente reutilizando el código justo. El motivo de la creación de este nuevo controlador se debe, principalmente, a que se quiere disponer de un sistema bien organizado y claramente centrado en la labor de controlar las tareas.
+
+Hasta este momento el controlador se encargaba tanto de administrar las tareas como de codificar los mecanismos necesarios de control para determinar los datos de entrada, las funciones llamadas, etc. Esto se debe principalmente a que no se ha hecho uso de ningún \emph{framework} de desarrollo web que ocultase este tipo de tareas. De este modo el controlador es una aplicación con un código que entremezcla la representación de datos, el control del flujo de ejecución y las tareas administrativas.
+
+Por el motivo anterior se decidió crear un nuevo controlador haciendo uso del \emph{framework} CakePHP (puede encontrarse en \url{http://cakephp.org/}). Este \emph{framework} tiene las siguientes características:
+
+\begin{itemize}
+	\item Abstrae la base de datos facilitando el trabajo con los datos independientemente del motor de base de datos utilizado.
+	
+	\item Maneja el flujo de funcionamiento de la aplicación permitiendo de este modo que el programador se centre únicamente en la labor de desarrollo de las funcionalidades el programa.
+	
+	\item Tiene actualizaciones constantes que, en caso de mejoras de rendimiento o estabilidad, pueden incorporarse fácilmente a nuestro desarrollo sin necesidad de realizar cambios sobre el mismo.
+	
+	\item Dispone de abundante documentación con gran cantidad de ejemplo, lo que facilita su aprendizaje.
+	
+	\item Su uso es muy sencillo.
+\end{itemize}
+
+Por otra parte, aprovechando este cambio del controlador se ha intentado realizar algunas optimizaciones. Entre ellas podemos destacar:
+
+\begin{itemize}
+	\item Optimización de la base de datos. Para ello se estudio el uso que hace el controlador de los accesos y se comprobó que las tablas de que se utilizan para realizar las estadísticas son constantemente utilizadas y éstas nunca llegan a tener un número de elementos muy elevado (el controlador borra los datos que considera antiguos). Por este motivo se ha decidido pasar estas tablas a memoria de modo que el acceso sea más rápido. El mayor problema de esta solución es que en caso de caída del la base de datos se perderían estos valores, pero al no ser información fundamental no supone una gran preocupación.
+	
+	\item Agrupación de accesos a base de datos. En el antiguo controlador se podía encontrar acciones que realizaban dos o tres accesos a la base de datos para modificar un mismo elemento. Para evitar esta situación lo que se ha hecho ha sido ir acumulando los cambios a realizar y una vez que no se van a hacer más se hace la actualización de la base de datos. Esto permite ahorrar algo de tiempo y reduce la carga sobre la base de datos.
+\end{itemize}
+
+Se ha tenido en cuenta el diseño de la web a la hora de reescribir el controlador considerando que un estilo más atractivo ayudaría a una mejor experiencia de usuario.
 
 \section{Algoritmos nuevos de seguridad implementados}
 
