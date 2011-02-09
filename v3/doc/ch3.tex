@@ -120,16 +120,4 @@ Por el motivo anterior CUDA provee de técnicas más avanzadas optimizar el uso 
 
 La reutilización de los valores previos es muy útil cuando se utilizan funcione de la forma $f(x) = af(x-1)+b$ ya que evita tener que realizar un exceso de copias de memoria. Si ya disponemos del resultado de la próxima ejecución en memoria simplemente lo dejamos ahí y lo utilizamos en lugar de copiarlo a memoria de sistema para después cargarlo a la memoria de la tarjeta gráfica.
 
-\section{Instalación del entorno}
 
-Una vez que se conoce como es la arquitectura, será necesario instalar el entorno CUDA en el sistema para poder utilizarlo. NVIDIA nos provee de 3 partes distintas:
-
-\begin{itemize}
-	\item El controlador gráfico con soporte de CUDA que es necesario para poder aprovechar las capacidades de cómputo de la tarjeta gráfica.
-	\item El SDK que contiene todas la bibliotecas necesarias para poder desarrollar aplicaciones con soporte de ejecución en GPU.
-	\item El Toolkit con las herramientas necesarias para generar los programas (como nvcc, el compilador de código CUDA) además de bibliotecas de alto nivel como BLAS y aceleración de FFT (transformada rápida de Fourier).
-\end{itemize}
-
-En la web de NVIDIA recomiendan que se instalen los componentes en el mismo orden en el que aparecen en el listado anterior.
-
-A la hora de realizar la instalación de CUDA es importante tener en cuenta la plataforma (Windows, MacOS X, GNU/Linux) y las versiones. Para el desarrollo del presente proyecto fin de carrera se ha utilizado como equipo de desarrollo un sistema con Ubuntu 10.04 y el equipo de ejecución utiliza Debian GNU/Linux en su última versión estable.

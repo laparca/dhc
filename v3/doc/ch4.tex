@@ -198,23 +198,107 @@ El código original de DHC utiliza el mismo mecanismo de ejecución para todos l
 
 La ejecución con este mecanismo se complica un poco más (ver figura~\ref{fig:algotirmo_gpu_executor}), pero la sobrecarga introducida por este mecanismo es despreciable en tiempo.
 
+Una de las principales ventajas que podemos comentar sobre este sistema es que ahora un algoritmo no tiene porque estar sujeto a un único modo de hacer las cosas. Se puede detectar si hay un \emph{Executor} en concreto y si no está se pude seleccionar otro. Así, en caso de que se retire uno por cuestiones de mantenimiento o depuración el sistema podría seguir funcionando (siempre que se implemente esta forma de trabajar).
+
+Por otra parte se permite, gracias a la arquitectura utilizada, la creación de proxys, objetos intermedios que capturan la funcionalidad expuesta para realizar operaciones de forma transparente. Por ejemplo, se podría disponer de un proxy para los algoritmos que permitiese hacer un seguimiento de las llamdas ejecutadas en caso de que el algoritmo no tuviese habilitada la generación de trazas de ejecución.
+
+En la figura~\ref{fig:alg_ex_prox} puede verse como pueden interactuar entre sí los distintos elementos expuesto en este apartado. Como puede comprobarse, la versatilidad del nuevo sistema permite gran cantidad de configuraciones que pueden ser utilizadas siempre que sea necesario. Para comprender mejor la gráfica, los círculos representan algoritmos, las cajas son \emph{Executors} y las flechar son asociaciones de uso. Por ejemplo, \emph{MD5} usa \emph{BasicExecutor}.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.4\textwidth]{images/algorithms_executors_proxys.pdf}
+	\caption{Panorámica de uso de \emph{Algorithms} y \emph{Executors}}\label{fig:alg_ex_prox}
+\end{figure}
+
 \subsection{Modificaciones para la mejora de la escalabilidad}
 
-En todo sistema es importante tener en cuenta la escalabilidad del mismo. Por este motivo se ha decidido hacer cambios en algunos aspectos internos de DHC para mejorar este punto.
+Durante las primeras pruebas realizadas sobre DHC se noto que el tiempo de respuesta de la interfaz web podía verse seriamente comprometido si la velocidad utilizada por los agentes para solicitar tereas o devolver tareas es muy alta y si la distancia entre el agente y el controlador es grande. Este último punto se constató cuando se hicieron pruebas en las que el controlador se encuentraba en un servidor en Alemania y el agente se encuentraba en España. Sin duda la ralentización en este punto se debía a las latencias de la red por la espera de los asentimientos (paquetes ACK de la arquitectura IP). Estos retrasos pueden afectar de forma importante en la escalabilidad del sistema, por lo que se ha dedicido realizar cambios para eliminar en la medida de lo posible estos problemas.
 
-Cada agente de DHC se encuentra en un bucle en el que en cada iteración solicita una unidad de trabajo al controlador. En caso de que no haya tarea alguna que pueda realizar el agente se procede a esperar 5 segundos. Este tiempo puede resultar insuficiente si el controlador tiene que hacer gran cantidad de cálculos o si el número de agentes es tal que saturen con peticiones al controlador (efecto DDoS). Por este motivo se ha diseñado un algoritmo que ajuste el tiempo de espera de forma dinámica para ajustarse mejor a las capacidades del controlador.
+Cada agente de DHC se encuentra en un bucle en el que en cada iteración solicita una WU al controlador. En caso de que no haya ninguna tarea que pueda realizar el agente se procede a esperar 5 segundos. Este tiempo puede resultar insuficiente si el controlador tiene que hacer gran cantidad de cálculos o si el número de agentes es tal que saturen con peticiones al controlador (efecto DDoS). Por este motivo se ha diseñado un algoritmo que ajuste el tiempo de espera de forma dinámica para ajustarse mejor a las capacidades del controlador.
 
-El nuevo algoritmo tiene en cuenta el tiempo de respuesta del controlador y si se ha recibido o no una tarea.
+El nuevo algoritmo tiene en cuenta el tiempo que tarda el controlador en dar una respuesta al ajente y si la respuesta dada contiene o no una WU. Con esto se pretende que el sistema se ajuste mejor a las condiciones ambientales del sistema.
 
 \subsubsection{Control del tiempo con respecto al tiempo de respuesta del controlador}
 
-Este sistema mide el tiempo que tarda el controlador en responder a cada solicitud. En caso de que este tiempo se incremente significaría que el controlador se encuentra sobrecargado, por lo que el agente procederá a esperar más tiempo entre consultas.
+Siempre que se solicitan WU a un controlador el agente mide los tiempos que tarda en recibir la respuesta. Este tiempo permite controlar si el controlador está empezando a saturarse o no. Así, en caso de que los tiempos empiecen a verse incrementados, y por tanto se considere que el controlador está saturado, se procede a incrementar el tiempo entre solicitudes. Con esto se pretende descargar al controlador de un exceso de carga distribuyéndola en el tiempo.
 
-Igualmente, en caso de que el tiempo disminuyese supondría justo lo contrario, por lo que el tiempo de espera puede reducirse.
+Por otra parte, en caso de que el tiempo disminuyese supondría justo lo contrario, la carga del controlador ha disminuido, por lo que el tiempo de espera puede empezar a reducirse poco a poco. Al realizar una disminución lenta del tiempo de espera se consigue que no se sature de repente el controlador como podría suceder si este tiempo disminuyese rápidamente.
 
 \subsubsection{Control del tiempo con respecto a las tareas recibidas}
 
-En este control se considera que en caso de que el controlador no proporcione trabajo a un agente se puede esperar más tiempo. La razón de dicha suposición es que es probable que el controlador no reciba muchas peticiones de tareas, por lo que en caso de que no haya tareas no es necesario estar preguntándole de forma constante.
+Aunque el ideal sería que el sistema pudiera estar contantemente funcionando, la realidad dista mucho de esto ya que es fácil que se de el caso de que no haya tareas que procesar o, que habiendolas, éstas no sean compatibles con los agentes libres.
+
+Teniendo lo anterior en cuenta, es fácil considerar que si en un momento dado no hay tareas, la próxima vez que consultemos al agente éste siga sin disponer de trabajos que asignar. Como este caso puede darse de forma continuada durante muchas consultas creemos que tiene sentido considerar que cada vez que se haga una petición a un controlador y éste no tenga WUs la espera hasta la siguiente vez que solicite una tarea se vea incrementado hasta un tiempo máximo. 
+
+En caso de que el controlador empiece a ofrecer de nuevo WU a los agentes, estos empezarán a disminuir el tiempo entre solicitudes de forma paulatina hasta que vuelvan a estar estables.
+
+La figura~\ref{fig:control_tiempo_espera} puede verse una explicación gráfica de los dos mecanismos explicados. Las variables utilizadas son:
+\begin{description}
+	\item[Tesp:] representa el tiempo de espera que se utilizará en caso de que se considere que el sistema no está respondiendo correctamente.
+	
+	\item[Tresp:] contiene el tiempo que ha tardado el controlador en devolver una respuesta al agente.
+	
+	\item[Tant:] es el tiempo que tardó el agente en responder en la anterior consulta.
+	
+	\item[MAX\_TESP:] representa el tiempo máximo que puede estar esperándo antes entre consultas al controlador.
+	
+	\item[MIN\_TESP:] es el tiempo mínimo entre llamadas al controlador.
+\end{description}
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.7\textwidth]{images/control_tiempo_espera.pdf}
+	\caption{Control del tiempo de espera en las solicitudes}\label{fig:control_tiempo_espera}
+\end{figure}
+
+\section{Diseño e implementación de un mecanismo de carga de extensiones}
+
+Ahora que se dispone de un API que facilita la creación de algoritmos y mecanismos para ejecutar éstos, se ha diseñado un sistema que permite cargar nuevos algoritmos y \emph{Executors} que se encuentren fuera de la aplicación. Estos algoritmos y \emph{Executors} que pueden cargarse de este modo son denominados \emph{plugins}.
+
+Para comprender mejor la idea hay que tener en cuenta que hasta este momento, si se modificaba un algoritmo al estar este dentro del programa había que generar un nuevo ejecutable con dicha modificación. Lo que se pretende es que el algoritmo no tenga que formar parte del agente y que pueda ser una unidad que se encuentre por separado.
+
+Para poder implementar este apartado se ha desarrollado una serie de clases (figura~\ref{fig:plugins}) que van a permitir describir el contenido de un fichero que pueda ser cargado desde fuera, el contenido del mismo y añaden facilidades para poder crear instancias de las clases que defina. Las clases definidas son:
+
+\begin{description}
+	\item[PluginFacility:] clase abstracta que describe una funcionalidad que va a presentar el plugin al agente. Esta está identificada por un nombre, su versión y el tipo. Además, permite crear instancias de la funcionalidad.
+	
+	\item[PluginFacilityAlgorithm:] permite que el plugin pueda ofrecer a los agentes algoritmos. Esta clase implementa PluginFacility.
+	
+	\item[PluginFacilityExecutor:] permite que el plugin pueda ofrecer a los agentes \emph{Executors}. Esta clase implementa PluginFacility.
+	
+	\item[PluginFactory:] esta clase debe ser instanciada en el plugin y en ella hay que registrar todos aquellos componentes que ofrecerá el plugin al agente. Cada componente a ofrecer deberá heredad de PluginFacility. Además, esta clase proporciona información extra como el autor del plugin o el listado de \emph{facilites} que se van a exportar.
+\end{description}
+
+Además de lo anterior, los plugins deben contener una función llamda \emph{GetPluginFactory} que permitirá obtener la instancia de \emph{PluginFactory} que tiene el plugin.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.7\textwidth]{images/plugins.pdf}
+	\caption{Control del tiempo de espera en las solicitudes}\label{fig:plugins}
+\end{figure}
+
+Como tener que memorizar todo el proceso de crear un plugin puede resultar muy complicado (intervienen muchas clases con dependencias entre ellas) se ha añadido una serie de macros de C que permiten simplificar en gran medida la creación de un plugin. Por ejemplo, para la creación del algoritmo que implementa SHA256 se ha creado una clase denominada sha256 que exportamos como algoritmo del siguiente modo:
+
+\begin{verbatim}
+BEGIN_PLUGIN("Samuel Rodriguez Sevilla")
+   ADD_ALGORITHM(sha256, "sha256", 1)
+END_PLUGIN()
+\end{verbatim}
+
+
+\subsection{Instalación de nuevos algoritmos}
+
+Esto podría apreciarse en el caso de que hubiese dos grupos de desarrollo y cada uno trabajase con una version del agente diferente. Si cada agente debe contener los algoritmos que utiliza puede darse un caso como el siguiente: el agente del equipo 1 implementa los algoritmos A, B y C; el agente del equipo 2 tiene los algoritmos B y D. Así que si estamos utilizando el agente del quipo 1 y tenemos que probar el algoritmo D tenemos que deshacernos de los algoritmos A y C.
+
+Separando la lógica de los algoritmos fuera del agente conseguimos mayor independencia. En el caso anterior solo tendríamos que instalar el nuevo algoritmo D sin tener que preocuparnos por los algoritmos A, B y C.
+
+\subsection{Eliminación algoritmos obsoletos o erróneos}
+
+Puede darse el caso de que un algoritmo pase a un estado de obsolescencia. Esto podría deberse a que se disponga de un algoritmo más nuevo que haga el mismo trabajo. También podría ser que tras probar un algoritmo descubramos que éste introduce errores en el sistema. En estos casos la mejor solución es eliminarlos con un simple borrado de disco.
+
+Con el sistema tal y como venía era un problema solucionar esto, ya que se dependía del tiempo que pudera tardar el desarrollador en solucionar el problema.
+
+\section{Nuevo controlador}
 
 \section{Algoritmos nuevos de seguridad implementados}
 
