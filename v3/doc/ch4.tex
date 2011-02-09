@@ -1,21 +1,23 @@
 \chapter{Mejora de la aplicación}\label{cap4}
 
-Distributed Hash Cracker, en adelante DHC, es un software que permite determinar la palabra utilizada en una función resumen para devolver un determinado resumen. Para ello hace uso de un sistema de fuerza bruta~\cite{dhc:paper}. Éste software se encontraba alojado en la página \url{http://rpisec.net/}, pero por cuestiones desconocidas a desaparecido dejando de tener soporte.
+Para la realización de este proyecto fin de carrera se decidió buscar herramientas que hicieran uso de tarjetas gráficas para comprobar contraseñas. Tras una busqueda exhaustiva se determiní que la aplicación \emph{Distributed Hash Cracker} era la más completa y, lo más importante, la única que disponía de una licencia abierta que nos permitía poder realizar cambios sobre ella.
 
-Para la implementación del sistema distribuido se ha utilizado un software ya existente y libre al que se ha ido modificando para que sea ajuste del mejor modo posible a las necesidades del presente proyecto fin de carrera.
+Como ya se mencionó en la introducción, el uso de software libre es muy importante para la seguridad por el hecho de que al disponer del código fuente se pueden realizar auditorías sobre el mismo. Además, en caso de que la empresa que desarrolla el software dejase de darle soporte siempre cabría la posibilidad de que otra empresa pudiera ofrecer dicho soporte. Por otra parte, el software libre no solo tiene ventajas en la seguridad, sino que ofrece la garantía de que si la empresa deja de desarrolla dicho software o ésta desapareciese siempre quedaría el software a disposición del público pudiendo tomar otro el relevo sobre el mantenimiento sin que puedan realizarse acciones legales contra éste por infracción de derechos de autor. En este punto se debe mencionar que hay que obedecer siempre los terminos de la licencia del software y, en especial, el Real Decreto Legislativo 1/1996, de 12 de abril, por el que se aprueba el Texto Refundido de la Ley de Propiedad Intelectual, que es la ley que regula los derechos de autor en España.
 
-El software utilizado ha sidoDistributed Hash Cracker (en adelante DHC) que se encuentra en http://rpisec.net/projects/show/hash-cracker y que dispone de licencia BSD. Esta herramienta está programada en C++ y ensamblador y es capaz de distribuir el trabajo entre un conjunto de máquinas (denominados agentes por dicho software). Los agentes se encargan de procesar tareas criptográficas tanto en CPU como en GPU dependiendo de los algoritmos implementados en cada caso.
+\emph{Distributed Hash Cracker}, en adelante DHC, es un software que permite determinar la palabra utilizada en una función resumen para devolver un determinado resumen. Para ello hace uso de un sistema de fuerza bruta~\cite{dhc:paper}. Éste software se encontraba alojado en la página \url{http://rpisec.net/}, pero por cuestiones desconocidas a desaparecido dejando de tener soporte. Esto nos a animado a realizar las modificaciones que necesitabamos para conseguir una aplicación completa y, especialmente, más fácil de mantener y que permitiera añadir funcionalidades de forma sencilla.
 
-Aunque DHC es una muy buena base sobre la que empezar a desarrollar nuevas funciones resumen no implementadas, es importante tener en cuenta que tiene algunos problemas que es importante solucionar previamente.
+DHC es un software que se distribuía bajo licencia BSD\footnote{La licencia libre BSD permite realizar modificaciones sobre el software siempre y cuando se mantenga la mención de autoría en el mismo, pero no obliga a distribuir el código en caso de dar copias de la aplicación.}. Esta herramienta está programada en C++ y ensamblador y es capaz de distribuir el trabajo entre un conjunto de máquinas, denominadas agentes. Los agentes se encargan de procesar tareas criptográficas tanto en CPU como en GPU dependiendo de los algoritmos implementados en cada caso.
 
-El mayor problema actualmente es que aún estando escrito en un lenguaje orientado a objetos, no se hace uso de las características del mismo cuando se debería. Por ejemplo, el código de las funciones resumen de que dispone está entremezclado uno con otro. Esto supone un gran problema al implementar nuevas funciones resumen, ya que implica tener que ver qué partes de código se deben adaptar y cuáles no. Por tanto, es necesario hacer un cambio de cómo controla DHC estas funciones de tal modo que sea más sencillo el mantenimiento de la herramienta.
+Aunque DHC es una muy buena herramienta, pero tiene algunas deficiencias que hacen que necesite modificaciones en algunos puntos importantes de su código para garantizar que la herramienta pueda sobrevivir en el futuro.
 
-Por otra parte, la implementación de funciones resumen de que dispone DHC, aún estando relativamente bien surtida, se nos antoja demasiado escasa en funcionalidades al soportar únicamente comprobación por fuerza bruta siendo deseable la posibilidad de utilizar más variedad de modalidades de comprobación en caso de que existiesen de forma que se mejoren los tiempos de comprobación. Este cambio supone una importante contribución a la herramienta y, a nuestro suponer, requiere el cambio mencionado en el párrafo anterior para su mejor desarrollo.
+El mayor problema actualmente es que aún estando escrito en un lenguaje orientado a objetos, no se hace uso de las características del mismo cuando se debería. Por ejemplo, el código de las funciones resumen de que dispone está entremezclado. Esto supone un gran problema al implementar nuevas funciones resumen, ya que implica tener que ver qué partes de código se deben adaptar y cuáles no. Por tanto, es necesario hacer un cambio de cómo controla DHC estas funciones de tal modo que sea más sencillo el mantenimiento de la herramienta.
 
-\section{Estimación de costes}
-Cocomo II
+Por otra parte, la implementación de funciones resumen de que dispone DHC, aún estando relativamente bien surtida, creemos que podría ser necesario en un futuro la implementación de más funciones resumen u otro tipo de comprobaciones sobre seguridad (como pudiera ser redes WiFi). Esto significa que hay que realizar los cambios necesario que permitan en un futuro añadir funcionalidades diferentes a las inicialmente planteadas sin que esto suponga un esfuerzo demasiado elevado.
 
-\section{Lenguaje de programación utilizado}
+Finalmente, DHC dispone de un programa que se encarga de controlar el reparto de las tareas. Este programa se denomina controlador y está desarrollado enteramente en PHP sin seguir un modelo claro de organización del código. En un principio parece que está basado en MVC, pero por algún motivo el código fuente parece muy entremezclado.
+
+\section{Lenguajes de programación utilizado}
+
 El lenguaje de programación elegido para el proyecto ha sido C++. Esta elección se realiza por diversos factores:
 
 \begin{itemize}
@@ -24,44 +26,177 @@ El lenguaje de programación elegido para el proyecto ha sido C++. Esta elecció
 	\item Aunque no hace un uso adecuado de las capacidades de C++, DHC ha sido desarrollado utilizando dicho lenguaje de programación.
 \end{itemize}
 
-\section{Diseño actual de DHC}
+Por otra parte se hace uso del lenguaje PHP para el controlador web por ser un lenguaje gratuito y muy extendido. Además, dispone de versiones para Windows, Linux y MacOS X.
 
-DHC es una aplicación divida en dos partes:
+Por último se hace uso de una variación del lenguaje C creada por NVIDIA para desarrollar en sus tarjetas gráficas. Esta variación consiste en añadir información sobre el acceso a métodos y variables:
+
 \begin{itemize}
-	\item Controlador
-	\item Agente
+	\item Se usa \_\_global\_\_ para denotar funciones que se alojarán en la tarjeta gráfica, pero que podrán ser llamdas desde la CPU.
+
+	\item \_\_device\_\_ son funciones que solo pueden ser llamadas desde otras funciones que ya se encuentre en la GPU.
+	
+	\item Las variables que pueden ser compartidas entre distintos \emph{threads} se denotan con \_\_shared\_\_. Estas variables hacen uso de la memoria global.
+	
+	\item Si se necesitase que una función resida en la CPU se le indicaría con \_\_host\_\_.
+	
+	\item Si utilizamos memoria que no pueda cambiar de valor dentro de la GPU utilizaremos la notación \_\_constant\_\_ y deberemos iniciar la memoria desde la CPU.
 \end{itemize}
 
-El controlador es el encargado de gestionar las tareas solicitadas. Estas tareas consisten en:
+En caso de necesitar más detalles sobre la arquitectuar CUDA en~\cite{nvidia:cuda_c_programming_guide} se puede encontrar una guía completa sobre las peculiaridades de la implementación de C realizada por NVIDIA.
+
+\section{Estudio de DHC}
+
+DHC es una aplicación divida en dos partes claramente diferenciadas y que es importante comprender de cara a poder realizar modificaciones de forma satisfactorias sobre el. Estas partes son el controlador y el agente.
+
+\subsection{Controlador de DHC}
+El controlador es la herramienta encargada de gestionar las tareas solicitadas, permitir al usuario la introducción de tareas y la cancelación de las mismas, realizar estadísticas de uso, etc. A continuación se expone de manera más detallada las tareas realizadas por el controlador:
+
 \begin{itemize}
-	\item Introducción de nuevos resúmenes que probar.
-	\item Crear paquetes de claves a probar y repartirlos entre los agentes para comprobar un determinado resumen.
-	\item Contabilizar el tiempo transcurrido para realizar una comprobación, los agentes existentes y los algoritmos que puede probar cada agente.
+	\item Introducción de nuevos resúmenes que probar. Estos resúmenes son almacenados en una base de datos para garantizar la persistencia de la tareas y así, en caso de caída, poder recuperar el trabajo.
+
+	\item Crear paquetes de claves a probar y repartirlos entre los agentes para comprobar un determinado resumen. Estos paquetes son denominados unidades de trabajo (WU en sus siglas en inglés y que será la nomenclatura utilizada en este documento). Una WU es una estructura que contiene la información de la tarea a realizar. Esta información contiene datos como:
+
+	\begin{itemize}
+		\item Tipo de algoritmo que se desea utilizar, como pueden ser MD5, SHA-1, etc.
+	
+		\item Datos sobre los que realizar las comprobaciones. En el caso de las funciones resumen este dato se corresponde con el hash que queremos comprobar.
+	
+		\item Juego de caracteres a utilizar. Permite elegir si utilizar número y lentras minúsculas o mayúsculas. También permite seleccionar símbolos, espacio y retorno de carro.
+	
+		\item Longitud máxima esperada. Ésta se utiliza para restrigir las pruebas, ya que consideramos que una cotraseña no va a exceder de los 8 caracteres no es necesario probar más allá.
+	
+		\item Bloque de claves a comprobar. Esto es el conjunto de contraseñas que se van a probar indicadas por su posición inicial (el primer valor a probar) y final.
+	\end{itemize}
+	
+	\item Mide los tiempos transcurridos desde que un controlador recibe una WU hasta que devuelve un resultado, calcula la velocidad de ejecución en hash/s y muestra informes de velocidad y carga de trabajo del sistema.
+	
 	\item Controlar los tiempos de expiración de las tareas y las prioridades de las mismas.
 \end{itemize}
 
 De este modo el controlador es una de las partes más importantes del sistema al ser la interfaz que el usuario va a utilizar para utilizar los recursos del mismo.
 
-El agente es la aplicación ejecutora, recibe una tarea del controlador y la lleva a cabo, devolviendo a éste el resultado (encontrado o no encontrado).
+El controlador hace uso de una base de datos MySQL, conocida por ofrecer un buen rendimiento y por ser software libre. Gracias al uso de esta base de datos la aplicación consigue de forma sencilla garantizar la persistencia de los datos en caso de caídas del sistema. Hay que recordar que solo hay un controlador y en caso de que este deje de estar activo todo el sistema se viene abajo por lo que es importante garantizar que la información con la que éste trabaja no se pierda.
+
+Cada vez que una WU es dada a un agente se calcula un tiempo de vida que será el tiempo que tiene el agente para devolver un resultado antes de considerar que la esa WU ha caducado. Si una WU caduca será reciclada y ofrecida a otro agente.
+
+El controlador esta programado enteramente en PHP sin hacer uso de ningún \emph{framework} sino que haciendo uso de una base del patrón de diseño MVC se ha programado desde cero todo el sistema. Al no disponer de documentación se hace relativamente complejo realizar el mantenimiento de esta solución, especialmente cuando no siempre hace uso del patrón anteriormente mencionado.
+
+\subsection{Agente de DHC}
+
+El agente es el encargado de realizar la tarea más compleja del sistema que es la comprobación de los resumenes dados por el controlador utilizando para ello las herramientas que estén a su disposición (la CPU y si puede ser la GPU).
+
+El agente se encuentra en el equipo que va a realizar las operaciones de comprobación de funciones resúmenes y puede haber tantos equipos como se necesite. De este modo el sistema no está restringido a un único agente y puede distribuir la carga de trabajo entre tantos agentes como haga falta. Además, los agentes pueden estar no solo distribuidos en una red local de ordenadores, sino que pueden distribuirse a lo largo de internet, de modo se podría tenerse varias sedes que ejecuten agentes disponiendo de un único controlador. En caso de requerir un sistema más complejo se puede consultar el apartado~\ref{sec:conf_avanzada}.
+
+Por otro lado, cuando se ejecuta un agente sobre un ordenador éste realiza una comprobación del número de CPUs en el sistema y del número de GPUs con capacidad para utilizar CUDA. Lo que se pretende con esto es crear un proceso ligero encargado de cada unidad de cómputo de que disponga el sistema teniendo en cuenta que para cada GPU asigna una CPU. Esto significa que si disponemos de un sistema con 4 GPU y 8 CPUs (concretamente 8 núcleos) sólo considerará que hay 4 GPUs y 4 CPUs (las otras 4 CPUs las utiliza para control de las unidades de tarjeta gráfica).
+
+A grandes rasgos, el proceso de ejecución de un agente, tras haberse configurado es el mostrado en la figura~\ref{fig:cont_proc_ejec}. Los apartados más importantes de este proceso son la obtención de la WU y la ejecución de la misma.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.26\textwidth]{images/proc_cont.pdf}
+	\caption{Proceso de ejecución de un controlador}\label{fig:cont_proc_ejec}
+\end{figure}
+
+Durante el proceso de obtención de una WU, el agente comprueba si esta es valida para el algoritmo indicado. Para ello utiliza el siguiente código:
+
+\begin{lstlisting}[language=c]
+if(algorithm == "md4" || 
+  algorithm == "md4_fast" || 
+  algorithm == "md5" ||
+  algorithm == "md5crypt" ||
+  algorithm == "ntlm")
+{
+  hashlen = 16;
+}
+else if(algorithm == "sha1")
+  hashlen = 20;
+else        
+  ThrowCustomError("Unknown hash function");
+                
+if(algorithm != "md5crypt" && hashlen*2 != text.length())
+  ThrowError("Invalid hash length");
+
+//Sanity check
+if(hashlen > 256)
+  ThrowError("Hash length too long");
+if(text.length() == 0)
+  ThrowError("Empty hash");
+\end{lstlisting}
+
+El problema del código mostrado anteriormente es que requiere forzosamente que ante la cualquier cambio de un algoritmo, o ante la creación de un algoritmo nuevo, modificar ese código. De este modo no el código no aprovecha la capacidad de abstracción de que otorga el lenguaje C++ ya que podría haberse hecho esto de un modo más elegante como se comprobará más adelante. Además, la el código mosntrado anteriormente supone un problema para el mantenimiento ya que éste se encuentra en un fichero del código fuente, pero además, en otro completamente distinto también se hacen comprobaciones sobre los algoritmos por lo que hay que tener un buen conocimiento sobre la estructura interna del código y la organización de sus ficheros.
 
 \section{Modificaciones realizadas a DHC}
 
+Como se ha podido ver en el apartado anterior DHC es una buena aplicación, pero tiene algunos fallo que podrían resolverse para mejorar la mantenibilidad de la solución. Esto ofrecería una esperanza de vida mayor al programa y lo convertiría en una herramienta mucho más útil a corto y largo plazo.
+
+Por los motivos anteriores se ha decidido realizar los cambios necesarios que conviertan a DHC en una herramienta más fácil de manejar, de mantener y que permita a cualquier programador añadir funcionalidades de forma sencilla sin requerir un alto grado de conocimiento del códgo del agente.
+
 \subsection{Diseño de API para algoritmos de codificación}
 
-Como ya se ha comentado anteriormente, una de las mayores deficiencias de DHC, a nuestro entender, es la falta de una API adecuada para poder incorporar nuevos algoritmos. Esto supone a la hora de realizar nuevos algoritmos un problema importante al encontrarse todo el código de los mismos repartido entre distintas funciones y métodos, dificultando enormemente las labores de mantenimiento y de desarrollo. Por este motivo se ha decidido implementar una API para el desarrollo de algoritmos que aprovechando todas las funcionalidades ya existentes mejore de forma sustancial las labores de mantenimiento de la aplicación y facilite el desarrollo de nuevos algoritmos.
+Como ya se ha comentado anteriormente, una de las mayores deficiencias de DHC, a nuestro entender, es la falta de mecanismo sencillo para incorporar nuevos algoritmos debido, principalmente, a que el código de los algoritmos se entremezcla con la funcionalidad de controlador por distintos ficheros de código fuente. Esto supone a la hora de realizar nuevos algoritmos un problema importante al encontrarse todo el código de los mismos repartido entre distintas funciones y métodos, dificultando enormemente las labores de mantenimiento y de desarrollo. Por este motivo se ha decidido implementar una API para el desarrollo de algoritmos que aprovechando todas las funcionalidades ya existentes mejore de forma sustancial las labores de mantenimiento de la aplicación y facilite el desarrollo de nuevos algoritmos.
 
 El diseño de la API propuesta se ha basado en dos ideas:
 \begin{itemize}
 	\item El algoritmo como sistema de realización de una tarea específica, como pueda ser obtener el valor que generó un determinado resumen y
+	
 	\item El preparador que es el mecanismo de configuración de los parámetros obtenidos del controlador para poder ser utilizados por un algoritmo.
 \end{itemize}
 
+El objetivo principal de la propuesta es permitir agrupar todo el código que rige a un algoritmo de forma que facilite la modificación del mismo y, en caso necesario, crear algoritmos nuevos sin tener que realizar un gran esfuerzo.
+
+Gracias al API propuesto, cada algoritmo será una clase que herede de la clase \emph{Algorithm}. Esta clase abstracta define las funcionalidades mínimas que debe implementar un algoritmo para poder ser utilizado por el agente. De este modo se consigue englobar en un único lugar todo lo relativo a un algoritmo.
+
+La clase \emph{Algorithm} define los siguiente métodos obligatorios de implementar:
+
+\begin{description}
+	\item[GetName] Devuelvel el nombre del algoritmo. Este nombre se utiliza para poder identificar el algoritmo y poder seleccionarlo cuando se solicite. Para garantizar el buen funcionamiento del sistema y evitar funcionamientos extraños, este nombre debe ser único.
+	
+	\item[HashLength] Es el tamaño que debe tener un hash para ser considerado válido. Con esto se pretende que en caso de que el controlador nos de un hash erróneo poder hacer frente al problema.
+
+	\item[InputLength] Tamaño de la entrada recibida por el WU. Aunque en muchos casos solo comprobando el tamaño del hash sería suficiente, hay algoritmos que pueden necesitar entradas extendidas, por lo que se necesita un doble chequeo.
+
+	\item[ExecuteCPU] Implementa el código que se encarga de utilizar la CPU para realizar la tarea solicitada.
+
+	\item[ExecuteGPU] Ejecuta en una GPU el algoritmo con objeto de realizar la tarea de comprobación.
+	
+	\item[IsGPUCapable] Indica si el algoritmo tiene soporte de GPU. De este modo el sistema sabe si puede determinar el método por el que debe realizarse el procesamiento, si por CPU o por GPU.
+	
+	\item[IsCPUCapable] Indica si el algoritmo soporta procesamiento utilizando CPU.
+\end{description}
+
 Cada algoritmo tendría asociado un preparador. Inicialmente se adaptaría el sistema existente para disponer del primer preparador al igual que sucederá con los algoritmos ya existentes, que también serán transformados. En la Figura 3 se puede ver a grandes rasgos cómo funcionaría este sistema.
-Estos dos elementos ya existen actualmente en DHC pero de forma difusa y poco clara. Con este cambio de visión se pretende conseguir un mejor diseño que permita una implementación más eficaz.
- 
-Figura 3. Esquema de ejecución de un algoritmo
+
+Por otra parte se ha creado una factoría de algoritmos (la clase \emph{AlgorithmFactory}) que permite acceder de forma sencilla a los algoritmos que se encuentren registrados en el sistema. Además, esta factoría permite el registro de nuevos algoritmos de forma sencilla para facilitar la implementación de nuevas utilidades.
+
+Para poder comprender mejor como funciona el nuevo sistema la figura~\ref{fig:algotirmo_gpu} muestra a grandes rasgos como sería el proceso. En este caso el actor es el agente que va a hacer uso de la funcionalidad ofrecida para realizar una comprobación sobre MD5.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.7\textwidth]{images/algoritmo_gpu.pdf}
+	\caption{Proceso de ejecución de un algoritmo en GPU}\label{fig:algotirmo_gpu}
+\end{figure}
 
 A la hora de implementar estas características hay que tener en cuenta que se puede hacer uso tanto de una CPU como de una GPU. Esto supone que tanto el preparador como el algoritmo deben estar capacitados para ofrecer alguna de dichas opciones y, a poder ser, ambas. Esto supone en la práctica que tanto el algoritmos implementado como el configurador pueden estar duplicados (uno especializado en CPU y otro en GPU).
+
+
+
+\subsection{Diseño de API para la estandarización de la ejecución de algoritmos}
+
+Una vez creado el API para algoritmos se puede comprobar que muchos algoritmos siempre siguen el mismo patron de ejecución. Esto supone tener que repetir constantemente el mismo código en los algoritmos cuando podríamos hacer uso de la reutilización para eliminar este inconveniente. Por este motivo se planteo diseñar un sistema que permitiera estandarizar la forma que tiene un algoritmo de ejecutarse de tal modo que solo tengamos que centrarnos en lo imprescindible de cada uno de ellos.
+
+La filosofía que se ha empleado es la misma que en el caso de los algortimos. En este caso se ha creado la clase \emph{Executor} que se encarga de definir las funcionalidades básicas que debe implementar un mecanismo de ejecución y por otro lado se dispone de la clase \emph{ExecutorFactory} que nos facilita el acceso a los mismos.
+
+Con este sistema se obtiene un mecanismo muy interesante para la realización de pruebas de algoritmos sin tener que modificar el resto de algoritmos y, en caso de obtener un mecanismo suficientemente bueno y que puedar ser utilizado por más algoritmos, de organizar todos los algoritmos que deban ejecutarse de igual forma para reducir la cantidad de código duplicado facilitando el mantenimiento en caso de errores.
+
+El código original de DHC utiliza el mismo mecanismo de ejecución para todos los algoritmos implementados. Esto está muy bien hasta cierto punto ya que restringe de forma muy clara la cantidad de mecanismos que pueden implementarse en el sistema. Gracias a la nueva API se permite implementar más algoritmos, no teniendo que restringirnos necesariamente a una forma concreta de hacer las cosas o a un tipo concreto de algoritmos (hasta el momento solo hay funciones resumen).
+
+\begin{figure}
+	\centering
+	\includegraphics[width=1\textwidth]{images/executor.pdf}
+	\caption{Proceso de ejecución de un algoritmo en GPU utilizando un \emph {Executor}}\label{fig:algotirmo_gpu_executor}
+\end{figure}
+
+La ejecución con este mecanismo se complica un poco más (ver figura~\ref{fig:algotirmo_gpu_executor}), pero la sobrecarga introducida por este mecanismo es despreciable en tiempo.
 
 \subsection{Modificaciones para la mejora de la escalabilidad}
 
