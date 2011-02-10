@@ -82,12 +82,11 @@ Estas características del sistema del cumpleaños lo convierten en un sistema i
 
 \subsection{Tablas arcoíris}
 
-Las tablas arcoíris son una técnica por la que se toma un conjunto de entradas y sobre cada una de éstas se realizan un proceso iterativo de resúmenes que van tomando el último resumen realizado para hacer uno nuevo hasta obtener un elemento que consideraremos terminal. Se puede considerar este proceso como una tabla en el que la primera columna son las distintas entradas que se han elegido y cada columna $C_j$, para $j>1$, representa el resumen de la columna anterior ($C_j = H(C_{j-1})$, ver figura \ref{fig:arcoiris}). La tabla arcoíris consiste en tomar la primera y última columnas.
+Las tablas arcoíris son una técnica por la que se toma un conjunto de entradas y sobre cada una de éstas se realizan un proceso iterativo de resúmenes que van tomando el último resumen realizado para hacer uno nuevo hasta obtener un elemento que consideraremos terminal. Se puede considerar este proceso como una tabla en el que la primera columna son las distintas entradas que se han elegido y cada columna $C_j$, para $j>1$, representa el resumen de la columna anterior ($C_j = H(C_{j-1})$, ver cuadro \ref{tab:arcoiris}). La tabla arcoíris consiste en tomar la primera y última columnas.
 
-\begin{figure}
+\begin{table}
 	\centering
 	\begin{tabular}{ccccc}
-		\hline
 		$M$   & $H(M)$ & $H(M')$ & $H(M'')$ & $H(M''')$\\
 		\hline
 		$m_1$ & $m'_1$ & $m''_1$ & $m'''_1$ & $m_{1,terminal}$\\
@@ -99,8 +98,8 @@ Las tablas arcoíris son una técnica por la que se toma un conjunto de entradas
 		$m_4$ & $m'_4$ & $m''_4$ & $m'''_4$ & $m_{4,terminal}$\\
 		\hline
 	\end{tabular}
-	\caption{Ejemplo de tabla arcoíris}\label{fig:arcoiris}
-\end{figure}
+	\caption{Ejemplo de tabla arcoíris}\label{tab:arcoiris}
+\end{table}
 
 Una vez que se dispone de la tabla arcoíris se pueden empezar a probar claves por fuerza bruta y si en algún momento alguna coincide con algún elemento final de la tabla arcoíris simplemente tenemos que buscar los resúmenes empezando en el que genero dicho elemento terminal (el mensaje inicial).
 

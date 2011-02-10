@@ -1,6 +1,42 @@
 \chapter{Presupuesto}
 
+Para la estimación del presupuesto necesario para la realización del proyecto se ha utilizado COCOMO II y como entrada de éste se le ha especificado líneas de código. La razón de utilizar líneas de código se debe a que es un dato fácil de obtener a partir del repositorio de versiones.
+
+Además de COCOMO II se ha tenido en cuenta otros factores, como el estudio del código de DHC ya que el modelo de estimación elegido se centra principalmente en el desarrollo de código, pero no contempla el hecho de que se parta de un código que es desconocido. Por este motivo se debe tener en cuenta este hecho para poder dejar constancia y disponer de un presupuesto lo más ajustado a la realidad posible.
+
 \section{Estimación de costes}
-Cocomo II
+
+Como ya se ha comentado antes, para estimar los costes se ha utilizado COCOMO II y, concretamente, la herramienta suministrada por la University of Southern California. Esta herramienta se puede encontrar en \url{http://csse.usc.edu/tools/COCOMOII.php}.
+
+\subsection{Obtención de las SLOC}
+
+Para obtener el número de líneas se ha hecho uso de los datos suministrados por la herramienta git y SLOCCount.
+
+Si se toma como referencia la última versión del código se podrá ver que en el directorio que contiene el código fuente del agente hay un total de 9.129 líneas de las cuales solo 3.252 son de código fuente (sin comentarios) lo que significa que aproximadamente el 64\% de las líneas de código son o comentarios o líneas en blanco. Utilizaremos esta proporción para poder determinar el número de líneas de código que han sido cambiadas frente a las líneas totales cambiadas.
+
+\begin{table}
+	\centering
+
+	\begin{tabular}{|l|r|r|}
+	\hline
+	Descripción & Número de líneas & SLOC\footnote{Se obtiene utilizando la herramienta SLOCcount o multiplicando el número de líneas por 0,36 en caso de que se haya suministrado dicho dato.}\\
+	\hline
+	Número inicial de líneas\footnote{Se obtiene del primer \emph{commit} de git. En este \emph{commit} se encuentra el código original de DHC.} &  & 4.101\\
+	\hline
+	Número final de líneas\footnote{Se obtiene del último \emph{commit} del repositorio (o HEAD).} &  & 5.236\\
+	\hline
+	Líneas añadidas &  3.500 & 1.260\\
+	\hline
+	Líneas borradas & 451 & 162\\
+	\hline
+	\end{tabular}
+
+	\caption{Números de líneas de código}\label{tab:num_lin_codi}
+\end{table}
+
+
+\subsection{Tiempo de estudio del código}
+
+\section{Presupuesto}
 
 Coste CUDA 7082\euro
