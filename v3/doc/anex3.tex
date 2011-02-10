@@ -1,5 +1,25 @@
 \chapter{Manual de usuario} 
 
+\section{Instalación del agente}
+
+\section{Instalación de controlador}
+
+\section{Administración de plugins}
+
+\subsection{Instalación de nuevos algoritmos}
+
+Esto podría apreciarse en el caso de que hubiese dos grupos de desarrollo y cada uno trabajase con una versión del agente diferente. Si cada agente debe contener los algoritmos que utiliza puede darse un caso como el siguiente: el agente del equipo 1 implementa los algoritmos A, B y C; el agente del equipo 2 tiene los algoritmos B y D. Así que si estamos utilizando el agente del equipo 1 y tenemos que probar el algoritmo D tenemos que deshacernos de los algoritmos A y C.
+
+Separando la lógica de los algoritmos fuera del agente conseguimos mayor independencia. En el caso anterior solo tendríamos que instalar el nuevo algoritmo D sin tener que preocuparnos por los algoritmos A, B y C.
+
+\subsection{Eliminación algoritmos obsoletos o erróneos}
+
+Puede darse el caso de que un algoritmo pase a un estado de obsolescencia. Esto podría deberse a que se disponga de un algoritmo más nuevo que haga el mismo trabajo. También podría ser que tras probar un algoritmo descubramos que éste introduce errores en el sistema. En estos casos la mejor solución es eliminarlos con un simple borrado de disco.
+
+Con el sistema tal y como venía era un problema solucionar esto, ya que se dependía del tiempo que pueda tardar el desarrollador en solucionar el problema.
+
+\section{Uso del controlador}
+
 \section{Configuraciones avanzadas}\label{sec:conf_avanzada}
 
 \subsection{Varios controladores un MySQL}

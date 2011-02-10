@@ -16,7 +16,7 @@ Por otra parte, la implementación de funciones resumen de que dispone DHC, aún
 
 Finalmente, DHC dispone de un programa que se encarga de controlar el reparto de las tareas. Este programa se denomina controlador y está desarrollado enteramente en PHP sin seguir un modelo claro de organización del código. En un principio parece que está basado en MVC, pero por algún motivo el código fuente parece muy entremezclado.
 
-\section{Lenguajes de programación utilizado}
+\section{Lenguajes de programación utilizados}
 
 El lenguaje de programación elegido para el proyecto ha sido C++. Esta elección se realiza por diversos factores:
 
@@ -131,7 +131,7 @@ Como se ha podido ver en el apartado anterior DHC es una buena aplicación, pero
 
 Por los motivos anteriores se ha decidido realizar los cambios necesarios que conviertan a DHC en una herramienta más fácil de manejar, de mantener y que permita a cualquier programador añadir funcionalidades de forma sencilla sin requerir un alto grado de conocimiento del código del agente.
 
-\subsection{Diseño de API para algoritmos de codificación}
+\subsection{Diseño de API para algoritmos de codificación}\label{sec:api_alg}
 
 Como ya se ha comentado anteriormente, una de las mayores deficiencias de DHC, a nuestro entender, es la falta de mecanismo sencillo para incorporar nuevos algoritmos debido, principalmente, a que el código de los algoritmos se entremezcla con la funcionalidad de controlador por distintos ficheros de código fuente. Esto supone a la hora de realizar nuevos algoritmos un problema importante al encontrarse todo el código de los mismos repartido entre distintas funciones y métodos, dificultando enormemente las labores de mantenimiento y de desarrollo. Por este motivo se ha decidido implementar una API para el desarrollo de algoritmos que aprovechando todas las funcionalidades ya existentes mejore de forma sustancial las labores de mantenimiento de la aplicación y facilite el desarrollo de nuevos algoritmos.
 
@@ -286,18 +286,47 @@ END_PLUGIN()
 \end{verbatim}
 
 
-\subsection{Instalación de nuevos algoritmos}
+\section{Mejoras en la depuración}
 
-Esto podría apreciarse en el caso de que hubiese dos grupos de desarrollo y cada uno trabajase con una versión del agente diferente. Si cada agente debe contener los algoritmos que utiliza puede darse un caso como el siguiente: el agente del equipo 1 implementa los algoritmos A, B y C; el agente del equipo 2 tiene los algoritmos B y D. Así que si estamos utilizando el agente del equipo 1 y tenemos que probar el algoritmo D tenemos que deshacernos de los algoritmos A y C.
+Cuando se desarrollan aplicaciones siempre hay que tener muy encuenta que se pueden producir errores durante la ejecución. Generalmenet, el método habitual para comprobar los fallos es utilizar salidas por pantalla tratando de acotar el lugar del fallo; este sistema es poco profesional por lo que para la realización de esta práctica se ha utilizado otros mecanismos.
 
-Separando la lógica de los algoritmos fuera del agente conseguimos mayor independencia. En el caso anterior solo tendríamos que instalar el nuevo algoritmo D sin tener que preocuparnos por los algoritmos A, B y C.
+Para comprobar la ejecución de toda aplicación en caso de errores el mejor método es el uso de un depurador, por este motivo se ha utilizado el depurador de gnu gdb. Pero aún así no siempre es suficiente con utilizar un buen depurador, sino que tener información extra a la que éste pueda darnos puede ser de gran utilidad. Por este motivo se ha implementado un sistema de trazas para depuración que no buscan la acotación de los errores, esa información ya se encuentra en el fichero de volcado creado en los fallos graves, sino que ofrece una visión más global sobre qué está sucediendo en el código. Esta información puede ser desde cuando se entra en un método, cuando se sale de éste, salida de información varia, etc.
 
-\subsection{Eliminación algoritmos obsoletos o erróneos}
+Para activar la salida de depuración se debe llamar a cmake del siguiente modo:
+\begin{verbatim}
+$ DEBUG=1 cmake .
+\end{verbatim}
 
-Puede darse el caso de que un algoritmo pase a un estado de obsolescencia. Esto podría deberse a que se disponga de un algoritmo más nuevo que haga el mismo trabajo. También podría ser que tras probar un algoritmo descubramos que éste introduce errores en el sistema. En estos casos la mejor solución es eliminarlos con un simple borrado de disco.
+Así, cuando cmake esté generando el fichero de Makefile tendrá conocimiento de que debe activar la opción de depuración y de generación de salida de depuración. El primero consistema en añadir el parámetro -g durante la compilación y el segundo con -DDEBUG.
 
-Con el sistema tal y como venía era un problema solucionar esto, ya que se dependía del tiempo que pueda tardar el desarrollador en solucionar el problema.
+Las funciones para utilizar la salida de depuración son:
 
+\begin{description}
+	\item[DO\_ENTER(class, method)] Se encarga de anunciar cuándo se entra en un método/función. También configura automáticamente el sistema para controlar cuándo se sale del método/función para que quede constancia. Sus parámetros son cadenas que representan la clase en la que nos encontramos (class) y el método (method).
+	
+	\item[DO\_ERROR(str)] Muestra un error por la salida de depuración. Acepta como parámetro la salida que debe mostrar.
+
+	\item[DO\_WARNING(str)] Advierte de una situación extraña, pero que no impide a la aplicación seguir funcionando. Acepta como parámetro la salida que debe mostrar.
+
+	\item[DO\_MESSAGE(str)] Muestra un mensaje de usuario. Acepta como parámetro la salida que debe mostrar.
+
+	\item[DO\_LOG(str)] Muestra un mensaje de seguimiento. Acepta como parámetro la salida que debe mostrar.
+	
+	\item[DO\_DEBUG(str)] Información de depuración. Es útil cuando se quiere mostrar por la salida de depuración información sobre el estado de ciertas variables. Acepta como parámetro la salida que debe mostrar.
+
+	\item[INIT\_LOG(lvl)] Inicializa el sistema de salida de depuración. Acepta como parámetro el nivel de depuración que se va a utilizar. Este nivel puede ser:
+	\begin{description}
+		\item[ERROR] Es el nivel más bajo de depuración. Solo se muestran las salidas de error.
+		
+		\item[WARINING] Siguiente nivel de depuración. Se mostrarán las salidas de los niveles anteriores y las salidas de avisos.
+		
+		\item[MESSAGE] Muestra las salidas de los niveles anteriores y los mensajes del programador.
+		
+		\item[LOG] Mensajes de seguimiento y todos los mensajes de los niveles anteriores.
+
+		\item[DEBUG] Mensajes de depuración junto a todos los mensajes de los niveles anteriores.
+	\end{description}
+\end{description}
 \section{Nuevo controlador}
 
 Además de los cambios anteriores realizados al agente también se han realizado cambios en el controlador. Concretamente se ha rehecho completamente reutilizando el código justo. El motivo de la creación de este nuevo controlador se debe, principalmente, a que se quiere disponer de un sistema bien organizado y claramente centrado en la labor de controlar las tareas.
@@ -334,7 +363,7 @@ Inicialmente DHC soporta los algoritmos MD4, MD5, SHA1, NTLM y MD5 crypt. Este �
 
 $$HASH = H(SALT | PASSWD)$$
 
-Estos algoritmos se han recodificado para que se adapten a los cambios mencionados en 5.3.1.Diseño de API para algoritmos de codificación. Tras este cambio se ha procedido al desarrollo de nuevos algoritmos que dotan al sistema de mayor funcionalidad, especialmente si son algoritmos más modernos.
+Estos algoritmos se han recodificado para que se adapten a los cambios mencionados en \ref{sec:api_alg}. Tras este cambio se ha procedido al desarrollo de nuevos algoritmos que dotan al sistema de mayor funcionalidad, especialmente si son algoritmos más modernos.
 
 Hay que tener en cuenta que a menos que se hallen debilidades contra los algoritmos el sistema de comprobación a utilizar será siempre el de fuerza bruta. Esto supone que los algoritmos más actuales sean más costosos con respecto al tiempo necesario.
 

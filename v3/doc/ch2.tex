@@ -106,7 +106,12 @@ Una vez que se dispone de la tabla arcoíris se pueden empezar a probar claves p
 
 El principal problema de éste sistema es determinar el tamaño de la tabla a utilizar y el tiempo que se necesita para crearla. En general este mecanismo solo se utiliza para casos muy concretos de funciones resumen débiles.
 
-\subsection{Camino diferencia para SHA-1\cite{citeulike:7684257}}
-Ataques a SHA1
+\subsection{Caminos diferenciales para SHA-1}
+
+La técnica de los caminos diferenciales consiste en realizar una estudio sobre los cambios en los bits de las variables utilizadas en una función resumen. El objetivo es detectar estadísticamente los puntos en los que se producen alternancia de bits o en los que éstos no cambian para realizar una aproximación estadística a posibles colisiones.
+
+En \cite{citeulike:7684257} se puede encontrar un estudio que a partir del uso de aproximaciones no lineales es capaz de encontrar una colisión en SHA-1 en $2^{52}$ intentos. Para ello toma el resumen para el que deseamos hayar un mensaje que lo genere y trata de determinar los mensajes que pudieron haberlo generado deshaciendo el algoritmo tomando los datos de los posibles cambios obtenidos en el estudio anteriormente comentado.
+
+Como sucedía con el ataque del cumpleaños, esta técnica es interesante siempre y cuando el conjunto de caracteres de entrada sea completo ya que en el caso de de contraseñas, donde se utiliza un juego de caracteres muy limitado, una técnica de fuerza bruta puede resultar más eficiente.
 
 
