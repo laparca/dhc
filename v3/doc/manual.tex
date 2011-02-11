@@ -37,8 +37,17 @@ Una vez instalado todas las herramientas necesarias se procede a la compilación
 	$ make
 	\end{verbatim}
 	
-	\item Una vez compilado el código disponemos en el directorio del proyecto de una carpeta llamda bin y otra ptx que contienen los binarios de linux y de CUDA.
+	\item Una vez compilado el código disponemos en el directorio del proyecto de una carpeta llamada \emph{bin} y otra \emph{ptx} que contienen los binarios de linux y de CUDA. Para terminar la instalación procederemos del siguiente modo:
+	
+	\begin{verbatim}
+	$ sudo cp bin/agent /usr/bin
+	$ sudo mkdir -p /usr/lib/cracker/ptx
+	$ sudo cp bin/*.aplug.so /usr/lib/cracker/ptx
+	$ sudo cp ptx/* /usr/lib/cracker/ptx
+	\end{verbatim}
 \end{enumerate}
+
+En el cuadro~\ref{tab:mat_agente} podemos ver la lista de tareas a realizar. Este cuadro puede ser utilizado como \emph{checklist} de la instalación.
 
 \begin{table}
 	\centering
@@ -57,7 +66,9 @@ Una vez instalado todas las herramientas necesarias se procede a la compilación
 	\hline
 	& Comprobar si se han creado los dispositivos de NVIDIA en /dev & \\
 	\hline
-	& Compilador el agente & \\
+	& Compilación del agente & \\
+	\hline
+	& Instalación de los binarios &\\
 	\hline
 	\end{tabular}
 	
@@ -66,26 +77,161 @@ Una vez instalado todas las herramientas necesarias se procede a la compilación
 
 \subsection{Instalación de controlador}
 
+El controlador es la parte encargada de la gestión del sistema. Es algo más sencilla de instalar que el agente al no requerir ninguna compilación, pero en cambio necesita que se modifiquen ciertos ficheros.
+
+Para poder utilizar el controlador hace falta que el ordenador disponga del servidor web Apache y PHP. Además puede tener MySQL o se puede alojar la base de datos en otro ordenador. Con independencia de dónde se decida instalar MySQL se considerarán las siguiente variables que utilizaremos para identificar datos de configuración:
+
+\begin{description}
+	\item[PWEB] Ruta al punto en que se encontrará el controlador y que es un directorio público en internet (normalmente es /var/www).
+	\item[WEB\_HOST] Dirección del servidor web para la base de datos (si el servidor aloja ambos servicios se considerará que es localhost).
+	\item[MYSQL\_HOST] Dirección IP de la máquina que aloja el servidor de base de datos (en caso de ser el mismo equipo que el servidor web se considerará que es localhost).
+	\item[DB\_USER] Usuario que se configurará en MySQL para poder acceder a la base de datos del controlador.
+	\item[DB\_PASS] Contraseña del usuario \$DB\_USER.
+	\item[DB\_NAME] Nombre que tendrá la base de datos (por ejemplo, DHC).
+\end{description}
+
+Los pasos a seguir para la instalación son los siguientes:
+
+\begin{enumerate}
+	\item Instalar el sistema operativo en el servidor de Apache y de MySQL según lo mostrado en el apéndice~\ref{chap:entorno}.
+	
+	\item Creamos la base de datos en el servidor de MySQL:
+	
+	\begin{verbatim}
+	$ mysql -h $MYSQL_HOST -u root -p
+	mysql> create database $DB_NAME
+	mysql> grant all privileges on $DB_NAME.* to `$DB_USER`@`$WEB_HOST` identified by '$DB_PASS'
+	mysql> quit
+	\end{verbatim}
+
+	\item Se hace una copia del repositorio para trabajar con ella:
+	
+	\begin{verbatim}
+	$ git clone $LOCATION dhc
+	\end{verbatim}
+	
+	\$LOCATION hace referencia al lugar en el que se encuentre el repositorio y puede ser de la forma \emph{file://directorio} o \emph{usuario@ssh://direccion/ruta}. Una vez realizada esta copia dispondremos de una version local del respositorio sobre la que trabajar. Esta versión se habrá creado en el directorio en el que nos estuviéramos en el momento de realizar la llamada.
+
+	\item Copiamos el controlador a su destino:
+	
+	\begin{verbatim}
+	$ sudo cp -r dhc/v3/controller/* $PWEB
+	\end{verbatim}
+	
+	\item Volcamos la base de datos inicial:
+	
+	\begin{verbatim}
+	$ mysql -h $MYSQL_HOST -u $DB_USER \
+	  -p $DB_PASS < $PWEB/app/config/database.sql
+	\end{verbatim}
+	
+	\item Editamos el fichero de configuración de la base de datos (\$PWEB/app/config/database.php) para que quede como sigue:
+	
+	\begin{verbatim}
+	class DATABASE_CONFIG {
+	  var $default = array(
+	    'driver' => 'mysql',
+	    'persistent' => false,
+	    'host' => '$MYSQL_HOST',
+	    'login' => '$DB_USER',
+	    'password' => '$DB_PASS',
+	    'database' => '$DB_NAME',
+	    'prefix' => '',
+	  );
+
+	  var $test = array(
+	    'driver' => 'mysql',
+	    'persistent' => false,
+	    'host' => '$MYSQL_HOST',
+	    'login' => '$DB_USER',
+	    'password' => '$DB_PASS',
+	    'database' => '$DB_NAME',
+	    'prefix' => '',
+	  );
+	}
+	\end{verbatim}
+\end{enumerate}	
+
+A partir de este momento el controlador ya se encuentra listo para ser utilizado. En el cuadro~\ref{tab:mat_controlador} podemos ver un resumen de los pasos a seguir.
+
+\begin{table}
+	\centering
+	
+	\begin{tabular}{|c|p{5.6cm}|p{5.6cm}|}
+	\hline
+	Hecho & Descripción & Notas\\
+	\hline
+	& Instalar S.O. Linux en el servidor web & \\
+	\hline
+	& Instalar S.O. Linux en el servidor de MySQL & \\
+	\hline
+	& Configurar MySQL & \\
+	\hline
+	& Copiamos e instalamos el controlador & \\
+	\hline
+	& Iniciamos la base de datos & \\
+	\hline
+	& Configuramos el acceso a la base de datos & \\
+	\hline
+	\end{tabular}
+	
+	\caption{Matriz de comprobación de la instalación del controlador}\label{tab:mat_controlador}
+\end{table}
+
+\section{Uso de DHC}
+
+Para utilizar DHC se hace uso del controlador. Éste es la interfaz que permitirá utilizar todas las funcionalidades que nos ofrezcan los agentes. Pero antes de esto hay que iniciar los agentes.
+
+La inicialización de un agente es tan sencilla como ejecutar el siguiente comando en el ordenador en que se encuentre:
+
+\begin{verbatim}
+$ agent $DIRECCION_CONTROLADOR
+\end{verbatim}
+
+Donde \$DIRECCION\_CONTROLADOR es la URL del controlador.
+
+Una vez que se tiene a los agentes en funcionamiento se puede proceder a utilizar el controlador. Para este fin de hará uso de un navegador web\footnote{Actualmente existe una gran cantidad de navegadores web en el mercado. Se recomienda encarecidamente el uso de navegadores con soporte de HTML5 y CSS3 como pueden ser Google Chrome, Apple Safari o Mozilla Firefox.}
+
+\textbf{FALTA CAPTURAS CON EL USO. HAY QUE TERMINAR UN PAR DE DETALLES DE LA WEB}
+
 \section{Administración de plugins}
 
-\subsection{Instalación de nuevos algoritmos}
+Durante el tiempo que esté en uso DHC pueden surgir ocasiones en las que se necesite instalar nuevos plugins o eliminar los antiguos.  Para ello se seguirán los siguientes pasos en el agente sin olvidar que tras la modificación hay que reiniciar el agente.
 
-Esto podría apreciarse en el caso de que hubiese dos grupos de desarrollo y cada uno trabajase con una versión del agente diferente. Si cada agente debe contener los algoritmos que utiliza puede darse un caso como el siguiente: el agente del equipo 1 implementa los algoritmos A, B y C; el agente del equipo 2 tiene los algoritmos B y D. Así que si estamos utilizando el agente del equipo 1 y tenemos que probar el algoritmo D tenemos que deshacernos de los algoritmos A y C.
+\subsection{Instalación de nuevos plugins}
 
-Separando la lógica de los algoritmos fuera del agente conseguimos mayor independencia. En el caso anterior solo tendríamos que instalar el nuevo algoritmo D sin tener que preocuparnos por los algoritmos A, B y C.
+Para instalar nuevos plugins en el sistema solo hay que copiar estos al directorio /usr/lib/cracker/ptx. Los plugins tienen todos la extensión .aplug.so.
+%Esto podría apreciarse en el caso de que hubiese dos grupos de desarrollo y cada uno trabajase con una versión del agente diferente. Si cada agente debe contener los algoritmos que utiliza puede darse un caso como el siguiente: el agente del equipo 1 implementa los algoritmos A, B y C; el agente del equipo 2 tiene los algoritmos B y D. Así que si estamos utilizando el agente del equipo 1 y tenemos que probar el algoritmo D tenemos que deshacernos de los algoritmos A y C.
 
-\subsection{Eliminación algoritmos obsoletos o erróneos}
+%Separando la lógica de los algoritmos fuera del agente conseguimos mayor independencia. En el caso anterior solo tendríamos que instalar el nuevo algoritmo D sin tener que preocuparnos por los algoritmos A, B y C.
 
-Puede darse el caso de que un algoritmo pase a un estado de obsolescencia. Esto podría deberse a que se disponga de un algoritmo más nuevo que haga el mismo trabajo. También podría ser que tras probar un algoritmo descubramos que éste introduce errores en el sistema. En estos casos la mejor solución es eliminarlos con un simple borrado de disco.
+\subsection{Eliminación plugins obsoletos o erróneos}
 
-Con el sistema tal y como venía era un problema solucionar esto, ya que se dependía del tiempo que pueda tardar el desarrollador en solucionar el problema.
+Para eliminar un plugin con errores u obsoleto basta con borrar el fichero que lo contiene:
 
-\section{Uso del controlador}
+\begin{verbatim}
+$ sudo rm /usr/local/cracker/ptr/nombre_plugin.aplug.so	
+\end{verbatim}
+%Puede darse el caso de que un algoritmo pase a un estado de obsolescencia. Esto podría deberse a que se disponga de un algoritmo más nuevo que haga el mismo trabajo. También podría ser que tras probar un algoritmo descubramos que éste introduce errores en el sistema. En estos casos la mejor solución es eliminarlos con un simple borrado de disco.
+
+%Con el sistema tal y como venía era un problema solucionar esto, ya que se dependía del tiempo que pueda tardar el desarrollador en solucionar el problema.
 
 \section{Configuraciones avanzadas}\label{sec:conf_avanzada}
 
-\subsection{Varios controladores un MySQL}
-Disponer de varios controladores gracias a que comparten una base de datos.
+En ciertas ocasiones puede hacer falta realizar instalaciones especiales de DHC. En esta sección se van a explicar dos opciones que hemos detectado.
+
+\subsection{Varios controladores con un MySQL}
+Puede darse el caso de que se necesite disponer de varios controladores de DHC pero que compartan una única base de datos. Esto puede resultar útil si la carga sobre un único controlador es muy elevada.
+
+Para llevar a cabo este proceso se deben instalar dos o más controlador solo con servidor web siguiendo los pasos descritos anteriormente y a parte se configurará otro servidor con MySQL. Ambos controladores se configurarán para utilizar dicho servidor de MySQL.
+
+Una vez que se inicien los agentes se irá pasando a cada uno la URL del controlador que deseemos o podemos configurar un balanceador de carga automático.
+
 
 \subsection{Cambio de los tiempos de espera para evitar exceso de reciclado de WU}
 En ciertas ocasiones, los agentes pueden tardar mucho en devolver el resultado de una WU por lo que se hace necesario modificar los tiempo de caducidad para evitar un exceso de reciclados que ralentizarían sobremedida el proceso de comprobación.
+
+\subsection{Cambio de los directorios de búsqueda predeterminados}
+Cuando un agente se inicia siempre comprueba la existencia de plugins en unos directorios predefinidos. Además, también busca en estos mismos directorio los ficheros binarios de CUDA que le puedan ser solicitados por los algoritmos. Por defecto estos directorios son: el directorio desde el que se ejecuta el agente, el directorio \emph{ptx} desde el que se ejecuta el agente y el directorio \emph{/usr/lib/cracker/ptx}.
+
+En caso de que se quisiese cambiar este comportamiento se puede editar el fichero config.cpp del agente para añadir o eliminar directorios de búsqueda.
