@@ -246,11 +246,15 @@ Para realizar el proyecto se ha utilizado, a parte de las herramientas anteriorm
 \begin{description}
 	\item[Servidor web] Se dispone de un servidor privado virtual que tiene instalado Apache, Git, Redmine, PHP y la versión de pruebas del controlador de DHC.
 	
+	Este servidor ha sido subcontratado para garantizar un buen funcionamiento del servicio ya que la red de la universidad no ofrece garantías suficientes de estabilidad. Además, el uso de un servidor privado virtual ofrece la posibilidad de instalar todas aquellas herramientas que sean necesarias.
+	
 	\item[Equipos de desarrollo] Puede ser cualquier equipo desde el que puede escribirse código fuente. Se han utilizado dos ordenadores para este propósito uno con Mac OS X y el otro con Kubuntu 10.10.
 	
 	Desde estos equipos se realizan constantes peticiones de \emph{pull} y \emph{push} a git para mantener siempre una copia actualizada de los cambios.
 	
-	\item[Equipo de ejecución] Este equipo se encuentra instalado en el laboratorio de Evalues en el Parque Cientifico-Tecnológico de Leganés. Dispone de una 2 microprocesadores de 4 núcleos cada uno, 8 GB de RAM y una NVIDIA Tesla S1070.
+	\item[Equipo de ejecución] Este equipo se encuentra instalado en el laboratorio de Evalues en el Parque Cientifico-Tecnológico de Leganés. Dispone de una 2 microprocesadores AMD Opteron de 4 núcleos cada uno, 8 GB de RAM y una NVIDIA Tesla S1070.
+	
+	Tanto la unidad Tesla como el equipo que la controla pueden montarse en un \emph{rack} de ordenadores.
 	
 	Para ejecutar las pruebas este ordenador hace peticiones de \emph{pull} al git para obtener las versiones más actuales del código.
 \end{description}

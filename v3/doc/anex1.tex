@@ -1,42 +1,237 @@
 \chapter{Presupuesto}
 
-Para la estimación del presupuesto necesario para la realización del proyecto se ha utilizado COCOMO II y como entrada de éste se le ha especificado líneas de código. La razón de utilizar líneas de código se debe a que es un dato fácil de obtener a partir del repositorio de versiones.
+A continuación se va a presentar el presupuesto requerido para llevar a cabo del proyecto.
 
-Además de COCOMO II se ha tenido en cuenta otros factores, como el estudio del código de DHC ya que el modelo de estimación elegido se centra principalmente en el desarrollo de código, pero no contempla el hecho de que se parta de un código que es desconocido. Por este motivo se debe tener en cuenta este hecho para poder dejar constancia y disponer de un presupuesto lo más ajustado a la realidad posible.
+La duración total del proyecto ha sido de 11 meses, teniendo en cuenta que la dedicación que se ha aplicado ha sido de aproximadamente 13,2 horas semanales (un tercio de las 40 horas semanales).
 
-\section{Estimación de costes}
+\section{Desglose de actividades del proyecto}
 
-Como ya se ha comentado antes, para estimar los costes se ha utilizado COCOMO II y, concretamente, la herramienta suministrada por la University of Southern California. Esta herramienta se puede encontrar en \url{http://csse.usc.edu/tools/COCOMOII.php}.
-
-\subsection{Obtención de las SLOC}
-
-Para obtener el número de líneas se ha hecho uso de los datos suministrados por la herramienta git y SLOCCount.
-
-Si se toma como referencia la última versión del código se podrá ver que en el directorio que contiene el código fuente del agente hay un total de 9.129 líneas de las cuales solo 3.252 son de código fuente (sin comentarios) lo que significa que aproximadamente el 64\% de las líneas de código son o comentarios o líneas en blanco. Utilizaremos esta proporción para poder determinar el número de líneas de código que han sido cambiadas frente a las líneas totales cambiadas.
+Para calcular el total de horas del proyecto se ha tenido en cuenta todas las actividades realizadas en el mismo. En el cuadro~\ref{tab:des_horas} puede apreciarse el trabajo que ha ido desde el estudio de la solución previa, el análisis de los posibles cambios a realizar, el diseño de las modificaciones realizadas o la instalación del sistema de pruebas (la máquina Tesla).
 
 \begin{table}
 	\centering
-
-	\begin{tabular}{|l|r|r|}
-	\hline
-	Descripción & Número de líneas & SLOC\footnote{Se obtiene utilizando la herramienta SLOCcount o multiplicando el número de líneas por 0,36 en caso de que se haya suministrado dicho dato.}\\
-	\hline
-	Número inicial de líneas\footnote{Se obtiene del primer \emph{commit} de git. En este \emph{commit} se encuentra el código original de DHC.} &  & 4.101\\
-	\hline
-	Número final de líneas\footnote{Se obtiene del último \emph{commit} del repositorio (o HEAD).} &  & 5.236\\
-	\hline
-	Líneas añadidas &  3.500 & 1.260\\
-	\hline
-	Líneas borradas & 451 & 162\\
-	\hline
+	
+	\begin{tabular}{|l|r|}
+		\hline
+		Actividad & Horas \\
+		\hline
+		Estudio DHC & 80 h \\
+		\hline
+		Anásis y diseño & 70 h \\
+		\hline
+		Implementación & 280 h \\
+		\hline
+		Pruebas & 40 h \\
+		\hline
+		Instalación sistema & 5 h \\
+		\hline
+		Documentación & 100 h \\
+		\hline
 	\end{tabular}
+	\caption{Desglose de horas por actividad}\label{tab:des_horas}
+\end{table}
 
-	\caption{Números de líneas de código}\label{tab:num_lin_codi}
+\section{Gasto en personal imputable al proyecto}
+
+Para ajustar el precio por hora del programador se ha hecho una búsqueda entre las ofertas de trabajo que se encuentran actualmente en internet. Se ha tomado como muestra aquellas en las que se busca gente con experiencia donde el sueldo ronda los 36.000\euro/año.
+
+El coste total por personal es de 9.200\euro como puede apreciarse en el cuado~\ref{tab:des_prec_horas}.
+
+\begin{table}
+	\centering
+	
+	\begin{tabular}{|l|r|r|r|}
+		\hline
+		Cargo & Horas & Coste/Hora & Total \\
+		\hline
+		Analista & 150 h & 16,00\euro/hora & 2.400,00\euro\\
+		\hline
+		Programador & 280 h & 16,00\euro/hora & 4.480,00\euro\\
+		\hline
+		Responsable documentación & 100h h & 16,00\euro/hora & 1.600,00\euro\\
+		\hline
+		Responsable pruebas & 40 h & 16,00\euro/hora & 640,00\euro\\
+		\hline
+		Técnico instalación & 5 h & 16,00\euro/hora & 80,00\euro\\
+		\hline
+		\hline
+		Total & 575 h & \multicolumn{2}{|r|}{9.200,00\euro} \\
+		\hline
+	\end{tabular}
+	\caption{Desglose de horas por actividad}\label{tab:des_prec_horas}
 \end{table}
 
 
-\subsection{Tiempo de estudio del código}
+\section{Servicios subcontratados}
 
-\section{Presupuesto}
+En el cuadro~\ref{tab:serv_subcont} puede apreciarse el coste de los servicios que se han subcontratado.
 
-Coste CUDA 7082\euro
+\begin{table}
+	\centering
+	
+	\begin{tabular}{|l|r|r|r|}
+		\hline
+		Servicio & Precio mes & Meses & Total\\
+		\hline
+		Servidor privado virtual & 16,99\euro/mes & 11 & 186,89\euro\\
+		\hline
+	\end{tabular}
+	\caption{Coste de los servicios subcontratados}\label{tab:serv_subcont}
+\end{table}
+
+\section{Recursos materiales empleados}
+
+Durante la realización de este proyecto se ha hecho uso de una gran cantidad de software. Al haber sido software libre y gratuito el coste repercutido a un posible cliente es de 0\euro y no hace falta amortizarlo lo que puede ser considerado una ventaja importante frente a otros sistemas que pueden encarecer significativamente el producto.
+
+Por lo anterior, solo es necesario repercutir el coste de los dispositivos materiales empleados, como puede verse en el cuado~\ref{tab:re_mat}.
+
+\begin{table}
+	\centering
+	
+	\begin{tabular}{|l|r|r|}
+		\hline
+		Recurso & Cantidad & Coste total \\
+		\hline
+		Ordenador personal & 2 & 3.000,00\euro \\
+		\hline
+		Tesla T1070 & 1 & 7.082,00\euro \\
+		\hline
+		Servidor tesla & 1 & 2.528,00\euro\\
+		\hline
+		\hline
+		\multicolumn{2}{|l|}{Total} & 12.610,00\euro\\
+		\hline
+	\end{tabular}
+	\caption{Coste de los recursos materiales empleados}\label{tab:re_mat}
+\end{table}
+
+\section{Gastos indirectos}
+
+Se debe tener en cuenta el coste de todos aquellos elementos que si bien no repercuten directamente sobre el proyecto suponen un gasto constante durante la vida de éste.
+
+\begin{table}
+	\centering
+	
+	\begin{tabular}{|l|r|r|}
+		\hline
+		Descripción & Coste \\
+		\hline
+		Conexión a internet & 143,50\euro \\
+		\hline
+		Llamadas telefónicas & 143,50\euro \\
+		\hline
+		Material de oficina & 10,00\euro\\
+		\hline
+		Alquiler local & 3.953,13\euro\\
+		\hline
+		Electricidad & 74,75\euro\\
+		\hline
+		Servicio de limpiza & 3593,75\euro\\
+		
+		\hline
+		\hline
+		Total & 7.918,63\euro\\
+		\hline
+	\end{tabular}
+	\caption{Costes indirectos}\label{tab:cost_indi}
+\end{table}
+
+El precio de la conexión a internet y de la telefonía se ha calculado a partir de las facturas obtenidas de unos 40€\euro/mes cada una. Considerando que un mes tiene 4 semanas a 40 horas lavorables el precio por hora es de 0,25\euro/hora. Este valor se multiplica por el total de horas empleadas para realizar el proyecto.
+
+El material de oficina comprende folios, cuadernos e instrumental para escribir. Apenas se ha gastado material de este tipo (un cuaderno, algunos folios y un boligrafo) por lo que su valor es bajo.
+
+El alquiler de locales en Leganés están sobre los 1.100\euro/mes de media (obtenido a partir de una revisión de \url{www.idealista.com}). Estos locales solo pueden amortizarse durante la actividad económica del mismo (40h/semana). Esto supone un coste por hora de 6,875\euro/hora.
+
+Se ha supuesto un gasto en electricidad de unos 20\euro/mes. Esto supone un coste por hora de 0,13\euro/hora.
+
+La limpiza del local puede rondar en torno a los 1.000\euro/mes. Se ha considerado que la subcontratación del servicio de limpieza puede rondar los 25\euro/hora y no sería necesario más de 2 horas al día durante cada día de la semana (unos 20 días al mes). Esto supone un coste distribuido por horas de 6,25\euro/hora.
+
+En el cuadro~\ref{tab:cost_indi} hay un resumen de los gastos indirectos del proyecto.
+
+\section{Resumen del presupuesto}
+
+\begin{table}
+	\centering
+	
+	\begin{tabular}{|l|r|}
+		\hline
+		Descripción        & Coste  \\
+		\hline
+		Personal & 9.200,00\euro \\
+		\hline
+		Subcontratas        & 186,89\euro \\
+		\hline
+		Material     & 12.610.00\euro\\
+		\hline
+		Indirectos & 7.918,63\euro\\
+		\hline
+		\hline
+		Total              & 29.915,52\euro\\
+		\hline
+	\end{tabular}
+	\caption{Resumen de los gastos del proyecto}\label{tab:resu_gastos}
+\end{table}
+
+Con todos los datos juntos (ver cuadro~\ref{tab:resu_gastos}) precedemos a calcular el precio de venta de la solución desarrollada.
+
+Lo primero de todo es que pueden darse imprevistos a lo largo del desarrollo, como roturas de material, enfermedad del personal, etc. Por este motivo se aplica un margen del 10\% sobre el precio para compensar estos posibles imprevistos: 2.991,55\euro.
+
+$$
+\mbox{Coste Total} + \mbox{Margen de imprevistos} = \mbox{32.907,07\euro}
+$$
+
+El margen de beneficio a aplicar es del 25\% sobre el percio con imprevistos: 8.226,77\euro.
+
+$$
+	\mbox{Precio Final} = \mbox{Precio con Imprevistos} + \mbox{Beneficio} = \mbox{41.133,84\euro}
+$$
+
+El precio final de la solución, contando el 18\% de I.V.A., es: {\large \textbf{48.537,93\euro}}.
+%Para la estimación del presupuesto necesario para la realización del proyecto se ha utilizado COCOMO II y como entrada de éste se le ha especificado líneas de código. La razón de utilizar líneas de código se debe a que es un dato fácil de obtener a partir del repositorio de versiones.
+
+%Además de COCOMO II se ha tenido en cuenta otros factores, como el estudio del código de DHC ya que el modelo de estimación elegido se centra principalmente en el desarrollo de código, pero no contempla el hecho de que se parta de un código que es desconocido. Por este motivo se debe tener en cuenta este hecho para poder dejar constancia y disponer de un presupuesto lo más ajustado a la realidad posible.
+
+%\section{Estimación de costes}
+
+%Como ya se ha comentado antes, para estimar los costes se ha utilizado COCOMO II y, concretamente, la herramienta suministrada por la University of Southern California. Esta herramienta se puede encontrar en \url{http://csse.usc.edu/tools/COCOMOII.php}.
+
+%\subsection{Obtención de las SLOC}
+
+%Para obtener el número de líneas se ha hecho uso de los datos suministrados por la herramienta git y SLOCCount.
+
+%\begin{table}
+%	\centering
+
+%	\begin{tabular}{|l|r|r|}
+%	\hline
+%	Descripción              & Número de líneas &  SLOC\\
+%	\hline
+%	Número inicial de líneas &                  & 4.101\\
+%	\hline
+%	Número final de líneas   &                  & 5.236\\
+%	\hline
+%	Líneas añadidas          &            3.500 & 1.260\\
+%	\hline
+%	Líneas borradas          &              451 &   162\\
+%	\hline
+%	\end{tabular}
+
+%	\caption{Números de líneas de código}\label{tab:num_lin_codi}
+%\end{table}
+
+%En el cuadro~\ref{tab:num_lin_codi} puede verse el desglose de líneas de código tomadas a partir de los datos obtenidos de la información almacenada en el repositorio. Para calcular los valoers de la tabla antes de nada hay que considerar:
+
+%\begin{itemize}
+%	\item Se ha considerado que solo el 36\% de las líneas indicadas por git son de código fuente. Para calcular esto se ha hecho uso de la última versión del código que se encontraba en el repositorio.
+	
+%	El procedimiento para obtener dicho valor ha consistido en comprobar las líneas de código con SLOCCount y éstas se han dividido entre el número total de líneas de código en el directorio.
+	
+%	Esta proporción es muy útil cuando solo disponemos de líneas modificadas, pero no podemos obtener un valor exacto de líneas de código.
+	
+%	\item El número de líneas de código inicial se ha tomado a partir del código inicial de DHC (el primer \emph{commit} que se encuentra en el repositorio) y utilizando la herramienta SLOCCount.
+	
+%	\item El número de líneas final se ha tomado de la revisión \emph{HEAD} del repositorio.
+	
+%	\item Para calcular el número de líneas añadidas o eliminadas se ha utilizado los logs de git, tomando las líneas identificadas por + como adiciones (excepto aquellas que empiezan por +++) y las líneas que empezaban por - (excepto las que empiezan por $---$) como eliminaciones. Como estas son solo líneas normales se ha utilizado el factor anterior para convertirlas a SLOC.
+%\end{itemize}
+%\subsection{Tiempo de estudio del código}
