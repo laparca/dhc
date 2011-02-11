@@ -10,17 +10,17 @@ SET(LATEX_OUTPUT_PATH "out")
 ADD_LATEX_DOCUMENT(Document.tex
 	BIBFILES bibliografia.bib
 	INPUTS 
-		ch1.tex
-		ch2.tex
-		ch3.tex
-		ch4.tex
-		ch5.tex
-		ch6.tex
-		anex1.tex
-		anex2.tex
-		anex3.tex
-		anex4.tex
-		anex5.tex
+		introduccion.tex
+		funcione_resumen.tex
+		tarjetas_graficas.tex
+		mejoras.tex
+		conclusiones.tex
+		trabajos_futuros.tex
+		presupuesto.tex
+		entorno.tex
+		manual.tex
+		glosario.tex
+		codigo.tex
 		contenido_cd.tex
 		aviso_legal.tex
 		agradecimientos.tex
