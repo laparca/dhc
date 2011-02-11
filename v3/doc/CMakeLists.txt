@@ -10,10 +10,12 @@ SET(LATEX_OUTPUT_PATH "out")
 ADD_LATEX_DOCUMENT(Document.tex
 	BIBFILES bibliografia.bib
 	INPUTS 
+		resumen.tex
 		introduccion.tex
 		funcione_resumen.tex
 		tarjetas_graficas.tex
 		mejoras.tex
+		resultados.tex
 		conclusiones.tex
 		trabajos_futuros.tex
 		presupuesto.tex
@@ -24,7 +26,6 @@ ADD_LATEX_DOCUMENT(Document.tex
 		contenido_cd.tex
 		aviso_legal.tex
 		agradecimientos.tex
-		resumen.tex
 	IMAGE_DIRS images
 	DEFAULT_PDF
 	USE_METAPOST)

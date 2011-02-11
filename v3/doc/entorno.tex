@@ -1,4 +1,4 @@
-\chapter{Entorno de desarrollo}
+\chapter{Entorno de desarrollo}\label{chap:entorno}
 
 Para el desarrollo del proyecto se ha hecho uso de una gran cantidad de herramientas y tecnologías que es importante ver para poder comprender mejor el modo de desarrollo.
 
@@ -89,7 +89,13 @@ Para desarrollar el proyecto se ha hecho uso de la versión 2.3 de CUDA que pued
 
 Es importante comprobar antes de utilizar CUDA si la tarjeta gráfica que tiene el equipo es compatible.
 
-Para instalar CUDA en linux se necesita instalar primero el controlador. Por desgracia no se ofrecen paquetes adaptados a cada distribución por lo que hay que utilizar el instalador que ofrece NVIDIA:
+Para instalar CUDA en linux se necesita instalar primero el controlador de la tarjeta gráfica. Este controlador requiere las cabeceras del núcleo Linux para poder compilarse. Por este motivo hay que asegurarse de que ya se encuentre instaladas y en caso contraro se puden instalar con el siguiente comando:
+
+\begin{verbatim}
+$ sudo apt-get install linux-headers-generic
+\end{verbatim}
+
+Por desgracia no se ofrecen paquetes adaptados a cada distribución por lo que hay que utilizar el instalador que ofrece NVIDIA:
 
 \begin{verbatim}
 $ wget http://developer.download.nvidia.com/compute/cuda/
@@ -98,6 +104,13 @@ $ sudo sh ./devdriver_3.2_linux_32_260.19.26.run
 \end{verbatim}
 
 Tras este paso solo hay que siguir las indicaciones del instalador.
+
+Hay ocasiones en las que el instalador de los controladores de NVIDIA fallan y no crean los dispositivos necesarios en /dev, por lo que hay que crearlos a mano. Para ello se puede utilizar las siguiente llamdas en línea de comando:
+
+\begin{verbatim}
+$ for i in $(seq 0 9); do sudo mknod /dev/nvidia${i} c 195 ${i}; done
+$ sudo mknod /dev/nvidiactl c 195 255
+\end{verbatim}
 
 Una vez instalado el controlador de CUDA se puede proceder a instalar las herramientas. Éstas utilizan su propio instalador, pero está adaptado a distintas distribuciones, por lo que hay que elegir el más adecuado:
 

@@ -1,8 +1,70 @@
 \chapter{Manual de usuario} 
 
-\section{Instalación del agente}
+En el este capítulo se va a mostrar como instalar y usar DHC. Además se verán algunos detalles más avanzados de configuración para casos especiales.
 
-\section{Instalación de controlador}
+\section{Instalación}
+
+Antes de poder hacer uso de la aplicación es necesario instalarla. En las siguiente subsecciones se explicarán los pasos detallados para poner a punto el sistema.
+
+\subsection{Instalación del agente}
+
+El agente es uno de los elementos esenciales de DHC y el que entraña mayor dificultad de instalación. Por ese motivo hay que prestar especialdetalle al procedimiento para identificar posibles fallos.
+
+El proceso de instalacion consiste en la instalación del sistema operativo en la máquina, los controladores del mismo y las herramientas de compilación tal y como se ha descrito en el apéndice~\ref{chap:entorno}.
+
+Una vez instalado todas las herramientas necesarias se procede a la compilación del agente. Para este propósito se deberán seguir los siguiente pasos:
+
+\begin{enumerate}
+	\item Se hace una copia del repositorio para trabajar con ella:
+	
+	\begin{verbatim}
+	$ git clone $LOCATION dhc
+	\end{verbatim}
+	
+	\$LOCATION hace referencia al lugar en el que se encuentre el repositorio y puede ser de la forma \emph{file://directorio} o \emph{usuario@ssh://direccion/ruta}. Una vez realizada esta copia dispondremos de una version local del respositorio sobre la que trabajar. Esta versión se habrá creado en el directorio en el que nos estuviéramos en el momento de realizar la llamada.
+	
+	\item Preparamos la compilación:
+	
+	\begin{verbatim}
+	$ cd dhc/v3
+	$ cmake .
+	$ mkdir ptx
+	\end{verbatim}
+	
+	\item Compilamos el código:
+	
+	\begin{verbatim}
+	$ make
+	\end{verbatim}
+	
+	\item Una vez compilado el código disponemos en el directorio del proyecto de una carpeta llamda bin y otra ptx que contienen los binarios de linux y de CUDA.
+\end{enumerate}
+
+\begin{table}
+	\centering
+	
+	\begin{tabular}{|c|p{5.6cm}|p{5.6cm}|}
+	\hline
+	Hecho & Descripción & Notas\\
+	\hline
+	& Instalar S.O. Linux en el ordenador & \\
+	\hline
+	& Instalar las herramientas de desarrollo de g++ y cmake & \\
+	\hline
+	& Comprobar e instalar, si es necesario, las cabeceras de Linux & \\
+	\hline
+	& Instalar controladores de NVIDIA con soporte de CUDA & \\
+	\hline
+	& Comprobar si se han creado los dispositivos de NVIDIA en /dev & \\
+	\hline
+	& Compilador el agente & \\
+	\hline
+	\end{tabular}
+	
+	\caption{Matriz de comprobación de la instalación del agente}\label{tab:mat_agente}
+\end{table}
+
+\subsection{Instalación de controlador}
 
 \section{Administración de plugins}
 

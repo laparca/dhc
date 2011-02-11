@@ -1,10 +1,15 @@
 \chapter{Trabajos futuros}\label{cap6}
 
-Carga de algoritmos desde el controlador
+Tras terminar el proyecto hay muchas mejoras que han quedado pendientes o sería deseable poder añadir. A continuación puede verse una lista de aquellas elementos que se han considerado más importante de cara a la continuidad del proyecto:
 
-Mejorar las comunicaciones entre agentes y controlador
+\begin{description}
+	\item[Carga de algoritmos desde el controlador] Este extensión permitiría centralizar la administración de los algoritmos en el controlador de modo que no haga falta tener que entrar de forma remota en cada uno de los agentes para añadir nuevas funcionalidades.
 
-Crear nuevos algoritmos de comprobación de hashes y de otros protocolos de seguridad
+	\item[Mejorar las comunicaciones entre agentes y controlador] Hasta este momento las comunicaciones entre agente y controlador hacen uso de un protocolo un poco probre en lo que a características se refiere lo que supone también una restricción a la hora de hacer ampliaciones. La mejora propuesta busca ampliar este protocolo para que la variedad de funciones que pueda tener el agente sea mucho mayor.
 
-Añadir control de cambios sobre el sistema de ficheros para realizar actualizaciones automáticas sobre las extensiones cargadas en memoria. Esto se realizaria con una cola de tareas.
+	\item[Crear nuevos algoritmos de comprobación de hashes] En la actualidad hay una gran cantidad de algoritmos de resumen que pueden ser portados a  DHC y sería interesante disponer de ellos.
+	
+	\item[Implementar nuevos protocolos de seguridad] DHC no tiene porque restringirse solo a funciones resumen y menos cuando no son el único mecanismo de cifrado que hay en la actualidad.
 
+	\item[Control de cambios sobre el sistema de ficheros] Esta característica puede utilizarse para determinar cuando un plugin ha cambiado y volverlo a cargar sin tener que reiniciar el agente. De este modo el rendimiento de la aplicación mejoraría al no tener que parar casi nunca.
+\end{description}
