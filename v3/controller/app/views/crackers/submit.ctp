@@ -1,3 +1,4 @@
+<h1><?php __('Submit')?></h1>
 <?php
 echo $this->Session->flash();
 

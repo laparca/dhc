@@ -71,7 +71,7 @@ class AgentsController extends AppController {
 						'WorkUnit.hostname' => "'$hostname'",
 						'WorkUnit.devtype' => "'$type'",
 						'WorkUnit.devid' => $num,
-						'WorkUnit.expiration' => time() + 120 /* two minutes */
+						'WorkUnit.expiration' => time() + Configure::read('WorkUnit.expiration') /* two minutes */
 					),
 					array('WorkUnit.id' => $workunit['WorkUnit']['id'])
 				);
@@ -194,7 +194,7 @@ class AgentsController extends AppController {
 				'start' => $start,
 				'end' => $end,
 				'started' => time(),
-				'expiration' => time() + 120 //TODO: is 2 minute expiration reasonable?
+				'expiration' => time() + Configure::read('WorkUnit.expiration') /*120*/ //TODO: is 2 minute expiration reasonable?
 			));
 
 			$this->Crack->save($crack);

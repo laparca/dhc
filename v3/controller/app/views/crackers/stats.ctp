@@ -1,3 +1,4 @@
+<h1><?php __('Stats')?></h1>
 <?php
 function endHostname()
 {

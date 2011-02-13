@@ -1,3 +1,4 @@
+<h1><?php __('Queue')?></h1>
 <table class='overview' cellspacing='0' id='ovtable'>
 	<thead>
 		<tr class='overviewheader'>
