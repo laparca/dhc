@@ -290,6 +290,7 @@ bool ControllerLink::GetWorkUnit(WorkUnit& wu, const vector<string>& alglist)
 	else
 	{
 		cerr << "Warning: Invalid work unit (expected <nowork> or <workunit>, found <" << pRoot->GetType().c_str() << ">)" << endl;
+		cerr << "Original message: " << recvdata;
 		return false;
 	}
 }
