@@ -41,7 +41,6 @@ CREATE TABLE IF NOT EXISTS `history` (
 	`id`          INT(10)      NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	`time`        INT(11)      NOT NULL,
 	`speed`       FLOAT        NOT NULL
-
 ) ENGINE=MEMORY DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS `stats` (
@@ -50,4 +49,4 @@ CREATE TABLE IF NOT EXISTS `stats` (
 	`device`      VARCHAR(255) NOT NULL,
 	`time`        INT(11)      NOT NULL,
 	`speed`       FLOAT        NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=MEMROY DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;

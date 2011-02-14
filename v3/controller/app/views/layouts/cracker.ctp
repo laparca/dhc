@@ -7,6 +7,12 @@
 		<?php echo $scripts_for_layout . "\n";?>
 		<link href='http://fonts.googleapis.com/css?family=Josefin+Sans:light,regular,600' rel='stylesheet' type='text/css'>
 		<?php echo $this->Html->css('dhc') . "\n";?>
+		<?php echo $this->Html->css('jquery.jqplot.min') . "\n";?>
+		<?php echo $this->Html->script('jquery.jqplot.min');?>
+		<!--[if IE]><?php echo $this->Html->script('excanvas');?><![endif]-->
+		<?php if($action == 'overview'): ?>
+		<?php echo $this->Html->script('overview.js');?>
+		<?php endif; ?>
 	</head>
 	<body>
 		<div id="header">

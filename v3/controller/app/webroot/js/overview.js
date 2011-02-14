@@ -1,4 +1,3 @@
-<?php
 /******************************************************************************
 *                                                                             *
 * Distributed Hash Cracker v3.0                                               *
@@ -34,83 +33,17 @@
 *                                                                             *
 ******************************************************************************/
 
-class StatsComponent extends Object {
-	/**
-	 * When the Stats component is initialized it sets the internal
-	 * Stat and History attributes to the model. It is important to
-	 * use it on each method.
-	 */
-	function startup(&$controller) {
-		$this->Stat = ClassRegistry::init('Stat');
-		$this->History = ClassRegistry::init('History');
-	}
-	
-	/**
-	 * Deletes the old stat values and the old history values.
-	 */
-	function deleteOld() {
-		$now = time();
-		$exp = $now - Configure::read('WorkUnit.expiration'); //120;
-		$exp2 = $now - Configure::read('History.old'); //900;
+/* It retrieve the values each 10 seconds */
+var interval = 10;
 
-		$this->Stat->deleteAll(array('updated <' => $exp));
-		$this->History->deleteAll(array('time <' => $exp2));
-	}
-
-	/**
-	 * Only deletes the old history values.
-	 */
-	function deleteOldHistory() {
-		$exp = time() - Configure::read('History.old');
-		$this->History->deleteAll(array('time <' => $exp));
-	}
+function loadChart() {
+	$.getJSON('ajax/history', function(data) {
+	});
 	
-	/**
-	 * Check the stat values to calculate the history.
-	 */
-	function updateHistory() {
-		//See if we already have history for this timestamp
-		//TODO: Make this more efficient
-		$now = time();
-		
-		$r = $this->History->find('first', array(
-			'conditions' => array('time' => $now)
-		));
-		if(empty($r))
-		{
-			$fspeed = 0;
-			$stats = $this->Stat->find('list',
-				array(
-					'fields' => array('Stat.id', 'Stat.speed')
-				)
-			);
-			foreach($stats as $id => $speed) {
-				$fspeed += $speed;
-			}
-
-			//Add to global stats
-			$this->History->save(
-				array(
-					'History' => array(
-						'time' => $now,
-						'speed' => $fspeed
-					)
-				)
-			);
-		}
-	}
-	
-	/**
-	 * Return the whole history
-	 */
-	function getHistory() {
-		return $this->History->find('all', array('order' => 'ASC'));
-	}
-	
-	function addStat($stat) {
-		$this->Stat->deleteAll(array('device' => $stat['device']));
-		//Add us to stats
-		$this->Stat->save(array('Stat' => $stat));
-	}
+	setTimeout(loadChart, interval * 1000);
 }
-?>
+
+$(function() {
+	//setTimeout(loadChart, interval * 1000);
+	loadChart();
+});
