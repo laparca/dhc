@@ -35,35 +35,20 @@
 #ifndef NTLM_H
 #define NTLM_H
 
+#include "Plugin.h"
 #include "Algorithm.h"
 
 class ntlm: public Algorithm {
 public:
-	string GetName()
-	{
-		return string("ntlm");
-	}
-	int HashLength()
-	{
-		return 16;
-	}
-	int  InputLength()
-	{
-		return 16;
-	}
-	void ExecuteCPU() {}
-	void ExecuteGPU() {}
-
-	virtual bool IsGPUCapable()
-	{
-		return true;
-	}
-	virtual bool IsCPUCapable()
-	{
-		return false;
-	}
-
-	void Prepare(WorkUnit & wo) {}
+		string GetName();
+		int HashLength();
+		int  InputLength();
+		void ExecuteCPU();
+	#ifdef CUDA_ENABLED
+		void ExecuteGPU(WorkUnit& wu, Device* pDevice, CudaContext* pContext);
+	#endif
+		virtual bool IsGPUCapable();
+		virtual bool IsCPUCapable();
 };
 
 #endif
