@@ -35,7 +35,9 @@
 ******************************************************************************/
 
 class AjaxController extends AppController { 
-	var $components = array('Stats');
+	var $components = array('Stats','RequestHandler' );
+	var $uses = array();
+	var $helpers = array('Javascript');
 //	var $helpers = array('Cache');
 	
 //	var $cacheAction = array(

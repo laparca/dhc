@@ -206,6 +206,10 @@ class CrackersController extends AppController {
 		)));
 	}
 	
+	function cancel($id) {
+		$this->Crack->delete($id);
+	}
+
 	function beforeFilter() {
 		parent::beforeFilter();
 		

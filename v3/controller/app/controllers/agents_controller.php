@@ -115,12 +115,12 @@ class AgentsController extends AppController {
 			//Get our character set
 			$ccode = $crack['Crack']['charset'];
 			$csets = array(
-				'a' => 'abcdefghijklmnopqrstuvwxyz',
-				'A' => 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
-				'1' => '1234567890',
+				'a' => "abcdefghijklmnopqrstuvwxyz",
+				'A' => "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+				'1' => "1234567890",
 				'!' => "!@_-?#$",
 				'>' => "`~%^&*()=+[]\\{}|;':\",./<>",
-				's' => ' ',
+				's' => " ",
 				'n' => "\n"
 				);
 			$charset = '';

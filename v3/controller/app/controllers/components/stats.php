@@ -104,7 +104,7 @@ class StatsComponent extends Object {
 	 * Return the whole history
 	 */
 	function getHistory() {
-		return $this->History->find('all', array('order' => 'ASC'));
+		return $this->History->find('all', array('order' => 'History.time ASC'));
 	}
 	
 	function addStat($stat) {

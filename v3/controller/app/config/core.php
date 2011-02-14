@@ -311,3 +311,5 @@
  * agent.
  */
 Configure::write('WorkUnit.expiration', 120);
+
+Configure::write('History.old', 900);

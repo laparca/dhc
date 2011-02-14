@@ -19,6 +19,8 @@ function endHostname()
 		<?php $tspeed  = ''; ?>
 	<?php endif;
 }
+
+//print_r($stats);
 ?>
 <table class='overview' cellspacing='0'>
 	<thead>
@@ -42,7 +44,7 @@ function endHostname()
 
 		<?php foreach($stats as $stat) : ?>
 			<?php
-			$desc = explode('-', $stats['Stat']['device']);
+			$desc = explode('-', $stat['Stat']['device']);
 			$stat['Stat']['hostname'] = $desc[0];
 			$stat['Stat']['dev'] = $desc[1] . ' ' . $desc[2];
 			?>
@@ -60,7 +62,7 @@ function endHostname()
 			<?php $devs .= $stat['Stat']['dev'] . '<br/>'; ?>
 			<?php $speeds .= $stat['Stat']['speed'] . '<br/>'; ?>
 			<?php $tspeed += $stat['Stat']['speed']; ?>
-			<?php $dts .= ($noe - $stat['Stat']['updated']) . ' seconds ago<br/>'; ?>
+			<?php $dts .= ($now - $stat['Stat']['updated']) . ' seconds ago<br/>'; ?>
 
 
 		<?php endforeach; ?>

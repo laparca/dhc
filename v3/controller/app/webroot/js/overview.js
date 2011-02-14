@@ -36,10 +36,29 @@
 /* It retrieve the values each 10 seconds */
 var interval = 10;
 
+/**
+ * Requiere variable history_url from main template
+ */
 function loadChart() {
-	$.getJSON('ajax/history', function(data) {
-	});
-	
+	$.ajax({
+		url: history_url,
+		dataType: 'json',
+		success: function(data) {
+			var values = [];
+			values[0] = [];
+			for(i = 0; i < data.length; i++) {
+				values[0][i] = [i, parseFloat(data[i].History.speed)];
+			}
+			
+			if(data.length > 1) {
+				$('#OverviewChart').html('');
+				$.jqplot('OverviewChart', values, {seriesDefaults: {showMarker:false}});
+			}
+		},
+		error: function(jqXHR, textStatus, errorThrown) {
+			alert('ERROR: '+textStatus);
+		}
+	});	
 	setTimeout(loadChart, interval * 1000);
 }
 
