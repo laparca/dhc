@@ -47,12 +47,25 @@ function loadChart() {
 			var values = [];
 			values[0] = [];
 			for(i = 0; i < data.length; i++) {
-				values[0][i] = [i, parseFloat(data[i].History.speed)];
+				var date = new Date(data[i].History.time);
+				values[0][i] = [date.toUTCString(), parseFloat(data[i].History.speed)];
 			}
 			
 			if(data.length > 1) {
 				$('#OverviewChart').html('');
-				$.jqplot('OverviewChart', values, {seriesDefaults: {showMarker:false}});
+				$.jqplot('OverviewChart', values, {
+					seriesDefaults: {
+						showMarker:false
+					},
+					axes: {
+						xaxis: {
+							renderer: $.jqplot.DateAxisRenderer,
+							tickOptions: {
+								formatString: '%Y-%m-%d %H:%M'
+							}
+						}
+					}
+				});
 			}
 		},
 		error: function(jqXHR, textStatus, errorThrown) {

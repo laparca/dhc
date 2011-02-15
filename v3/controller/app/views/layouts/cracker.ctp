@@ -8,7 +8,8 @@
 		<link href='http://fonts.googleapis.com/css?family=Josefin+Sans:light,regular,600' rel='stylesheet' type='text/css'>
 		<?php echo $this->Html->css('dhc') . "\n";?>
 		<?php echo $this->Html->css('jquery.jqplot.min') . "\n";?>
-		<?php echo $this->Html->script('jquery.jqplot');?>
+		<?php echo $this->Html->script('jquery.jqplot.min');?>
+		<?php echo $this->Html->script('jqplot.dateAxisRenderer.min');?>
 		<!--[if IE]><?php echo $this->Html->script('excanvas');?><![endif]-->
 		<?php if($action == 'overview'): ?>
 		<script type="text/javascript">
