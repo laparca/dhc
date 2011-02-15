@@ -27,5 +27,4 @@ ADD_LATEX_DOCUMENT(Document.tex
 		aviso_legal.tex
 		agradecimientos.tex
 	IMAGE_DIRS images
-	DEFAULT_PDF
-	USE_METAPOST)
+	DEFAULT_PDF)

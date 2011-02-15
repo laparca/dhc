@@ -39,9 +39,9 @@ $ sudo apt-get install git-core
 Durante el desarrollo del proyecto se ha utilizado varias ramas para controlar las distintas partes. Concretamente se ha utilizado:
 
 \begin{description}
-	\item[master] Mantiene el código que ha se ha comprobado que funciona correctamente. No se puede incorporar nada a esta rama directamente, sino que hay que desarrollar primero en otra rama, comprobar correcto funcionamiento de los cambios y luego se realiza la mezcla de los cambios con master.
+	\item[master] Mantiene el código que ha se ha comprobado que funciona correctamente. No se puede incorporar nada a esta rama directamente, sino que hay que desarrollar primero en otra rama, comprobar correcto funcionamiento de los cambios y luego se realiza la mezcla de los cambios con \emph{master}s.
 	
-	\item[ldopen] En esta rama se realizaron los cambios para soportar plugins. La nomenclatura de ldopen proviene de la llamda a sistema utilizada para poder desarrollar esta funcionalidad.
+	\item[ldopen] En esta rama se realizaron los cambios para soportar plugins. La nomenclatura de ldopen proviene de la llamada a sistema utilizada para poder desarrollar esta funcionalidad.
 	
 	\item[nuevaweb] Aquí se encuentra todo el código de pruebas del nuevo controlador desarrollado así como cambios sobre los agentes para soportar la nueva arquitectura.
 	
@@ -52,7 +52,7 @@ Durante el desarrollo del proyecto se ha utilizado varias ramas para controlar l
 
 Para poder hacer uso del controlador es necesario disponer de un servidor web con soporte de PHP. En este caso se ha utilizado el servidor web Apache en su versión 2 por ser el más popular, disponer de una abundante documentación y ser software libre.
 
-Cualquier distribución de GNU/Linux puede instalar este servidor web con unos pocos clicks de ratón o en su defecto un único comando. en el caso de las distribuciones basadas en Debian solo hace falta ejecutar el siguiente comando:
+Cualquier distribución de GNU/Linux puede instalar este servidor web con unos pocos \emph{clicks} de ratón o en su defecto un único comando. en el caso de las distribuciones basadas en Debian solo hace falta ejecutar el siguiente comando:
 
 \begin{verbatim}
 $ sudo apt-get install apache2
@@ -72,7 +72,7 @@ La instalación de redmine es probablemente de las más complicadas de todas las
 	 $ sudo apt-get install ruby rails rake
 	 \end{verbatim}
 	 
-	 \item Instalación del módulo passenger para apache\footnote{Passenger dispone de paquetes para algunas distribuciones. Por desgracia, la distribución que utilizaba el servidor de Redmine no disponía de dichos paquetes}:
+	 \item Instalación del módulo \emph{passenger} para apache\footnote{Passenger dispone de paquetes para algunas distribuciones. Por desgracia, la distribución que utilizaba el servidor de Redmine no disponía de dichos paquetes}:
 	 \begin{verbatim}
 	 $ sudo gem install passenger
 	 $ sudo passenger-install-apache2-module
@@ -89,7 +89,7 @@ Para desarrollar el proyecto se ha hecho uso de la versión 2.3 de CUDA que pued
 
 Es importante comprobar antes de utilizar CUDA si la tarjeta gráfica que tiene el equipo es compatible.
 
-Para instalar CUDA en linux se necesita instalar primero el controlador de la tarjeta gráfica. Este controlador requiere las cabeceras del núcleo Linux para poder compilarse. Por este motivo hay que asegurarse de que ya se encuentre instaladas y en caso contraro se puden instalar con el siguiente comando:
+Para instalar CUDA en linux se necesita instalar primero el controlador de la tarjeta gráfica. Este controlador requiere las cabeceras del núcleo Linux para poder compilarse. Por este motivo hay que asegurarse de que ya se encuentre instaladas y en caso contrario se pueden instalar con el siguiente comando:
 
 \begin{verbatim}
 $ sudo apt-get install linux-headers-generic
@@ -103,9 +103,9 @@ $ wget http://developer.download.nvidia.com/compute/cuda/
 $ sudo sh ./devdriver_3.2_linux_32_260.19.26.run
 \end{verbatim}
 
-Tras este paso solo hay que siguir las indicaciones del instalador.
+Tras este paso solo hay que seguir las indicaciones del instalador.
 
-Hay ocasiones en las que el instalador de los controladores de NVIDIA fallan y no crean los dispositivos necesarios en /dev, por lo que hay que crearlos a mano. Para ello se puede utilizar las siguiente llamdas en línea de comando:
+Hay ocasiones en las que el instalador de los controladores de NVIDIA fallan y no crean los dispositivos necesarios en \emph{/dev}, por lo que hay que crearlos a mano. Para ello se puede utilizar las siguiente llamadas en línea de comando:
 
 \begin{verbatim}
 $ for i in $(seq 0 9); do sudo mknod /dev/nvidia${i} c 195 ${i}; done
@@ -120,7 +120,7 @@ $ wget http://developer.download.nvidia.com/compute/cuda/
 $ sudo sh ./cudatoolkit_3.2.16_linux_64_ubuntu10.04.run
 \end{verbatim}
 
-Es recomendable instalar las herramientas en los directorios que nos indique como predeterminados (generalmente /usr/local/cuda).
+Es recomendable instalar las herramientas en los directorios que nos indique como predeterminados (generalmente \emph{/usr/local/cuda}).
 
 \section{g++}
 
@@ -134,15 +134,15 @@ Para asegurarnos que al instalar el compilador g++ se instalen todas las depende
 $ sudo apt-get install build-essential g++
 \end{verbatim}
 
-El paquete build-essential se encarga de instalar todas las herramientas y bibliotecas de compilación básicas. Luego le indicamos que se asegure de instalar g++.
+El paquete \emph{build-essential} se encarga de instalar todas las herramientas y bibliotecas de compilación básicas. Luego le indicamos que se asegure de instalar g++.
 
 \section{PHP}
 
 PHP es un lenguaje de programación web muy extendido gracias a que es gratuito y libre. Tiene una sintaxis sencilla fuertemente basada en C y es muy fácil de aprender.
 
-Es muy habitual hablar de instalaciones LAMP, que son aquellas que hacen uso de Linux, Apache, MySQL y PHP y que son ampliamentes utilizadas en internet por gran número de servicios de alojamiento por su bajo coste y facilidad de instalación y configuración.
+Es muy habitual hablar de instalaciones LAMP, que son aquellas que hacen uso de Linux, Apache, MySQL y PHP y que son ampliamente utilizadas en internet por gran número de servicios de alojamiento por su bajo coste y facilidad de instalación y configuración.
 
-Al ser un lenguaje muy extendido se ha utilizado para la creación del nuevo controlador de DHC. El anterior controlador también hacía uso de PHP pero cuando se planteó crear uno nuevo se barajaron soluciones basadas en Ruby y Groovy. Estas soluciones fueron descartadas por ser algo más complicadas de configurar. Para ser más precisos, Ruby requiere que se instalen modulos especiales para Apache y hay que revisar muy bien la configuración. En el caso de Groovy se necesita un servidor Apache Tomcat basado en java que puede suponer una gran sobrecarga para el sistema.
+Al ser un lenguaje muy extendido se ha utilizado para la creación del nuevo controlador de DHC. El anterior controlador también hacía uso de PHP pero cuando se planteó crear uno nuevo se barajaron soluciones basadas en Ruby y Groovy. Estas soluciones fueron descartadas por ser algo más complicadas de configurar. Para ser más precisos, Ruby requiere que se instalen módulos especiales para Apache y hay que revisar muy bien la configuración. En el caso de Groovy se necesita un servidor Apache Tomcat basado en java que puede suponer una gran sobrecarga para el sistema.
 
 Para instalar PHP e integrar éste con Apache solo hace falta ejecutar el siguiente comando en cualquier distribución basada en Debian:
 
@@ -156,7 +156,7 @@ CakePHP es un \emph{framework} de desarrollo web que hace uso del lenguaje de pr
 
 Gracias al uso de CakePHP se ha podido centrar la atención del controlador más en las tareas propias del mismo. De este modo ahora no hay que preocuparse de como hacer el acceso a la base de datos o incluso el tipo de base de datos que se está utilizando.
 
-Para utilizar CakePHP solo hace falta descargarlo y descromprimirlo en un directorio. Éste ya dispone de una estructura básisca de directorios para utilizar directamente en un proyecto. Para este proyecto los directorios más importantes son:
+Para utilizar CakePHP solo hace falta descargarlo y descromprimirlo en un directorio. Éste ya dispone de una estructura básica de directorios para utilizar directamente en un proyecto. Para este proyecto los directorios más importantes son:
 
 \begin{description}
 	\item[app/controllers] Almacena los controladores de la aplicación. Estos controladores se encargan de la lógica de negocio.
@@ -170,7 +170,7 @@ Para utilizar CakePHP solo hace falta descargarlo y descromprimirlo en un direct
 
 \section{MySQL}
 
-MySQL es uno de los motores de base de datos libres más extendidos de internet. La principal razón de ésto es que es fácil de administrar y que históricamente siempre ha sido una base de datos muy rápida, lo que suponía una ventaja para las aplicaciones web con una alta carga de peticiones.
+MySQL es uno de los motores de base de datos libres más extendidos de internet. La principal razón de esto es que es fácil de administrar y que históricamente siempre ha sido una base de datos muy rápida, lo que suponía una ventaja para las aplicaciones web con una alta carga de peticiones.
 
 El controlador de DHC hace uso de bases de datos para almacenar la información de las tareas que se están ejecutando y las estadísticas de las mismas.
 
@@ -234,9 +234,9 @@ Algunos de los diagramas expuestos en la memoria hacen uso de dicho lenguaje. Co
 
 \section{Debian y Ubuntu}
 
-Debian es una de las distribuciones de Linux más antiguas y su filosofía es utilizar solo software libre. Una de los puntos más importantes a destacar sobre esta distribución es que está mantenida enteramente por voluntarios y que tiene uno de los mayores repositorios de aplicaciones de todas las ditribuciones existentes.
+Debian es una de las distribuciones de Linux más antiguas y su filosofía es utilizar solo software libre. Una de los puntos más importantes a destacar sobre esta distribución es que está mantenida enteramente por voluntarios y que tiene uno de los mayores repositorios de aplicaciones de todas las distribuciones existentes.
 
-Debian posé muchas distribuciones derivadas que sobre ésta añaden paquetes y/o hacen cambios de configuración. Una de estas distribuciones, y probablemente la ditribución más famosa actualmente, es Ubuntu.
+Debian posé muchas distribuciones derivadas que sobre ésta añaden paquetes y/o hacen cambios de configuración. Una de estas distribuciones, y probablemente la distribución más famosa actualmente, es Ubuntu.
 
 Para descargar Debian se puede ir a \url{http://www.debian.org/distrib/} y Ubuntu se puede obtener de \url{http://www.ubuntu.com/desktop/get-ubuntu/download}.
 
@@ -254,7 +254,7 @@ $ sudo apt-get install sloccount
 
 \section{Organización del entorno de trabajo}
 
-Para realizar el proyecto se ha utilizado, a parte de las herramientas anteriormente mencionadas, una serie de equipos organizados del siguienet modo:
+Para realizar el proyecto se ha utilizado, a parte de las herramientas anteriormente mencionadas, una serie de equipos organizados del siguiente modo:
 
 \begin{description}
 	\item[Servidor web] Se dispone de un servidor privado virtual que tiene instalado Apache, Git, Redmine, PHP y la versión de pruebas del controlador de DHC.

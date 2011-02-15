@@ -2,7 +2,7 @@
 
 En este capítulo se presentan las pruebas realizadas sobre el proyecto y los resultados obtenidos por las mismas.
 
-Con las pruebas realizadas se ha procurado asegurar el buen funcionamiento de los cambios introducidos durante la realización del proyecto para asegurar su utilidad.
+Con las pruebas realizadas se ha procurado asegurar el buen funcionamiento de los cambios introducidos durante la realización del proyecto para garantizar su utilidad.
 
 \section{Subsistema de plugins}
 
@@ -25,7 +25,7 @@ Los pasos seguidos para el propósito descrito ha sido el siguiente:
 	
 	\item Creación de \emph{BasicExecutor}.
 	
-	Este \emph{executor} implementa la lógica antigua de funcionamiento de los algoritmos. Se pretende de este modo reducir la cantiad de código duplicado y comprobar a su vez el funcionamiento de este subsistema.
+	Este \emph{executor} implementa la lógica antigua de funcionamiento de los algoritmos. Se pretende de este modo reducir la cantidad de código duplicado y comprobar a su vez el funcionamiento de este subsistema.
 	
 	Como en el caso anterior el primer algoritmo en hacer uso de esta funcionalidad ha sido MD4.
 	
@@ -52,7 +52,7 @@ Los cambios realizados ha supuesto una mejora constatada tras dar a probar ambas
 
 \section{Mantenibilidad}
 
-La facilidad de mantener el sitema era un punto importante del proyecto por la falta de organización del mismo. Con los cambios que se han introducido se ha procurado mejorar este aspecto reduciendo el número de ficheros a cambiar para pequeños cambios.
+La facilidad de mantener el sistema era un punto importante del proyecto por la falta de organización del mismo. Con los cambios que se han introducido se ha procurado mejorar este aspecto reduciendo el número de ficheros a cambiar para pequeños cambios.
 
 Un ejemplo claro sería la introducción de un nuevo algoritmo, que antes suponía la modificación de al menos los siguientes ficheros:
 
@@ -61,8 +61,8 @@ Un ejemplo claro sería la introducción de un nuevo algoritmo, que antes supon�
 	\item ComputeThreadProc.cpp
 \end{itemize}
 
-Además, puede ser necesario el cambio de más ficheros dependiende de cómo se haya implementado el algoritmo.
+Además, puede ser necesario el cambio de más ficheros dependiendo de cómo se haya implementado el algoritmo.
 
-Tras la reimplentación del sistema se simplifica enormemente el número de ficheros a modificar ya que ahora solo hace falta cambiar el del propio algoritmo. Igualmente, añadir nuevas funcionalidades se simplifica enormente ya que no hay necesidad de modificar línea alguna de código sobre el agente.
+Tras la reimplentación del sistema se simplifica enormemente el número de ficheros a modificar ya que ahora solo hace falta cambiar el del propio algoritmo. Igualmente, añadir nuevas funcionalidades se simplifica enormemente ya que no hay necesidad de modificar línea alguna de código sobre el agente.
 
 Igualmente el controlador se ha visto claramente beneficiado por el uso de CakePHP ya que, gracias al uso de una estructura ordenada en la organización de los elementos que componen al software, se puede ir directamente a la parte en la que pueda haber cualquier problema para solucionarla.

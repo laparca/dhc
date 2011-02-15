@@ -1,9 +1,9 @@
 \documentclass[12pt]{book}
 \usepackage[utf8]{inputenc}
 \usepackage[spanish]{babel}
-%\usepackage{graphicx}
+\usepackage{graphicx}
 \usepackage[pdftex]{hyperref}
-\usepackage{emp}
+%\usepackage{emp}
 \usepackage{listings}
 \usepackage{eurofont}
 
@@ -19,12 +19,14 @@
 %\usepackage{tikz}
 %\usetikzlibrary{positioning,shapes,shadows,arrows}
 
-\ifx\pdftexversion\undefined
-\usepackage[dvips]{graphicx}
-\else
-\usepackage[pdftex]{graphicx}
-\DeclareGraphicsRule{*}{mps}{*}{}
-\fi
+
+%% For MetaPOST
+%\ifx\pdftexversion\undefined
+%\usepackage[dvips]{graphicx}
+%\else
+%\usepackage[pdftex]{graphicx}
+%\DeclareGraphicsRule{*}{mps}{*}{}
+%\fi
 
 \newcommand{\putcode}[1]{\section{v3/#1}\lstinputlisting{../../#1}}
 
@@ -58,10 +60,10 @@
 	\listoffigures
 	\listoftables
 	
-	\begin{empfile}
-	\begin{empcmds}
-	input metauml;
-	\end{empcmds}
+%	\begin{empfile}
+%	\begin{empcmds}
+%	input metauml;
+%	\end{empcmds}
 	% The rest of the document here
 	\input{introduccion.tex}
 	\input{funcione_resumen.tex}
@@ -81,7 +83,7 @@
 	\input{contenido_cd.tex}
 	\input{aviso_legal.tex}
 	\input{agradecimientos.tex}
-	\end{empfile}
+%	\end{empfile}
 	
 	%\bibliographystyle{plain}
 	\bibliographystyle{alpha}
