@@ -212,7 +212,7 @@ En la figura~\ref{fig:alg_ex_prox} puede verse como pueden interactuar entre sí
 
 \subsection{Modificaciones para la mejora de la escalabilidad}
 
-Durante las primeras pruebas realizadas sobre DHC se noto que el tiempo de respuesta de la interfaz web podía verse seriamente comprometido si la velocidad utilizada por los agentes para solicitar tareas o devolver tareas es muy alta y si la distancia entre el agente y el controlador es grande. Este último punto se constató cuando se hicieron pruebas en las que el controlador se encontraba en un servidor en Alemania y el agente se encontraba en España. Sin duda la ralentización en este punto se debía a las latencias de la red por la espera de los asentimientos (paquetes ACK de la arquitectura IP). Estos retrasos pueden afectar de forma importante en la escalabilidad del sistema, por lo que se ha decidido realizar cambios para eliminar en la medida de lo posible estos problemas.
+Durante las primeras pruebas realizadas sobre DHC se notó que el tiempo de respuesta de la interfaz web podía verse seriamente comprometido si la velocidad utilizada por los agentes para solicitar tareas o devolver tareas es muy alta y si la distancia entre el agente y el controlador es grande. Este último punto se constató cuando se hicieron pruebas en las que el controlador se encontraba en un servidor en Alemania y el agente se encontraba en España. Sin duda la ralentización en este punto se debía a las latencias de la red por la espera de los asentimientos (paquetes ACK de la arquitectura IP). Estos retrasos pueden afectar de forma importante en la escalabilidad del sistema, por lo que se ha decidido realizar cambios para eliminar en la medida de lo posible estos problemas.
 
 Cada agente de DHC se encuentra en un bucle en el que en cada iteración solicita una WU al controlador. En caso de que no haya ninguna tarea que pueda realizar el agente se procede a esperar 5 segundos. Este tiempo puede resultar insuficiente si el controlador tiene que hacer gran cantidad de cálculos o si el número de agentes es tal que saturen con peticiones al controlador (efecto DDoS). Por este motivo se ha diseñado un algoritmo que ajuste el tiempo de espera de forma dinámica para ajustarse mejor a las capacidades del controlador.
 
@@ -372,4 +372,5 @@ Para el desarrollo de los nuevos algoritmos se ha tenido en cuenta su uso. De es
 \subsection{SHA256}
 
 Este algoritmo de resumen que sustituye al antiguo SHA1 es muy parecido al primero, habiéndose reutilizado todo el código que ha sido posible para simplificar su desarrollo. Es sustancialmente más lento al ejecutarse de esta forma, aproximadamente x1.5 veces más lento.
-La implementación de este algoritmo se ha tomado de la que aparece de Wikipedia y se ha probado que funciona correctamente.
+
+La implementación de este algoritmo se ha tomado a partir de la información ofrecida por el NIST~\cite{nist:sha256_implementation} y se ha probado que funciona correctamente.

@@ -24,7 +24,7 @@ A causa de su gran uso es necesario disponer de sistemas que comprueben la forta
 
 Existen dos formas básicas para comprobar la fortaleza de los mecanismos de seguridad. El primero es buscar debilidades en la propia función resumen que se va a utilizar. El segundo mecanismo es comprobar la calidad de la clave utilizada. Para este último caso lo más sencillo es utilizar un de mecanismo de fuerza bruta. Éste tipo de comprobación consisten en probar todas las combinaciones posibles entradas para generar resúmenes y éstos se cotejan con un resumen conocido previamente.
 
-El mayor problema de los sistemas de fuerza bruta es que al tener que hacer muchas comprobaciones el tiempo que tardan en obtener una solución es muy elevado. Por este motivo es importante poder predecir el tiempo que dedicarán previamente para comprobar si vale o no la pena intentar realizar una comprobación de éste tipo.
+El mayor problema de los sistemas de fuerza bruta es el tiempo que tardan en ofrecer algún resultado. Esto se debe a la gran cantidad de comprobaciones que deben realizar. Por este motivo es importante poder predecir el tiempo que dedicarán previamente para comprobar si vale o no la pena intentar realizar una comprobación de éste tipo.
 
 Para poder calcular el tiempo que se necesitará para poder poder hacer una comprobación de fuerza bruta empezaremos por el caso genera. En éste, el tiempo máximo (el que recorre todas la combinaciones posibles) es de:
 
@@ -42,7 +42,17 @@ $$ T_{max}=\frac{\sum^n_{i=m}k^i}{\sum^p_{j=1}\frac{C_j}{t_j}}$$
  
 Con esta información  se puede calcular cuál debe ser el tamaño del sistema a utilizar para poder comprobar la fortaleza de una contraseña en un tiempo determinado.
 
-Por ejemplo, si dispusiéramos de un sistema que utilizara 2 tipos de procesadores diferentes para calcular una función resumen y que el primer procesador puede hacer una media de 25 millones de resúmenes por segundo y el segundo procesador puede hacer 1250 millones de resúmenes por segundo (éste caso se aproxima al uso de CPU+GPU). De cada procesador se dispone de 4 unidades. Además, nuestra clave está entre 6 y 8 caracteres de longitud y solo vamos a considerar letras minúsculas y números lo que supone 36 símbolos de entrada. Esto supone que el tiempo máximo que tardará el sistema en comprobar todas las combinaciones en las condiciones expuestas es de casi 9,5 horas.
+Por ejemplo, si dispusiéramos de un sistema con las siguientes características:
+
+\begin{itemize}
+	\item 4 microprocesadores capaces de hacer 25 millones de resúmenes por segundo cada uno.
+	
+	\item 4 tarjetas gráficas capaces de hacer 1.250 millones de resúmenes por segundo cada una.
+\end{itemize}
+
+Tardaríamos unas 9,5 horas en encontrar una contraseña de entre 6 y 8 caracteres utilizando solo letras minúsculas y números. Es importante tener en cuenta que al buscar una contraseña se puede acotar mucho el conjunto de símbolos de entreda y las longitudes de las claves. Esto reduce enormemente los tiempos de búsqueda.
+%Por otra parte sabemos que la longitud de las contraseñas está entre 6 y 8 caracteres de longitud y que el usuario solo utiliza letras minúsculas y números.
+%2 tipos de procesadores diferentes para calcular una función resumen y que el primer procesador puede hacer una media de 25 millones de resúmenes por segundo y el segundo procesador puede hacer 1250 millones de resúmenes por segundo (éste caso se aproxima al uso de CPU+GPU). De cada procesador se dispone de 4 unidades. Además, nuestra clave está entre 6 y 8 caracteres de longitud y solo vamos a considerar letras minúsculas y números lo que supone 36 símbolos de entrada. Esto supone que el tiempo máximo que tardará el sistema en comprobar todas las combinaciones en las condiciones expuestas es de casi 9,5 horas.
 
 Es fácil comprobar que utilizando sistemas de fuerza bruta para comprobar resúmenes se resuelve de forma lineal con respecto al número de procesadores.
 
