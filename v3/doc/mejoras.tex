@@ -359,7 +359,7 @@ Se ha tenido en cuenta el diseño de la web a la hora de reescribir el controlad
 
 \section{Algoritmos nuevos de seguridad implementados}
 
-Inicialmente DHC soporta los algoritmos MD4, MD5, SHA1, NTLM y MD5 crypt. Este último es una versión de MD5 utilizada por los sistemas UNIX para almacenar las contraseñas y que se forma de la siguiente forma \$ID\$SALT\$HASH, donde ID es el identificador del algoritmo de resumen empleado (1 para MD5), SALT es una semilla aleatoria que se adjunta a la contraseña a resumir y HASH es el resultado de el resumen de la unión de la contraseña y la semilla.
+Inicialmente DHC soporta los algoritmos MD4, MD5, SHA1, NTLM y MD5 crypt. Este último es una versión de MD5 utilizada por los sistemas UNIX para almacenar las contraseñas y que se forma de la siguiente forma \$ID\$SALT\$HASH, donde ID es el identificador del algoritmo de resumen empleado (1 para MD5), SALT es una semilla aleatoria que se adjunta a la contraseña a resumir y HASH es el resultado de el resumen de la unión de la contraseña y la semilla:
 
 $$HASH = H(SALT | PASSWD)$$
 
@@ -367,10 +367,15 @@ Estos algoritmos se han recodificado para que se adapten a los cambios mencionad
 
 Hay que tener en cuenta que a menos que se hallen debilidades contra los algoritmos el sistema de comprobación a utilizar será siempre el de fuerza bruta. Esto supone que los algoritmos más actuales sean más costosos con respecto al tiempo necesario.
 
-Para el desarrollo de los nuevos algoritmos se ha tenido en cuenta su uso. De este modo no se han implementado algoritmos que estén en desuso por ser de poca utilidad.
+Para el desarrollo de los nuevos algoritmos se ha tenido en cuenta su uso. De este modo no se han implementado aquellos que estén en desuso por ser de poca utilidad.
 
-\subsection{SHA256}
+\subsection{SHA-256}
 
-Este algoritmo de resumen que sustituye al antiguo SHA1 es muy parecido al primero, habiéndose reutilizado todo el código que ha sido posible para simplificar su desarrollo. Es sustancialmente más lento al ejecutarse de esta forma, aproximadamente x1.5 veces más lento.
+Este algoritmo de resumen busca sustituir al antiguo SHA-1 ya que este se vio seriamente afectado por el tamaño de los resúmenes que generaba (de 128 bits) y por el descubrimiento de ataques controla el mismo (como se ha visto en~\ref{sub:sha1}).
+
+Para codificar este nuevo algoritmo se ha procurado hacer uso de la experiencia previa de la aplicación, procedente del estudio de la misma, y se ha reutilizado parte del código del antiguo SHA-1. De este modo se consigue reducir el tiempo de desarrollo.
 
 La implementación de este algoritmo se ha tomado a partir de la información ofrecida por el NIST~\cite{nist:shs} y se ha probado que funciona correctamente.
+
+
+

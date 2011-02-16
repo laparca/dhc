@@ -1,26 +1,57 @@
 \chapter{Códigos destacados} 
 
-En este apéndice se van a poner los ficheros de código fuente más interesantes del proyecto.
+En este apéndice se van a presentarr los ficheros de código fuente que probablemente sean más interesantes en el proyecto. La mayoría representan únicamente aquellos ficheros que disponen de código importante sobre los cambios realizados.
+
+Por otra parte se presenta también la organización de los ficheros para que en caso de acceder al código se sepa dónde se encuentra cada cosa.
 
 \section{Organización del código}
 
+El código fuente del proyecto se encuetra en la subcarpeta v3. En esta se puede encontrar la carpeta del agente, del controlador y la documentación:
 
+\begin{enumerate}
+	\item[v3/agent/] Código fuente del agente.
 
+	\item[v3/controller/] Contiene el código fuente del controlador.
+	
+	\item[v3/controller/components/] Aquí se encuentran herramientas que son de utilidad para el desarrollo de la aplicación.
 
+	\item[v3/controller/app/config/] Almacena la información de configuración de la base de datos y de algunas variables del controlador.
+
+	\item[v3/controller/app/models] En esta carpeta se encuentra la definición del modelo de base de datos. Cada fichero representa una tabla.
+
+	\item[v3/controller/app/views] La representación de los datos devueltos, tanto en la parte web como en los agente se lleva a cabo desde este punto.
+
+	\item[v3/controller/app/controllers/] El control de las acciones se lleva a cabo en esta carpeta.
+
+	\item[v3/doc] Código fuente de esta memoria.
+\end{enumerate}
+
+\section{Códigos importantes del agente}
 
 \lstset{language=C++,tabsize=2,basicstyle=\tiny,numbers=left}
 
-%\putcode{agent/config.cpp}
-%\putcode{agent/Algorithm.h}
-%\putcode{agent/AlgorithmFactory.h}
-%\putcode{agent/AlgorithmFactory.cpp}
-%\putcode{agent/Executor.h}
-%\putcode{agent/ExecutorFactory.h}
-%\putcode{agent/ExecutorFactory.cpp}
-%\putcode{agent/Plugin.h}
-%\putcode{agent/PluginLoader.h}
-%\putcode{agent/PluginLoader.cpp}
-%\putcode{agent/debug.h}
-%\putcode{agent/DummyPlugin.h}
-%\putcode{agent/DummyPlugin.cpp}
+\putcode{agent/config.cpp}
+\putcode{agent/Algorithm.h}
+\putcode{agent/AlgorithmFactory.h}
+\putcode{agent/AlgorithmFactory.cpp}
+\putcode{agent/Executor.h}
+\putcode{agent/ExecutorFactory.h}
+\putcode{agent/ExecutorFactory.cpp}
+\putcode{agent/Plugin.h}
+\putcode{agent/PluginLoader.h}
+\putcode{agent/PluginLoader.cpp}
+\putcode{agent/debug.h}
+\putcode{agent/DummyPlugin.h}
+\putcode{agent/DummyPlugin.cpp}
+
+\section{Códigos importantes del controlador}
+
+\lstset{language=PHP}
+\putcode{controller/app/controllers/crackers_controller.php}
+\putcode{controller/app/controllers/agents_controller.php}
+\putcode{controller/app/controllers/ajax_controller.php}
+\putcode{controller/app/controllers/components/stats.php}
+%\putcode{controller/app/controllers/components/base_n.php}
+\subsection{v3/controller/app/controllers/components/base\_n.php}
+\lstinputlisting{../../controller/app/controllers/components/base_n.php}}
 

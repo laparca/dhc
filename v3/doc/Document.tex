@@ -3,7 +3,6 @@
 \usepackage[spanish]{babel}
 \usepackage{graphicx}
 \usepackage[pdftex]{hyperref}
-%\usepackage{emp}
 \usepackage{listings}
 \usepackage{eurofont}
 
@@ -11,24 +10,10 @@
 %\usepackage{titlesec}
 %\newcommand{\sectionbreak}{\clearpage}
 
-%\usepackage{caption3} % load caption package kernel first
-%\DeclareCaptionOption{parskip}[]{} % disable "parskip" caption option
-
 \usepackage[font=scriptsize,format=plain,labelfont=bf,up,textfont=it,up]{caption}
-%\usepackage[a4paper,margin=1cm,landscape]{geometry}
-%\usepackage{tikz}
-%\usetikzlibrary{positioning,shapes,shadows,arrows}
 
 
-%% For MetaPOST
-%\ifx\pdftexversion\undefined
-%\usepackage[dvips]{graphicx}
-%\else
-%\usepackage[pdftex]{graphicx}
-%\DeclareGraphicsRule{*}{mps}{*}{}
-%\fi
-
-\newcommand{\putcode}[1]{\section{v3/#1}\lstinputlisting{../../#1}}
+\newcommand{\putcode}[1]{\subsection{v3/#1}\lstinputlisting{../../#1}}
 
 \begin{document}
 	
@@ -60,11 +45,6 @@
 	\listoffigures
 	\listoftables
 	
-%	\begin{empfile}
-%	\begin{empcmds}
-%	input metauml;
-%	\end{empcmds}
-	% The rest of the document here
 	\input{introduccion.tex}
 	\input{funcione_resumen.tex}
 	\input{tarjetas_graficas.tex}
@@ -83,9 +63,7 @@
 	\input{contenido_cd.tex}
 	\input{aviso_legal.tex}
 	\input{agradecimientos.tex}
-%	\end{empfile}
 	
-	%\bibliographystyle{plain}
 	\bibliographystyle{alpha}
 	\bibliography{bibliografia}\addcontentsline{toc}{chapter}{Bibliografía}
 \end{document}

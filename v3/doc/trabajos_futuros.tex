@@ -9,7 +9,17 @@ Tras terminar el proyecto hay muchas mejoras que han quedado pendientes o sería
 
 	\item[Crear nuevos algoritmos de comprobación de hashes] En la actualidad hay una gran cantidad de algoritmos de resumen que pueden ser portados a  DHC y sería interesante disponer de ellos.
 	
-	\item[Implementar nuevos protocolos de seguridad] DHC no tiene porque restringirse solo a funciones resumen y menos cuando no son el único mecanismo de cifrado que hay en la actualidad.
+	\item[Crear nuevos mecanismos de ejecución] En estos momentos los algoritmos solo pueden hacer uso de un sistema básico de ejecución, pero podrían implementarse nuevos sistemas que permitiesen mejoras en los tiempos o simplemente implementar nuevos algoritmos más allá de las funciones resumen.
+	
+	\item[Implementar nuevos protocolos de seguridad] DHC no tiene porque restringirse solo a funciones resumen. Con esto se conseguiría que la herramienta abarcase una mayor número de mecanismos de seguridad como  podrían ser:
+	
+	\begin{itemize}
+		\item Contraseñas de redes WiFi con protección WPA.
+		
+		\item Determinar las claves generadas a partir de un \emph{handshake} del sistema TLS utilizado en páginas web.
+	\end{itemize}
 
 	\item[Control de cambios sobre el sistema de ficheros] Esta característica puede utilizarse para determinar cuando un plugin ha cambiado y volverlo a cargar sin tener que reiniciar el agente. De este modo el rendimiento de la aplicación mejoraría al no tener que parar casi nunca.
+	
+	\item[Sistema de controladores jerárquicos] El objetivo de este cambio es poder disponer de un árbol de controladores donde los que se encuentren en las ramas sean los encargados de repartir el trabajo entre los agentes y los demás controladores simplemente repartan trabajo entre ellos. El objetivo es repartir la carga en casos en los que haya una gran cantidad de agentes.
 \end{description}

@@ -50,6 +50,8 @@ El controlador ha sufrido un rediseño importante de su aspecto que ha buscando 
 
 Los cambios realizados ha supuesto una mejora constatada tras dar a probar ambas interfaces a un grupo de personas. Este grupo se componía de 7 personas completamente ajenas al desarrollo de éste proyecto y constataron la mejora del mismo.
 
+Por otro lado, los cambios en los agentes destinados a mejorar el tiempo de respuesta del controlador han contribuido a que, en momentos de alta carga de trabajo, los tiempos de espera se reduzcan. Esto supone una mejor experiencia de usuario al eliminar posibles impaciencias por la tardanza en obtener una página del controlador. Para poder comprobar este último punto solo ha sido necesario enviar un hash al sistema para que se ponga en marcha y controlar el tiempo que tarda en devolver una página.
+
 \section{Mantenibilidad}
 
 La facilidad de mantener el sistema era un punto importante del proyecto por la falta de organización del mismo. Con los cambios que se han introducido se ha procurado mejorar este aspecto reduciendo el número de ficheros a cambiar para pequeños cambios.
@@ -66,3 +68,11 @@ Además, puede ser necesario el cambio de más ficheros dependiendo de cómo se 
 Tras la reimplentación del sistema se simplifica enormemente el número de ficheros a modificar ya que ahora solo hace falta cambiar el del propio algoritmo. Igualmente, añadir nuevas funcionalidades se simplifica enormemente ya que no hay necesidad de modificar línea alguna de código sobre el agente.
 
 Igualmente el controlador se ha visto claramente beneficiado por el uso de CakePHP ya que, gracias al uso de una estructura ordenada en la organización de los elementos que componen al software, se puede ir directamente a la parte en la que pueda haber cualquier problema para solucionarla.
+
+\section{Algoritmo SHA-256}
+
+Las pruebas sobre este algoritmo han consistido, por una parte, en comprobar que los resúmenes que generaba eran correctos. Una vez confirmado este punto se ha procedido a calcular el tiempo que tarda en calcular en resumen para poder compararlo con el resto de algoritmos.
+
+Para comprobar el tiempo que tarda se eligió una palabra de prueba con minúscula, mayúsculas, números y algunso símbolos y una longitud de 8 caracteres. Tras esto se generó su resumen SHA-1 y SHA-256. Tras medir los tiempos que tardaba el sistema en encontrar la palabra para SHA-1 y SHA-256 se pudo determinar que la implementación de este último es 1,5 veces más lenta que la primera. Esto se debe principalmente a que el nuevo algoritmo requiere más pasos para obtener el resumen.
+
+El resultado anterior es importante de cara a la implementación de nuevos algoritmos ya que será importante tener en cuenta cuanto más complejos son y, en caso de una complejidad excesiva, si es útil implementarlo. Si la complejidad de un algoritmo resultase muy elevada podría suceder que el tiempo que tardase en devolver un resultado fuera demasiado elevado. Esto significa que es importante comprobar con las ecuaciones mostradas en~\ref{sec:comprobacion_resumen} para determinar de forma anticipada los tiempos.

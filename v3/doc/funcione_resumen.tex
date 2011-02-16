@@ -20,7 +20,7 @@ Este tipo de funciones son ampliamente utilizadas en el mundo de la seguridad co
 
 A causa de su gran uso es necesario disponer de sistemas que comprueben la fortaleza de las contraseñas elegidas por los usuarios o de las claves de sesión que pueda generar un sistema de seguridad. El primer caso es importante para garantizar la seguridad de las organizaciones, impidiendo que los usuarios elijan contraseñas que puedan ser adivinadas o quebrantadas por posibles atacantes dando acceso a la información privada de ésta con los consiguientes problemas por posibles copias y/o borrados de información. El segundo caso es importante para garantizar que los sistemas seguros sean capaces de generar claves suficientemente robustas para impedir ataques externos.
 
-\section{Comprobación de funciones resumen y contraseñas}
+\section{Comprobación de funciones resumen y contraseñas}\label{sec:comprobacion_resumen}
 
 Existen dos formas básicas para comprobar la fortaleza de los mecanismos de seguridad. El primero es buscar debilidades en la propia función resumen que se va a utilizar. El segundo mecanismo es comprobar la calidad de la clave utilizada. Para este último caso lo más sencillo es utilizar un de mecanismo de fuerza bruta. Éste tipo de comprobación consisten en probar todas las combinaciones posibles entradas para generar resúmenes y éstos se cotejan con un resumen conocido previamente.
 
@@ -115,7 +115,7 @@ Una vez que se dispone de la tabla arcoíris se pueden empezar a probar claves p
 
 El principal problema de éste sistema es determinar el tamaño de la tabla a utilizar y el tiempo que se necesita para crearla. En general este mecanismo solo se utiliza para casos muy concretos de funciones resumen débiles.
 
-\subsection{Caminos diferenciales para SHA-1}
+\subsection{Caminos diferenciales para SHA-1}\label{sub:sha1}
 
 La técnica de los caminos diferenciales consiste en realizar una estudio sobre los cambios en los bits de las variables utilizadas en una función resumen. El objetivo es detectar estadísticamente los puntos en los que se producen alternancia de bits o en los que éstos no cambian para realizar una aproximación estadística a posibles colisiones.
 

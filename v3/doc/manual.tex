@@ -192,7 +192,47 @@ Donde \$DIRECCION\_CONTROLADOR es la URL del controlador.
 
 Una vez que se tiene a los agentes en funcionamiento se puede proceder a utilizar el controlador. Para este fin de hará uso de un navegador web\footnote{Actualmente existe una gran cantidad de navegadores web en el mercado. Se recomienda encarecidamente el uso de navegadores con soporte de HTML5 y CSS3 como pueden ser Google Chrome, Apple Safari o Mozilla Firefox.}
 
-\textbf{FALTA CAPTURAS CON EL USO. HAY QUE TERMINAR UN PAR DE DETALLES DE LA WEB}
+Nada más entrar en la aplicación podemos observar una pantalla como la mostrada en la figura~\ref{fig:DHC_principal}. En caso de que el sistema esté en funcionamiento podremos ver a qué velocidad está trabajando (en millones de hashes por segundo) o nada en otro caso.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.7\textwidth]{images/resumen.png}
+	\caption{Pantalla principal de DHC}\label{fig:DHC_principal}
+\end{figure}
+
+El primer paso es ir a enviar para solicitar la realialización de alguna tarea (ver figura~\ref{fig:DHC_enviar}). En este punto tendremos que seleccionar todas las opciones de configuración de la tarea.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.7\textwidth]{images/dhc_enviar.png}
+	\caption{Envío de una tarea}\label{fig:DHC_enviar}
+\end{figure}
+
+Tras el envío de la tarea el sistema nos dirá si ésta se ha almacenado correctamente o si a habido algún error.
+
+En todo momento podemos comprobar qué tareas hay en funcionamiento desde la pantalla de cola (figura~\ref{fig:DHC_cola}).
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.7\textwidth]{images/cola.png}
+	\caption{Cola de tareas}\label{fig:DHC_cola}
+\end{figure}
+
+Finalmente, podemos comprobar las tereas que se han terminado en la sección salida (ver figura~\reg{fig:DHC_salida}). Además, se puede comprobar la razón de la finalización de la tarea (resultado encontrado, no encontrado, etc.).
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.7\textwidth]{images/salida.png}
+	\caption{Salida de las tareas}\label{fig:DHC_saliad}
+\end{figure}
+
+Si en algún momento queremos conocer mejor la situación de los agentes, se puede comprobar en estadísticas (ver figura~\ref{fig:DHC_estadisticas}) el rendimiento de cada uno y el último momento en que se ha sabido de ellos.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.7\textwidth]{images/estadisticas.png}
+	\caption{Estadísticas de funcionamiento}\label{fig:DHC_estadisticas}
+\end{figure}
 
 \section{Administración de plugins}
 
@@ -201,9 +241,6 @@ Durante el tiempo que esté en uso DHC pueden surgir ocasiones en las que se nec
 \subsection{Instalación de nuevos plugins}
 
 Para instalar nuevos plugins en el sistema solo hay que copiar estos al directorio /usr/lib/cracker/ptx. Los plugins tienen todos la extensión .aplug.so.
-%Esto podría apreciarse en el caso de que hubiese dos grupos de desarrollo y cada uno trabajase con una versión del agente diferente. Si cada agente debe contener los algoritmos que utiliza puede darse un caso como el siguiente: el agente del equipo 1 implementa los algoritmos A, B y C; el agente del equipo 2 tiene los algoritmos B y D. Así que si estamos utilizando el agente del equipo 1 y tenemos que probar el algoritmo D tenemos que deshacernos de los algoritmos A y C.
-
-%Separando la lógica de los algoritmos fuera del agente conseguimos mayor independencia. En el caso anterior solo tendríamos que instalar el nuevo algoritmo D sin tener que preocuparnos por los algoritmos A, B y C.
 
 \subsection{Eliminación plugins obsoletos o erróneos}
 
@@ -212,9 +249,6 @@ Para eliminar un plugin con errores u obsoleto basta con borrar el fichero que l
 \begin{verbatim}
 $ sudo rm /usr/local/cracker/ptr/nombre_plugin.aplug.so	
 \end{verbatim}
-%Puede darse el caso de que un algoritmo pase a un estado de obsolescencia. Esto podría deberse a que se disponga de un algoritmo más nuevo que haga el mismo trabajo. También podría ser que tras probar un algoritmo descubramos que éste introduce errores en el sistema. En estos casos la mejor solución es eliminarlos con un simple borrado de disco.
-
-%Con el sistema tal y como venía era un problema solucionar esto, ya que se dependía del tiempo que pueda tardar el desarrollador en solucionar el problema.
 
 \section{Configuraciones avanzadas}\label{sec:conf_avanzada}
 
