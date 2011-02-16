@@ -290,10 +290,23 @@ bool ControllerLink::GetWorkUnit(WorkUnit& wu, const vector<string>& alglist)
 	else
 	{
 		cerr << "Warning: Invalid work unit (expected <nowork> or <workunit>, found <" << pRoot->GetType().c_str() << ">)" << endl;
+		cerr << "Original message: " << recvdata;
 		return false;
 	}
 }
 
+bool isSeparator(char val)
+{
+	switch(val)
+	{
+		case ' ':
+		case '\t':
+		case '\n':
+		case '\r':
+			return true;
+	}
+	return false;
+}
 /*!
 	@brief Submits the results of processing a work unit.
 	
@@ -334,7 +347,10 @@ void ControllerLink::SubmitResults(WorkUnit& wu)
 	curl_easy_setopt(m_pCurl, CURLOPT_SSL_VERIFYPEER, 0);		//TODO: control this by command line arg
 	if(0 != curl_easy_perform(m_pCurl))
 		ThrowError("libcurl error");
-		
+	
+	while(isSeparator(recvdata[recvdata.size()-1]))
+		recvdata.resize(recvdata.size() - 1);
+
 	if(recvdata != "ok")
 	{
 		//Fix bug #142: this should not be a fatal error

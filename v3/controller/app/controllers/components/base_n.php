@@ -1,26 +1,26 @@
 <?php
-	function array2string($arr) {
-		$str = "";
-		if(is_array($arr)) {
-			$str .= "( ";
-			$first = true;
-			foreach($arr as $idx => $value) {
-				if($first) {
-					$first = false;
-				}
-				else {
-					$str .= ", ";
-				}
-			$str .= "[$idx] = " . array2string($value);
+function array2string($arr) {
+	$str = "";
+	if(is_array($arr)) {
+		$str .= "( ";
+		$first = true;
+		foreach($arr as $idx => $value) {
+			if($first) {
+				$first = false;
 			}
-			$str .= ") ";
+			else {
+				$str .= ", ";
+			}
+		$str .= "[$idx] = " . array2string($value);
 		}
-		else
-		{
-			$str .= $arr;
-		}
-		return $str;
+		$str .= ") ";
 	}
+	else
+	{
+		$str .= $arr;
+	}
+	return $str;
+}
 
 class BaseNComponent extends Object {
 	/*!
@@ -33,9 +33,14 @@ class BaseNComponent extends Object {
 	*/
 	function make($str, $rcharset)
 	{
+		$this->log("[BaseNComponent::make] rcharset = " . array2string($rcharset), 'debug');
+		$this->log("[BaseNComponent::make] str = " . $str, 'debug');
+		
 		$ret = array();
 		for($i = 0; $i < strlen($str); $i++)
 			$ret[$i] = $rcharset[$str[$i]];
+
+		$this->log("[BaseNComponent::make] ret = " . array2string($ret), 'debug');
 		return $ret;
 	}
 
@@ -51,20 +56,24 @@ class BaseNComponent extends Object {
 	*/
 	function add($num, $base, $add)
 	{
-		$this->log("num  = " . array2string($num), 'debug');
-		$this->log("base = $base", 'debug');
-		$this->log("add  = $add", 'debug');
 		$len = count($num);
 
 		//Get number of digits required to add this number
 		$maxplace = ceil( log($add) / log($base) );
+		$this->log(
+			"[BaseNComponent::add]" .
+			"\tnum  = " . array2string($num) .
+			"\tbase = $base\n" .
+			"\tadd  = $add\n" .
+			"\tlen  = $len\n" .
+			"\tmaxplace = $maxplace", 'debug');
 
 		//Too much? Can't possibly fit, saturate and quit
 		if($maxplace > $len)
 		{
 			for($i = 0; $i < $len; $i++)
 				$num[$i] = $base - 1;
-			$this->log("Saturate: " . array2string($num), 'debug');
+			$this->log("[BaseNComponent::add] Saturate: " . array2string($num), 'debug');
 			return $num;
 		}
 
@@ -103,7 +112,7 @@ class BaseNComponent extends Object {
 		}
 
 		//Done
-		$this->log("return: " . array2string($num), 'debug');
+		$this->log("[BaseNComponent::add] return: " . array2string($num), 'debug');
 		return $num;
 	}
 
@@ -120,6 +129,7 @@ class BaseNComponent extends Object {
 		$str = '';
 		for($i=0; $i<count($num); $i++)
 			$str .= $charset[$num[$i]];
+		$this->log("[BaseNComponent::toString] return: " . $str, 'debug');
 		return $str;
 	}
 

@@ -1,3 +1,4 @@
+<h1><?php __('Output')?></h1>
 <table class='output' cellspacing='0'>
 	<thead>
 		<tr class='outputheader'>

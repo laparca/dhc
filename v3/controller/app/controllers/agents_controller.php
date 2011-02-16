@@ -71,7 +71,7 @@ class AgentsController extends AppController {
 						'WorkUnit.hostname' => "'$hostname'",
 						'WorkUnit.devtype' => "'$type'",
 						'WorkUnit.devid' => $num,
-						'WorkUnit.expiration' => time() + 120 /* two minutes */
+						'WorkUnit.expiration' => time() + Configure::read('WorkUnit.expiration') /* two minutes */
 					),
 					array('WorkUnit.id' => $workunit['WorkUnit']['id'])
 				);
@@ -115,12 +115,12 @@ class AgentsController extends AppController {
 			//Get our character set
 			$ccode = $crack['Crack']['charset'];
 			$csets = array(
-				'a' => 'abcdefghijklmnopqrstuvwxyz',
-				'A' => 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
-				'1' => '1234567890',
+				'a' => "abcdefghijklmnopqrstuvwxyz",
+				'A' => "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+				'1' => "1234567890",
 				'!' => "!@_-?#$",
 				'>' => "`~%^&*()=+[]\\{}|;':\",./<>",
-				's' => ' ',
+				's' => " ",
 				'n' => "\n"
 				);
 			$charset = '';
@@ -194,7 +194,7 @@ class AgentsController extends AppController {
 				'start' => $start,
 				'end' => $end,
 				'started' => time(),
-				'expiration' => time() + 120 //TODO: is 2 minute expiration reasonable?
+				'expiration' => time() + Configure::read('WorkUnit.expiration') /*120*/ //TODO: is 2 minute expiration reasonable?
 			));
 
 			$this->Crack->save($crack);
