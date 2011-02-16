@@ -195,7 +195,7 @@ void ComputeThreadProc(void* pData)
 		}
 		
 		waiting_time = t1 - t0;
-		cout << "wait time = " << waiting_time << endl;
+		//cout << "wait time = " << waiting_time << endl;
 		
 		
 		//Dispatch it
@@ -216,6 +216,7 @@ void ComputeThreadProc(void* pData)
 			delete[] wu.m_salts[i];
 		
 		// Always sleep
+		cout << "Waiting " << sleep_time << " milliseconds\n";
 		Sleep(sleep_time);
 	}
 	
