@@ -63,7 +63,7 @@ int  DummyAlgorithm::InputLength()
  *	@brief Executes the CPU version of the algorithm. It is useful
  *	if the system is not GPU accelerated.
  */
-void DummyAlgorithm::ExecuteCPU()
+void DummyAlgorithm::ExecuteCPU(WorkUnit& wu, int nCore)
 {
 	
 }

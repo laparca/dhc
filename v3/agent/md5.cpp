@@ -51,7 +51,7 @@ int  md5::InputLength()
 	return 16;
 }
 
-void md5::ExecuteCPU()
+void md5::ExecuteCPU(WorkUnit& wu, int nCore)
 {
 	
 }

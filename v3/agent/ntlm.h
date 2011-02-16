@@ -43,7 +43,7 @@ public:
 		string GetName();
 		int HashLength();
 		int  InputLength();
-		void ExecuteCPU();
+		void ExecuteCPU(WorkUnit& wu, int nCore);
 	#ifdef CUDA_ENABLED
 		void ExecuteGPU(WorkUnit& wu, Device* pDevice, CudaContext* pContext);
 	#endif

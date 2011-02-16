@@ -51,7 +51,7 @@ int  ntlm::InputLength()
 	return 16;
 }
 
-void ntlm::ExecuteCPU()
+void ntlm::ExecuteCPU(WorkUnit& wu, int nCore)
 {
 	
 }

@@ -47,6 +47,13 @@
 #include <stdarg.h>
 using namespace std;
 
+#define MAX_WAIT 30000
+#define MIN_WAIT  1000
+#define INC_WAIT  5000
+#define DEC_WAIT  1000
+#define MAX(a, b) ((a>b)?(a):(b))
+#define MIN(a, b) ((a<b)?(a):(b))
+
 extern double g_tBaseN;
 extern bool g_bTesting;
 
@@ -116,48 +123,6 @@ vector<string> GetAlgorithmNames(const vector<Algorithm *>& vAlgorithm)
 }
 
 /*!
- *	@brief Wrapper for cuda kernel functions.
- *
- *	CudaFunction generates a wrapper for the cuda kernel functions and
- *	this is very useful for simplify calling those methods.
- */
-/*
-class CudaFunction
-{
-private:
-	Stream *m_stream;
-	CudaKernel *m_hashker;
-	int m_block_x;
-	int m_block_y;
-	int m_threads_x;
-	int m_threads_y;
-	int m_threads_z;
-public:
-	CudaFunction(Stream *stream, CudaKernel *hashker, int blocks_x, int blocks_y, int threads_x, int threads_y, int threads_z) :
-		m_stream(stream),
-		m_hashker(hashker),
-		m_block_x(blocks_x),
-		m_block_y(blocks_y),
-		m_threads_x(threads_x),
-		m_threads_y(threads_y),
-		m_threads_z(threads_z)
-	{}
-
-	/*!
-	 *	@brief Runs the kernel function.
-	 *	This operator runs the kernel function with the specificed parameters and
-	 *	emultates the aspect of a normal function. The parameters are an array
-	 *	of KernelParamBase. That array cannot be dynamic (allocated with malloc
-	 *	or new) in other case the template will not determine the array size.
-	 *	@param params An array with the params for the kernel function.
-	 */
-/*	template<int Size>
-	void operator()(KernelParamBase *(&params)[Size])
-	{
-		m_stream->AddKernelCall(*m_hashker, m_block_x, m_block_y, m_threads_x, m_threads_y, m_threads_z, params);
-	}
-};
-/*!
 	@brief Processes events for a single compute device.
 	
 	@param pData A ComputeDevice* pointer, casted to void*, identifying the device to use
@@ -190,7 +155,6 @@ void ComputeThreadProc(void* pData)
 	//Loop forever
 	while(true)
 	{
-		//TODO: get algorithm list from somewhere else rather than hard coding it
 		vector<string> algs;
 		if(pDev->bGPU)							//CUDA, regardless of CPU architecture
 		{
@@ -204,41 +168,35 @@ void ComputeThreadProc(void* pData)
 			algs = GetAlgorithmNames(vAlg);
 		}
 #endif
-		//Try to get a work unit
-		/* TODO
-		 * Tomar la diferencia de tiempo entre que se envia y se recive la
-		 * respuesta (tiempo de respuesta del servidor). Dependiendo de cuanto
-		 * sea este tiempo se debera esperar mas o menos para realizar la
-		 * siguiente peticion. El objetivo de esto es evitar la saturacion
-		 * del controlador en caso de que haya demasiados agentes ociosos.
-		 *
-		 * Si TRS actual == TRS anterior => mismo tiempo de espera
-		 * Si TRS actual > TRS anterior => subimos el tiempo de espera (5 seg.)
-		 * Si TRS actual < TRS anterior => reducimos el tiempo de espera (1 seg.)
-		 */
+
 		WorkUnit wu;
 		long t0 = time(NULL);
+		//Try to get a work unit
 		bool has_wu = link.GetWorkUnit(wu, algs);
 		long t1 = time(NULL);
+
+		if(!has_wu)
+		{
+			sleep_time = MIN(sleep_time + INC_WAIT, MAX_WAIT);
+			cout << "No WU, waiting " << sleep_time << " milliseconds\n";
+			Sleep(sleep_time);
+			continue;
+		}
+
+		// First time the system has no data about the waiting time
 		if(waiting_time != -1)
 		{
 			long wt_now = t1 - t0;
-			if(waiting_time > wt_now && sleep_time > 5000)
-				sleep_time -= 1000;
+
+			if(waiting_time > wt_now)
+				sleep_time = MAX(sleep_time - DEC_WAIT, MIN_WAIT);
 			else if(waiting_time < wt_now)
-				sleep_time += 5000;
+				sleep_time = MIN(sleep_time + INC_WAIT, MAX_WAIT);
 		}
 		
 		waiting_time = t1 - t0;
 		cout << "wait time = " << waiting_time << endl;
 		
-		if(!has_wu)
-		{
-			//Not cracking, wait 5 seconds and try again
-			cout << "No WU, waiting " << sleep_time << " milliseconds\n";
-			Sleep(sleep_time);
-			continue;
-		}
 		
 		//Dispatch it
 		#ifdef CUDA_ENABLED
@@ -256,6 +214,9 @@ void ComputeThreadProc(void* pData)
 			delete[] wu.m_hashvalues[i];
 		for(unsigned int i=0; i<wu.m_salts.size(); i++)
 			delete[] wu.m_salts[i];
+		
+		// Always sleep
+		Sleep(sleep_time);
 	}
 	
 	//TODO: free resources when we are ctrl-Ced
@@ -320,7 +281,7 @@ void DoWorkUnitOnCPU(WorkUnit& wu, int nCore)
 	
 		//Hash them
 		nHashes += 4;
-		pHash(guesses, outputs, len);		
+		pHash(guesses, outputs, len);
 		
 		//Test results
 		for(int i=0; i<4; i++)

@@ -60,7 +60,7 @@ class DummyAlgorithm : public Algorithm
 	 *	@brief Executes the CPU version of the algorithm. It is useful
 	 *	if the system is not GPU accelerated.
 	 */
-	void ExecuteCPU();
+	void ExecuteCPU(WorkUnit& wu, int nCore);
 #ifdef CUDA_ENABLED
 	/*!
 	 *	@brief Executes the GPU version of the algorithm.

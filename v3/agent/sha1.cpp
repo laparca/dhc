@@ -51,7 +51,7 @@ int  sha1::InputLength()
 	return 20;
 }
 
-void sha1::ExecuteCPU()
+void sha1::ExecuteCPU(WorkUnit& wu, int nCore)
 {
 	
 }

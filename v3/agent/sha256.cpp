@@ -51,7 +51,7 @@ int  sha256::InputLength()
 	return 32;
 }
 
-void sha256::ExecuteCPU()
+void sha256::ExecuteCPU(WorkUnit& wu, int nCore)
 {
 	
 }

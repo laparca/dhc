@@ -49,7 +49,7 @@ using namespace std;
 #define UNUSED__(counter) UNUSED_ ## counter
 
 /* register a path inside the ConfigDirectories vector */
-#define REGISTER_CONFIG_PATH(path) static _register_config_path UNUSED(path);
+#define REGISTER_CONFIG_PATH(path) static _register_config_path UNUSED(path)
 
 
 /*!
@@ -66,7 +66,7 @@ struct _register_config_path {
 	}
 };
 
-REGISTER_CONFIG_PATH("./")
+REGISTER_CONFIG_PATH("./");
 REGISTER_CONFIG_PATH("ptx/");
 REGISTER_CONFIG_PATH("/usr/lib/cracker/ptx/");
 

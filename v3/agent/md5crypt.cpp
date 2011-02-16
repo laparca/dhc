@@ -51,7 +51,7 @@ int  md5crypt::InputLength()
 	return 32;
 }
 
-void md5crypt::ExecuteCPU()
+void md5crypt::ExecuteCPU(WorkUnit& wu, int nCore)
 {
 	
 }

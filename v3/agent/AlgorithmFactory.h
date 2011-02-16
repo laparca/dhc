@@ -3,7 +3,7 @@
 * Distributed Hash Cracker v3.0                                               *
 *                                                                             *
 * Copyright (c) 2009 RPISEC.                                                  *
-* Copyright (C) 2010 Samuel Rodríguez Sevilla
+* Copyright (C) 2010 Samuel Rodríguez Sevilla                                 *
 * All rights reserved.                                                        *
 *                                                                             *
 * Redistribution and use in source and binary forms, with or without modifi-  *
@@ -38,6 +38,9 @@
  *	@file Algorithm.h
  *	
  *	@brief Declares the algorith factory facility.
+ *
+ *  Algorithms are the essential functionallity of the agent. They do the
+ *  real work of processing the data suministrated by the controller.
  */
 
 #ifndef ALGORITHM_FACTORY_H
@@ -158,6 +161,9 @@ public:
 				result.push_back(*it);
 		return result;
 	}
+	/*!
+	 * @brief Test internal functionallity.
+	 */
 	static void Test();
 	/*@}*/
 };

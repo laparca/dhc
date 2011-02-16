@@ -85,12 +85,16 @@ public:
 	/*!
 	 *	@brief Executes the CPU version of the algorithm. It is useful
 	 *	if the system is not GPU accelerated.
+	 *  @param wu Work unit to process.
+	 *  @param nCore CPU core used to process the work unit.
 	 */
-	virtual void ExecuteCPU() = 0;
+	virtual void ExecuteCPU(WorkUnit& wu, int nCore) = 0;
 #ifdef CUDA_ENABLED
 	/*!
 	 *	@brief Executes the GPU version of the algorithm.
-	 *	@param pDevice Information about the GPU device
+	 *  @param wu Work unit to process.
+	 *	@param pDevice Information about the GPU device.
+	 *  @param pContext Information about the CUDA device context.
 	 */
 	virtual void ExecuteGPU(WorkUnit& wu, Device* pDevice, CudaContext* pContext) = 0;
 #endif
@@ -103,26 +107,7 @@ public:
 	 *	@brief Returns if the algorithm cas use GPU capabilites
 	 *	@return True if the algorithm can use a CPU
 	 */
-	virtual bool IsCPUCapable() = 0;	
-	/*!
-	 *	@brief Prepares information to accelerate hash attack or to perform better the functionality
-	 *	@param wo The workunit with the information to analize
-	 */
-	//virtual void Prepare(WorkUnit & wo) = 0;
-#ifdef CUDA_ENABLED
-	/*!
-	 *  @brief Prepared information to accelerate hash attack or to improve the performance. It is
-	 *         indicated for CUDA devices.
-	 *  @param pDevice
-	 *  @param pContext
-	 *  @param wu
-	 */
-//	virtual void Prepare(Device *pDevice, CudaContext *pContext, WorkUnit *wu) = 0;
-#endif
-	/*!
-	 *  @brief This method frees the internal memory used during the execution process.
-	 */
-//	virtual void End() = 0;
+	virtual bool IsCPUCapable() = 0;
 	/*!
 	 *	@brief Number of registers used by the GPU version of the algorithm.
 	 *	This value can be obtained using the cubin compilation of the GPU unit. If it is

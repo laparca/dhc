@@ -3,7 +3,7 @@
 * Distributed Hash Cracker v3.0                                               *
 *                                                                             *
 * Copyright (c) 2009 RPISEC.                                                  *
-* Copyright (C) 2010 Samuel Rodríguez Sevilla
+* Copyright (C) 2010 Samuel Rodríguez Sevilla                                 *
 * All rights reserved.                                                        *
 *                                                                             *
 * Redistribution and use in source and binary forms, with or without modifi-  *
@@ -53,7 +53,10 @@ public:
 	{
 		return 16;
 	}
-	void ExecuteCPU() {}
+	void ExecuteCPU(WorkUnit& wu, int nCore)
+	{
+		
+	}
 
 #ifdef CUDA_ENABLED
 	void ExecuteGPU(WorkUnit& wu, Device* pDevice, CudaContext* pContext)
@@ -70,8 +73,8 @@ public:
 		/* Identify the function to use */
 		string func = "md4";
 
-		if(wu.m_start.length() <= 12)						//If we are cracking a weak algorithm, switch to
-		{																// the cryptanalytic attack when possible
+		if(wu.m_start.length() <= 12) // If we are cracking a weak algorithm, switch to
+		{                             // the cryptanalytic attack when possible
 			func = "md4_fast";
 		}
 		
