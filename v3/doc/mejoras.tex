@@ -4,17 +4,17 @@ Para la realización de este proyecto fin de carrera se decidió buscar herramie
 
 Como ya se mencionó en la introducción, el uso de software libre es muy importante para la seguridad por el hecho de que al disponer del código fuente se pueden realizar auditorías sobre el mismo. Además, en caso de que la empresa que desarrolla el software dejase de darle soporte siempre cabría la posibilidad de que otra empresa pudiera ofrecer dicho soporte. Por otra parte, el software libre no solo tiene ventajas en la seguridad, sino que ofrece la garantía de que si la empresa deja de desarrolla dicho software o ésta desapareciese siempre quedaría el software a disposición del público pudiendo tomar otro el relevo sobre el mantenimiento sin que puedan realizarse acciones legales contra éste por infracción de derechos de autor. En este punto se debe mencionar que hay que obedecer siempre los términos de la licencia del software y, en especial, el Real Decreto Legislativo 1/1996, de 12 de abril, por el que se aprueba el Texto Refundido de la Ley de Propiedad Intelectual, que es la ley que regula los derechos de autor en España.
 
-\emph{Distributed Hash Cracker}, en adelante DHC, es un software que permite determinar la palabra utilizada en una función resumen para devolver un determinado resumen. Para ello hace uso de un sistema de fuerza bruta~\cite{dhc:paper}. Éste software se encontraba alojado en la página \url{http://rpisec.net/}, pero por cuestiones desconocidas a desaparecido dejando de tener soporte. Esto nos a animado a realizar las modificaciones que necesitábamos para conseguir una aplicación completa y, especialmente, más fácil de mantener y que permitiera añadir funcionalidades de forma sencilla.
+\emph{Distributed Hash Cracker}, en adelante DHC, es un software que permite determinar la palabra utilizada en una función resumen para devolver un determinado resumen. Para ello hace uso de un sistema de fuerza bruta~\cite{dhc:paper}. Éste software se encontraba alojado en la página \url{http://rpisec.net/}, pero por cuestiones desconocidas a desaparecido dejando de tener soporte. Esto nos ha animado a realizar las modificaciones que necesitábamos para conseguir una aplicación completa y, especialmente, más fácil de mantener y que permitiera añadir funcionalidades de forma sencilla.
 
-DHC es un software que se distribuía bajo licencia BSD\footnote{La licencia libre BSD permite realizar modificaciones sobre el software siempre y cuando se mantenga la mención de autoría en el mismo, pero no obliga a distribuir el código en caso de dar copias de la aplicación.}. Esta herramienta está programada en C++ y ensamblador y es capaz de distribuir el trabajo entre un conjunto de máquinas, denominadas agentes. Los agentes se encargan de procesar tareas criptográficas tanto en CPU como en GPU dependiendo de los algoritmos implementados en cada caso.
+DHC es un software que se distribuía bajo licencia BSD\footnote{La licencia libre BSD permite realizar modificaciones sobre el software siempre y cuando se mantenga la mención de autoría en el mismo, pero no obliga a distribuir el código en caso de dar copias de la aplicación.}. Esta herramienta está programada en C++, ensamblador y PHP y es capaz de distribuir el trabajo entre un conjunto de máquinas, denominadas agentes. Los agentes se encargan de procesar tareas criptográficas tanto en CPU como en GPU dependiendo de los algoritmos implementados en cada caso.
 
-Aunque DHC es una muy buena herramienta, pero tiene algunas deficiencias que hacen que necesite modificaciones en algunos puntos importantes de su código para garantizar que la herramienta pueda sobrevivir en el futuro.
+Aunque DHC es una muy buena herramienta tiene algunas deficiencias que hacen que necesite modificaciones en algunos puntos importantes de su código para garantizar que la herramienta pueda sobrevivir en el futuro.
 
 El mayor problema actualmente es que aún estando escrito en un lenguaje orientado a objetos, no se hace uso de las características del mismo cuando se debería. Por ejemplo, el código de las funciones resumen de que dispone está entremezclado. Esto supone un gran problema al implementar nuevas funciones resumen, ya que implica tener que ver qué partes de código se deben adaptar y cuáles no. Por tanto, es necesario hacer un cambio de cómo controla DHC estas funciones de tal modo que sea más sencillo el mantenimiento de la herramienta.
 
 Por otra parte, la implementación de funciones resumen de que dispone DHC, aún estando relativamente bien surtida, creemos que podría ser necesario en un futuro la implementación de más funciones resumen u otro tipo de comprobaciones sobre seguridad (como pudiera ser redes WiFi). Esto significa que hay que realizar los cambios necesario que permitan en un futuro añadir funcionalidades diferentes a las inicialmente planteadas sin que esto suponga un esfuerzo demasiado elevado.
 
-Finalmente, DHC dispone de un programa que se encarga de controlar el reparto de las tareas. Este programa se denomina controlador y está desarrollado enteramente en PHP sin seguir un modelo claro de organización del código. En un principio parece que está basado en MVC, pero por algún motivo el código fuente parece muy entremezclado.
+Finalmente, DHC dispone de un programa que se encarga de controlar el reparto de las tareas. Este programa se denomina controlador y está desarrollado enteramente en PHP sin seguir un modelo claro de organización del código. En un principio parece que está basado en el patrón arquitectónico MVC, pero por algún motivo el código fuente parece muy entremezclado.
 
 \section{Lenguajes de programación utilizados}
 
@@ -22,7 +22,9 @@ El lenguaje de programación elegido para el proyecto ha sido C++. Esta elecció
 
 \begin{itemize}
 	\item Tanto los lenguajes C como C++ son completamente compatibles con CUDA. Además, CUDA ofrece algunas ayudas específicas para C++ (como la forma de definir texturas) facilitando el trabajo con dicha tecnología. Éste tipo de ayudas es más patente cuando se utiliza el método sencillo de desarrollo.
+	
 	\item El autor del presente proyecto final de carrera está muy familiarizado con dicho lenguaje lo que permite realizar mejor el desarrollo.
+	
 	\item Aunque no hace un uso adecuado de las capacidades de C++, DHC ha sido desarrollado utilizando dicho lenguaje de programación.
 \end{itemize}
 
@@ -31,7 +33,7 @@ Por otra parte se hace uso del lenguaje PHP para el controlador web por ser un l
 Por último se hace uso de una variación del lenguaje C creada por NVIDIA para desarrollar en sus tarjetas gráficas. Esta variación consiste en añadir información sobre el acceso a métodos y variables:
 
 \begin{itemize}
-	\item Se usa \_\_global\_\_ para denotar funciones que se alojarán en la tarjeta gráfica, pero que podrán ser llamdas desde la CPU.
+	\item Se usa \_\_global\_\_ para denotar funciones que se alojarán en la tarjeta gráfica, pero que podrán ser llamadas desde la CPU.
 
 	\item \_\_device\_\_ son funciones que solo pueden ser llamadas desde otras funciones que ya se encuentre en la GPU.
 	
@@ -79,13 +81,13 @@ El controlador hace uso de una base de datos MySQL, conocida por ofrecer un buen
 
 Cada vez que una WU es dada a un agente se calcula un tiempo de vida que será el tiempo que tiene el agente para devolver un resultado antes de considerar que la esa WU ha caducado. Si una WU caduca será reciclada y ofrecida a otro agente.
 
-El controlador esta programado enteramente en PHP sin hacer uso de ningún \emph{framework} sino que haciendo uso de una base del patrón de diseño MVC se ha programado desde cero todo el sistema. Al no disponer de documentación se hace relativamente complejo realizar el mantenimiento de esta solución, especialmente cuando no siempre hace uso del patrón anteriormente mencionado.
+El controlador esta programado enteramente en PHP sin hacer uso de ningún \emph{framework} sino que haciendo uso del patrón arquitectónico MVC se ha programado desde cero todo el sistema. Al no disponer de documentación se hace relativamente complejo realizar el mantenimiento de esta solución, especialmente cuando no siempre hace uso del patrón anteriormente mencionado.
 
 \subsection{Agente de DHC}
 
-El agente es el encargado de realizar la tarea más compleja del sistema que es la comprobación de los resumenes dados por el controlador utilizando para ello las herramientas que estén a su disposición (la CPU y si puede ser la GPU).
+El agente es el encargado de realizar la tarea más compleja del sistema que es la comprobación de los resúmenes dados por el controlador utilizando para ello las herramientas que estén a su disposición (la CPU y si puede ser la GPU).
 
-El agente se encuentra en el equipo que va a realizar las operaciones de comprobación de funciones resúmenes y puede haber tantos equipos como se necesite. De este modo el sistema no está restringido a un único agente y puede distribuir la carga de trabajo entre tantos agentes como haga falta. Además, los agentes pueden estar no solo distribuidos en una red local de ordenadores, sino que pueden distribuirse a lo largo de internet, de modo se podría tenerse varias sedes que ejecuten agentes disponiendo de un único controlador. En caso de requerir un sistema más complejo se puede consultar el apartado~\ref{sec:conf_avanzada}.
+El agente se encuentra en el equipo que va a realizar las operaciones de comprobación de funciones resúmenes y puede haber tantos equipos como se necesite. De este modo el sistema no está restringido a un único agente y puede distribuir la carga de trabajo entre tantos agentes como haga falta. Además, los agentes no tienen porque estar restringidos sólo a una red local, también pueden distribuirse a lo largo de internet, de modo se podría tenerse varias sedes que ejecuten agentes disponiendo de un único controlador. En caso de requerir un sistema más complejo se puede consultar el apartado~\ref{sec:conf_avanzada}.
 
 Por otro lado, cuando se ejecuta un agente sobre un ordenador éste realiza una comprobación del número de CPUs en el sistema y del número de GPUs con capacidad para utilizar CUDA. Lo que se pretende con esto es crear un proceso ligero encargado de cada unidad de cómputo de que disponga el sistema teniendo en cuenta que para cada GPU asigna una CPU. Esto significa que si disponemos de un sistema con 4 GPU y 8 CPUs (concretamente 8 núcleos) sólo considerará que hay 4 GPUs y 4 CPUs (las otras 4 CPUs las utiliza para control de las unidades de tarjeta gráfica).
 

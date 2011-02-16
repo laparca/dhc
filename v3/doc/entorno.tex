@@ -122,7 +122,7 @@ $ sudo sh ./cudatoolkit_3.2.16_linux_64_ubuntu10.04.run
 
 Es recomendable instalar las herramientas en los directorios que nos indique como predeterminados (generalmente \emph{/usr/local/cuda}).
 
-\section{g++}
+\section{GNU G++}
 
 El compilador de GNU es probablemente uno de los más utilizados hoy día en el mundo del software libre. Este compilador dispone de herramientas para compilar una gran cantidad de lenguajes distintos como C, C++, Objective-C, Pascal y muchos más. Es el compilador que traen todas las distribuciones GNU/Linux en la actualidad y hasta sistemas operativos como Mac OS X lo utilizan.
 
@@ -135,6 +135,16 @@ $ sudo apt-get install build-essential g++
 \end{verbatim}
 
 El paquete \emph{build-essential} se encarga de instalar todas las herramientas y bibliotecas de compilación básicas. Luego le indicamos que se asegure de instalar g++.
+
+\section{NASM}
+
+NASM es un ensamblador multiplataforma que se necesita para poder generar la versión de CPU de MD5. Es importante asegurarse de utilizar la última versión de la herramienta ya que, por ejemplo, la versión que trae Mac OS X no está actualizada y no permite realizar compilaciones de 64 bits.
+
+Para instalarlo solo hay que ejecutar:
+
+\begin{verbatim}
+$ sudo apt-get install nasm
+\end{verbatim}
 
 \section{PHP}
 

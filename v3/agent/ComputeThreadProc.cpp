@@ -190,7 +190,7 @@ void ComputeThreadProc(void* pData)
 
 			if(waiting_time > wt_now)
 				sleep_time = MAX(sleep_time - DEC_WAIT, MIN_WAIT);
-			else if(waiting_time < wt_now)
+			else
 				sleep_time = MIN(sleep_time + INC_WAIT, MAX_WAIT);
 		}
 		

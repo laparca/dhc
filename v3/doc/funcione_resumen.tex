@@ -4,19 +4,24 @@ Los sistemas destinados a ocultar o proteger información llevan usándose desde
 
 En la actualidad hay una gran cantidad de sistemas para la protección de información y se utilizarán unos u otros dependiendo de lo que se pretenda hacer. Concretamente existen 3 grandes grupos de mecanismos de seguridad:
 \begin{itemize}
-	\item Sistemas de cifrado de clave simétrica, que son aquellos que utilizan una clave para cifrar la información y esta clave debe ser conocida por todos aquellos que quieran tener acceso a información.
-	\item Sistemas de cifrado de clave asimétrica, que utiliza dos juegos de claves, una pública y conocida por todo el mundo y otra privada que solo su propietario posee.
+	\item Sistemas de cifrado de clave simétrica, que son aquellos que utilizan una única clave para cifrar la información y descifrar la misma. Esta clave debe ser conocida por todos aquellos que quieran tener acceso a los datos.
+
+	\item Sistemas de cifrado de clave asimétrica, que utiliza dos juegos de claves, una pública y conocida por todo el mundo y otra privada que solo su propietario posee. Estos sistemas permiten cifrar y descifrar mensajes y firmar los mismos (depende del tipo de claves).
+
 	\item Sistemas de un solo sentido o funciones resúmenes (también conocidas como funciones \emph{hash}).
 \end{itemize}
 
 Las funciones resumen, que son las que nos interesan para el presento proyecto fin de carrera, son aquellas que cumplen las siguientes características:
 
 \begin{itemize}
-	\item Son fáciles de calcular en un sentido, pero es muy complicado hallar su inversa y
-	\item Que dada una entrada de longitud arbitraria siempre producirán una salida de longitud fija.
+	\item Son fáciles de calcular en un sentido, pero es muy complicado hallar su inversa (en principio ésta no existe).
+
+	\item Dada una entrada de longitud arbitraria siempre producirán una salida de longitud fija.
+	
+	\item Debe ser muy complicado encontrar colisiones, esto es, dos entradas diferentes que produzcan el mismo resumen.
 \end{itemize}
 
-Este tipo de funciones son ampliamente utilizadas en el mundo de la seguridad como sistema para el almacenamiento de contraseñas de usuario, la generación de claves de sesión o la firma digital de documentos (por poner algunos ejemplos). Al ser ampliamente utilizadas es importante disponer de mecanismos para comprobar la fortaleza del mecanismo de funcionamiento como la fortaleza de la clave elegida.
+Este tipo de funciones son ampliamente utilizadas en el mundo de la seguridad como sistema para el almacenamiento de contraseñas de usuario, la generación de claves de sesión o la firma digital de documentos (por poner algunos ejemplos). Al ser ampliamente utilizadas es importante disponer de mecanismos para comprobar la fortaleza del mecanismo de funcionamiento. Por otra parte hay que poder comprobar también las calidad de las contraseñas para evitar problemas por posibles debilidades de las funciones resumen.
 
 A causa de su gran uso es necesario disponer de sistemas que comprueben la fortaleza de las contraseñas elegidas por los usuarios o de las claves de sesión que pueda generar un sistema de seguridad. El primer caso es importante para garantizar la seguridad de las organizaciones, impidiendo que los usuarios elijan contraseñas que puedan ser adivinadas o quebrantadas por posibles atacantes dando acceso a la información privada de ésta con los consiguientes problemas por posibles copias y/o borrados de información. El segundo caso es importante para garantizar que los sistemas seguros sean capaces de generar claves suficientemente robustas para impedir ataques externos.
 
@@ -36,11 +41,11 @@ Utilizando este sistema como referencia de peor caso es fácil medir las mejoras
 
 $$ T_{max}=t\sum^n_{i=m}\frac{k^i}{C} $$
 
-En la actualidad, gracias a los avances en las comunicaciones y a los distintos procesadores es normal disponer de sistemas distribuidos heterogéneos. Éstos pueden contar con unas cuantas máquinas o cientos de miles. Para este tipo de casos es necesario disponer de una función general que tenga en cuenta la velocidad de cálculo en cada tipo de procesador en que vaya a ejecutarse la función resumen. Si disponemos de $p$ tipos de procesadores distintos y $C_j$ procesadores para cada tipo que tardan $t_j$ segundos en computar la función resumen ($1 \leq j \leq p$):
+En la actualidad, gracias a los avances en las comunicaciones y a los distintos procesadores es normal disponer de sistemas distribuidos heterogéneos. Estos pueden contar con unas cuantas máquinas o cientos de miles. Para este tipo de casos es necesario disponer de una función general que tenga en cuenta la velocidad de cálculo en cada tipo de procesador en que vaya a ejecutarse la función resumen. Si disponemos de $p$ tipos de procesadores distintos y $C_j$ procesadores para cada tipo que tardan $t_j$ segundos en computar la función resumen ($1 \leq j \leq p$):
 
 $$ T_{max}=\frac{\sum^n_{i=m}k^i}{\sum^p_{j=1}\frac{C_j}{t_j}}$$
  
-Con esta información  se puede calcular cuál debe ser el tamaño del sistema a utilizar para poder comprobar la fortaleza de una contraseña en un tiempo determinado.
+Con esta información se puede calcular cual debe ser el tamaño del sistema a utilizar para poder comprobar la fortaleza de una contraseña en un tiempo determinado.
 
 Por ejemplo, si dispusiéramos de un sistema con las siguientes características:
 
@@ -50,9 +55,7 @@ Por ejemplo, si dispusiéramos de un sistema con las siguientes características
 	\item 4 tarjetas gráficas capaces de hacer 1.250 millones de resúmenes por segundo cada una.
 \end{itemize}
 
-Tardaríamos unas 9,5 horas en encontrar una contraseña de entre 6 y 8 caracteres utilizando solo letras minúsculas y números. Es importante tener en cuenta que al buscar una contraseña se puede acotar mucho el conjunto de símbolos de entreda y las longitudes de las claves. Esto reduce enormemente los tiempos de búsqueda.
-%Por otra parte sabemos que la longitud de las contraseñas está entre 6 y 8 caracteres de longitud y que el usuario solo utiliza letras minúsculas y números.
-%2 tipos de procesadores diferentes para calcular una función resumen y que el primer procesador puede hacer una media de 25 millones de resúmenes por segundo y el segundo procesador puede hacer 1250 millones de resúmenes por segundo (éste caso se aproxima al uso de CPU+GPU). De cada procesador se dispone de 4 unidades. Además, nuestra clave está entre 6 y 8 caracteres de longitud y solo vamos a considerar letras minúsculas y números lo que supone 36 símbolos de entrada. Esto supone que el tiempo máximo que tardará el sistema en comprobar todas las combinaciones en las condiciones expuestas es de casi 9,5 horas.
+Tardaríamos unas 9,5 horas en encontrar una contraseña de entre 6 y 8 caracteres utilizando solo letras minúsculas y números. Es importante tener en cuenta que al buscar una contraseña se puede acotar mucho el conjunto de símbolos de entrada y las longitudes de las claves. Esto reduce enormemente los tiempos de búsqueda.
 
 Es fácil comprobar que utilizando sistemas de fuerza bruta para comprobar resúmenes se resuelve de forma lineal con respecto al número de procesadores.
 
@@ -62,9 +65,9 @@ Aunque no es propósito del presente proyecto de fin de carrera implementar todo
 
 \subsection{Ataque de cumpleaños}
 
-Este ataque a los sistemas de resúmenes consiste en que dado un mensaje $M$ cualquiera y una función resumen $H$, que genera resúmenes de longitud $L$ bits, se puede hallar un mensaje $M’$ probando combinaciones aleatorias en aproximadamente $1.2\sqrt{2^L}$ intentos \cite{website:wastahf} \cite{Oorschot:1994:PCS:191177.191231}(en caso de que la función resumen sea uniformemente distribuida).
+Este ataque a los sistemas de resúmenes consiste en que dado un mensaje $M$ cualquiera y una función resumen $H$, que genera resúmenes de longitud $L$ bits, se puede hallar un mensaje $M’$ probando combinaciones aleatorias en aproximadamente $1.2\sqrt{2^L}$ intentos~\cite{website:wastahf,Oorschot:1994:PCS:191177.191231}(en caso de que la función resumen sea uniformemente distribuida).
 
-El principio en el que se base este ataque se encuentra en un problema de teoría de la probabilidad conocido como problema del cumpleaños o paradoja del cumpleaños. Esta dice que un grupo de personas debe tener 23 individuos para que haya un 50\% de probabilidad de que dos cumplan hayan nacido el mismo día (figura \ref{fig:Birthday}).
+El principio en el que se base este ataque se encuentra en un problema de teoría de la probabilidad conocido como problema del cumpleaños o paradoja del cumpleaños. Esta dice que un grupo de personas debe tener al menos 23 individuos para que haya al menos un 50\% de probabilidad de que dos hayan nacido el mismo día (figura \ref{fig:Birthday}).
 
 El funcionamiento general es el siguiente:
 
@@ -76,9 +79,9 @@ P(i, n) = \left\{
 	\end{array} \right.
 $$
 
-Donde $P(i, n)$ es la probabilidad de que para una población final de $n$ elementos (365 en el caso de los cumpleaños) y disponiendo de $i$ elementos seleccionados aleatoriamente dos individuos no coincidan. Por ejemplo, si tomamos tres individuos aleatoriamente el primero de ellos habrá nacido un día cualquiera del año (la probabilidad de que dos individuos no cumplan años el mismo día es del 100\% ó $365/365$), el segundo habrá nacido uno de los restantes días ($364/365$) y el tercero igual ($353/365$). La probabilidad total será el producto de las probabilidades; en este caso concreto es de $0.9945$.
+Donde $P(i, n)$ es la probabilidad de que para una población final de $n$ elementos (365 en el caso de los cumpleaños), y disponiendo de $i$ elementos seleccionados aleatoriamente, dos individuos no coincidan. Por ejemplo, si tomamos tres individuos aleatoriamente el primero de ellos habrá nacido un día cualquiera del año (la probabilidad de que dos individuos no cumplan años el mismo día es del 100\% ó $365/365$), el segundo habrá nacido uno de los restantes días ($364/365$) y el tercero igual ($353/365$). La probabilidad total será el producto de las probabilidades; en este caso concreto es de $0.9945$.
 
-Este mismo principio es aplicable a las funciones resumen \cite{Bellare04hashfunction}, ya que se puede considerar que en lugar de días del año tenemos resúmenes (todas las posibles combinaciones de éstos) y en lugar de personas tenemos textos o mensajes a ser cifrados.
+Este mismo principio es aplicable a las funciones resumen~\cite{Bellare04hashfunction}, ya que se puede considerar que en lugar de días del año tenemos resúmenes (todas las posibles combinaciones de éstos) y en lugar de personas tenemos textos o mensajes a ser cifrados.
 
 En el caso de las funciones resumen hay que tener en cuenta la distribución que hacen éstas de los datos de entrada ya que las funciones no uniformes serán en las que es más sencillo encontrar colisiones (se puede centrar la búsqueda en los cúmulos). Esto supone que en lugar de tener probar combinaciones aleatorias diferentes podríamos reducir el número intentos.
  
@@ -88,11 +91,11 @@ En el caso de las funciones resumen hay que tener en cuenta la distribución que
 	\caption{Probabilidad de encontrar dos personas nacidas el mismo día con respecto al tamaño del grupo}\label{fig:Birthday}
 \end{figure}
 
-Estas características del sistema del cumpleaños lo convierten en un sistema ideal para sustituir a los mecanismos de fuerza bruta convencionales, pero hay que tener en cuenta que se debe considerar el tiempo de crear los mensajes a probar (dependiendo de su longitud podría hacer al sistema igual de rápido que uno de fuerza bruta) y el tamaño de la muestra; el principal problema del ataque de cumpleaños es que debe trabajar sobre todas las posibles combinaciones existentes lo que puede suponer un problema en casos en los que sepamos que hay una gran cantidad de restricciones. Por ejemplo, en el caso expuesto al inicio de la sección en el que se tardaba 9,5 horas en completar la búsqueda se tardaría cerca de 8.217,73 años utilizando este mecanismo. Esto significa que hay que estudiar el problema para poder descubrir las debilidades locales (en el caso de las contraseñas puede ser la longitud, el conjunto de caracteres posibles, etc.).
+Estas características del sistema del cumpleaños lo convierten en un sistema ideal para sustituir a los mecanismos de fuerza bruta convencionales, pero hay que tener en cuenta que se debe considerar el tiempo de crear los mensajes a probar (dependiendo de su longitud podría hacer al sistema igual de rápido que uno de fuerza bruta) y el tamaño de la muestra. El principal problema del ataque de cumpleaños es que debe trabajar sobre todas las posibles combinaciones existentes lo que puede suponer un problema en casos en los que sepamos que hay una gran cantidad de restricciones. Por ejemplo, en el caso expuesto al inicio de la sección en el que se tardaba 9,5 horas en completar la búsqueda se tardaría cerca de 8.217,73 años utilizando este mecanismo. Esto significa que hay que estudiar el problema para poder descubrir las debilidades locales (en el caso de las contraseñas puede ser la longitud, el conjunto de caracteres posibles, etc.).
 
 \subsection{Tablas arcoíris}
 
-Las tablas arcoíris son una técnica por la que se toma un conjunto de entradas y sobre cada una de éstas se realizan un proceso iterativo de resúmenes que van tomando el último resumen realizado para hacer uno nuevo hasta obtener un elemento que consideraremos terminal. Se puede considerar este proceso como una tabla en el que la primera columna son las distintas entradas que se han elegido y cada columna $C_j$, para $j>1$, representa el resumen de la columna anterior ($C_j = H(C_{j-1})$, ver cuadro \ref{tab:arcoiris}). La tabla arcoíris consiste en tomar la primera y última columnas.
+Las tablas arcoíris son una técnica por la que se toma un conjunto de entradas y sobre cada una de éstas se realizan un proceso iterativo de resúmenes que van tomando el último resumen realizado para hacer uno nuevo hasta obtener un elemento que consideraremos terminal. Se puede considerar este proceso como una tabla en el que la primera columna son las distintas entradas que se han elegido y cada columna $C_j$, para $j>1$, representa el resumen de la columna anterior ($C_j = H(C_{j-1})$, ver cuadro~\ref{tab:arcoiris}). La tabla arcoíris consiste en tomar la primera y última columnas.
 
 \begin{table}
 	\centering
@@ -108,7 +111,7 @@ Las tablas arcoíris son una técnica por la que se toma un conjunto de entradas
 		$m_4$ & $m'_4$ & $m''_4$ & $m'''_4$ & $m_{4,terminal}$\\
 		\hline
 	\end{tabular}
-	\caption{Ejemplo de tabla arcoíris}\label{tab:arcoiris}
+	\caption{Ejemplo de generación de una tabla arcoiris}\label{tab:arcoiris}
 \end{table}
 
 Una vez que se dispone de la tabla arcoíris se pueden empezar a probar claves por fuerza bruta y si en algún momento alguna coincide con algún elemento final de la tabla arcoíris simplemente tenemos que buscar los resúmenes empezando en el que genero dicho elemento terminal (el mensaje inicial).
