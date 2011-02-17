@@ -4,9 +4,9 @@ En este capítulo se presentan las pruebas realizadas sobre el proyecto y los re
 
 Con las pruebas realizadas se ha procurado asegurar el buen funcionamiento de los cambios introducidos durante la realización del proyecto para garantizar su utilidad.
 
-\section{Subsistema de plugins}
+\section{Subsistema de \emph{plugins}}
 
-Las pruebas sobre el sistema de plugins tratan de comprobar, por una parte, el buen funcionamiento de la carga dinámica de las extensiones, así como de las mejoras suministradas por el API de algoritmos y de \emph{executors}.
+Las pruebas sobre el sistema de \emph{plugins} tratan de comprobar, por una parte, el buen funcionamiento de la carga dinámica de las extensiones, así como de las mejoras suministradas por el API de algoritmos y de \emph{executors}.
 
 Este apartado ha sido uno de los más importantes ya que todos los cambios realizados tienen un impacto importante sobre la estructura del proyecto. De este modo se debe garantizar que tras los cambios todo el sistema sigue funcionando de forma correcta.
 
@@ -19,7 +19,7 @@ Los pasos seguidos para el propósito descrito ha sido el siguiente:
 	
 	Se eligió el algoritmo de MD4 a lazar entre todos los implementados en DHC.
 	
-	\item Paso de todos los algoritmos a antiguas al nuevo sistema.
+	\item Paso de todos los algoritmos antiguos al nuevo sistema.
 	
 	Así se garantizaba el buen funcionamiento en todos los casos y se podía comprobar que no hubiese código antiguo interfiriendo en en la ejecución.
 	
@@ -37,18 +37,18 @@ Los pasos seguidos para el propósito descrito ha sido el siguiente:
 	
 	Este plugin de prueba no realiza ninguna operación dentro del sistema, pero es útil para comprobar que el subsistema de plugins es capaz de cargar correctamente los mismos.
 	
-	\item Transformación de los algoritmos en plugins.
+	\item Transformación de los algoritmos en \emph{plugins}.
 	
-	Finalmente, se pasaron todos los algoritmos para que hagan uso del sistema de plugins y así comprobar el funcionamiento real. Además, de este modo se independizan los plugins del agente.
+	Finalmente, se pasaron todos los algoritmos para que hagan uso del sistema de \emph{plugins} y así comprobar el funcionamiento real. Además, de este modo se independizan los plugins del agente.
 \end{enumerate}
 
-Para realizar las pruebas anteriores se fueron realizar cambios paulatinamente y corrigiendo los errores que surgieron. En estos momentos se puede considerar que los subsistema de plugins, algoritmos y \emph{executos} funciona correctamente.
+Para realizar las pruebas anteriores se fueron realizando los cambios paulatinamente y corrigiendo los errores que surgieron. En estos momentos se puede considerar que el subsistema de \emph{plugins}, algoritmos y \emph{executors} funciona correctamente.
 
 \section{Controlador}
 
 El controlador ha sufrido un rediseño importante de su aspecto que ha buscando mantener la misma funcionalidad que tenía anteriormente y a la vez ofrecer una experiencia más agradabe mejorando la presentación. Para ello se ha hecho uso de las técnicas actuales de diseño web como uso de degradados.
 
-Los cambios realizados ha supuesto una mejora constatada tras dar a probar ambas interfaces a un grupo de personas. Este grupo se componía de 7 personas completamente ajenas al desarrollo de éste proyecto y constataron la mejora del mismo.
+Los cambios realizados ha supuesto una mejora constatada tras dar a probar ambas interfaces a un grupo de personas. Este grupo se componía de 7 personas completamente ajenas al desarrollo de este proyecto y constataron la mejora del mismo.
 
 Por otro lado, los cambios en los agentes destinados a mejorar el tiempo de respuesta del controlador han contribuido a que, en momentos de alta carga de trabajo, los tiempos de espera se reduzcan. Esto supone una mejor experiencia de usuario al eliminar posibles impaciencias por la tardanza en obtener una página del controlador. Para poder comprobar este último punto solo ha sido necesario enviar un hash al sistema para que se ponga en marcha y controlar el tiempo que tarda en devolver una página.
 

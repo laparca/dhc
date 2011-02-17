@@ -125,23 +125,23 @@ if(text.length() == 0)
   ThrowError("Empty hash");
 \end{lstlisting}
 
-El problema del código mostrado anteriormente es que requiere forzosamente que ante la cualquier cambio de un algoritmo, o ante la creación de un algoritmo nuevo, modificar ese código. De este modo no el código no aprovecha la capacidad de abstracción de que otorga el lenguaje C++ ya que podría haberse hecho esto de un modo más elegante como se comprobará más adelante. Además, la el código mostrado anteriormente supone un problema para el mantenimiento ya que éste se encuentra en un fichero del código fuente, pero además, en otro completamente distinto también se hacen comprobaciones sobre los algoritmos por lo que hay que tener un buen conocimiento sobre la estructura interna del código y la organización de sus ficheros.
+El problema del código mostrado anteriormente es que requiere forzosamente ser modificado ante la cualquier cambio de un algoritmo, o ante la creación de un algoritmo nuevo. De este modo el código no aprovecha la capacidad de abstracción que otorga el lenguaje C++ ya que podría haberse hecho esto de un modo más elegante como se comprobará más adelante. Además, el código mostrado supone un problema para el mantenimiento ya que éste se encuentra en un fichero del código fuente, pero además, en otro completamente distinto también se hacen comprobaciones sobre los algoritmos por lo que hay que tener un buen conocimiento sobre la estructura interna de los ficheros del programa.
 
 \section{Modificaciones realizadas a DHC}
 
-Como se ha podido ver en el apartado anterior DHC es una buena aplicación, pero tiene algunos fallo que podrían resolverse para mejorar la mantenibilidad de la solución. Esto ofrecería una esperanza de vida mayor al programa y lo convertiría en una herramienta mucho más útil a corto y largo plazo.
+Como se ha podido ver en el apartado anterior DHC es una buena aplicación, pero tiene algunos fallo que podrían resolverse para mejorar la mantenibilidad de la solución. Esto ofrecería una mayor esperanza de vida al programa y lo convertiría en una herramienta mucho más útil a corto y largo plazo.
 
 Por los motivos anteriores se ha decidido realizar los cambios necesarios que conviertan a DHC en una herramienta más fácil de manejar, de mantener y que permita a cualquier programador añadir funcionalidades de forma sencilla sin requerir un alto grado de conocimiento del código del agente.
 
 \subsection{Diseño de API para algoritmos de codificación}\label{sec:api_alg}
 
-Como ya se ha comentado anteriormente, una de las mayores deficiencias de DHC, a nuestro entender, es la falta de mecanismo sencillo para incorporar nuevos algoritmos debido, principalmente, a que el código de los algoritmos se entremezcla con la funcionalidad de controlador por distintos ficheros de código fuente. Esto supone a la hora de realizar nuevos algoritmos un problema importante al encontrarse todo el código de los mismos repartido entre distintas funciones y métodos, dificultando enormemente las labores de mantenimiento y de desarrollo. Por este motivo se ha decidido implementar una API para el desarrollo de algoritmos que aprovechando todas las funcionalidades ya existentes mejore de forma sustancial las labores de mantenimiento de la aplicación y facilite el desarrollo de nuevos algoritmos.
+Como se ha comentado anteriormente, una de las mayores deficiencias de DHC, a nuestro entender, es la falta de un mecanismo sencillo para incorporar nuevos algoritmos debido, principalmente, a que el código de los algoritmos se entremezcla con la funcionalidad de controlador en distintos ficheros de código fuente. Esto supone un problema importante, a la hora de realizar nuevos algoritmos, al encontrarse todo el código de los mismos repartido entre distintas funciones y métodos, dificultando enormemente las labores de mantenimiento y de desarrollo. Por este motivo se ha decidido implementar una API para facilitar el desarrollo de algoritmos, que aprovechando todas las funcionalidades ya existentes, mejore de forma sustancial las labores de mantenimiento de la aplicación.
 
 El diseño de la API propuesta se ha basado en dos ideas:
 \begin{itemize}
-	\item El algoritmo como sistema de realización de una tarea específica, como pueda ser obtener el valor que generó un determinado resumen y
+	\item El algoritmo como sistema para la realización de una tarea específica, como pueda ser obtener el valor que generó un determinado resumen y
 	
-	\item El preparador que es el mecanismo de configuración de los parámetros obtenidos del controlador para poder ser utilizados por un algoritmo.
+	\item La factoría, que es el mecanismo que permite acceder a los algoritmos que existan en el sistema.
 \end{itemize}
 
 El objetivo principal de la propuesta es permitir agrupar todo el código que rige a un algoritmo de forma que facilite la modificación del mismo y, en caso necesario, crear algoritmos nuevos sin tener que realizar un gran esfuerzo.
@@ -151,7 +151,7 @@ Gracias al API propuesto, cada algoritmo será una clase que herede de la clase 
 La clase \emph{Algorithm} define los siguiente métodos obligatorios de implementar:
 
 \begin{description}
-	\item[GetName] Devuelvel el nombre del algoritmo. Este nombre se utiliza para poder identificar el algoritmo y poder seleccionarlo cuando se solicite. Para garantizar el buen funcionamiento del sistema y evitar funcionamientos extraños, este nombre debe ser único.
+	\item[GetName] Devuelve el nombre del algoritmo. Este nombre se utiliza para poder identificar el algoritmo y poder seleccionarlo cuando se solicite. Para garantizar el buen funcionamiento del sistema y evitar funcionamientos extraños, este nombre debe ser único.
 	
 	\item[HashLength] Es el tamaño que debe tener un hash para ser considerado válido. Con esto se pretende que en caso de que el controlador nos de un hash erróneo poder hacer frente al problema.
 
@@ -166,8 +166,6 @@ La clase \emph{Algorithm} define los siguiente métodos obligatorios de implemen
 	\item[IsCPUCapable] Indica si el algoritmo soporta procesamiento utilizando CPU.
 \end{description}
 
-Cada algoritmo tendría asociado un preparador. Inicialmente se adaptaría el sistema existente para disponer del primer preparador al igual que sucederá con los algoritmos ya existentes, que también serán transformados. En la Figura 3 se puede ver a grandes rasgos cómo funcionaría este sistema.
-
 Por otra parte se ha creado una factoría de algoritmos (la clase \emph{AlgorithmFactory}) que permite acceder de forma sencilla a los algoritmos que se encuentren registrados en el sistema. Además, esta factoría permite el registro de nuevos algoritmos de forma sencilla para facilitar la implementación de nuevas utilidades.
 
 Para poder comprender mejor como funciona el nuevo sistema la figura~\ref{fig:algotirmo_gpu} muestra a grandes rasgos como sería el proceso. En este caso el actor es el agente que va a hacer uso de la funcionalidad ofrecida para realizar una comprobación sobre MD5.
@@ -175,16 +173,16 @@ Para poder comprender mejor como funciona el nuevo sistema la figura~\ref{fig:al
 \begin{figure}
 	\centering
 	\includegraphics[width=0.7\textwidth]{images/algoritmo_gpu.pdf}
-	\caption{Proceso de ejecución de un algoritmo en GPU}\label{fig:algotirmo_gpu}
+	\caption{Diagrama de secuencia de la ejecución de un algoritmo en GPU}\label{fig:algotirmo_gpu}
 \end{figure}
 
-A la hora de implementar estas características hay que tener en cuenta que se puede hacer uso tanto de una CPU como de una GPU. Esto supone que tanto el preparador como el algoritmo deben estar capacitados para ofrecer alguna de dichas opciones y, a poder ser, ambas. Esto supone en la práctica que tanto el algoritmos implementado como el configurador pueden estar duplicados (uno especializado en CPU y otro en GPU).
+A la hora de implementar estas características hay que tener en cuenta que se puede hacer uso tanto de una CPU como de una GPU. Esto supone que el algoritmo debe estar capacitado para ofrecer alguna de dichas opciones y, a poder ser, ambas. Esto supone en la práctica que tanto el algoritmo implementado puede esta duplicado disponiendo del código de la versión de CPU y de la versión de GPU.
 
 
 
 \subsection{Diseño de API para la estandarización de la ejecución de algoritmos}
 
-Una vez creado el API para algoritmos se puede comprobar que muchos algoritmos siempre siguen el mismo patrón de ejecución. Esto supone tener que repetir constantemente el mismo código en los algoritmos cuando podríamos hacer uso de la reutilización para eliminar este inconveniente. Por este motivo se planteo diseñar un sistema que permitiera estandarizar la forma que tiene un algoritmo de ejecutarse de tal modo que solo tengamos que centrarnos en lo imprescindible de cada uno de ellos.
+Una vez creado el API para algoritmos se puede comprobar que muchos algoritmos siempre siguen el mismo patrón de ejecución. Esto supone tener que repetir constantemente el mismo código en los algoritmos cuando podríamos hacer uso de la reutilización para eliminar este inconveniente. Por este motivo se planteo diseñar un sistema que permitiera estandarizar la forma que tiene un algoritmo de ejecutarse de tal modo que sólo tengamos que centrarnos en lo imprescindible de cada uno de ellos.
 
 La filosofía que se ha empleado es la misma que en el caso de los algoritmos. En este caso se ha creado la clase \emph{Executor} que se encarga de definir las funcionalidades básicas que debe implementar un mecanismo de ejecución y por otro lado se dispone de la clase \emph{ExecutorFactory} que nos facilita el acceso a los mismos.
 
@@ -195,10 +193,10 @@ El código original de DHC utiliza el mismo mecanismo de ejecución para todos l
 \begin{figure}
 	\centering
 	\includegraphics[width=1\textwidth]{images/executor.pdf}
-	\caption{Proceso de ejecución de un algoritmo en GPU utilizando un \emph {Executor}}\label{fig:algotirmo_gpu_executor}
+	\caption{Diagrama de secuencia de la ejecución de un algoritmo en GPU utilizando un \emph {Executor}}\label{fig:algotirmo_gpu_executor}
 \end{figure}
 
-La ejecución con este mecanismo se complica un poco más (ver figura~\ref{fig:algotirmo_gpu_executor}), pero la sobrecarga introducida por este mecanismo es despreciable en tiempo.
+La ejecución con este mecanismo se complica un poco más (ver figura~\ref{fig:algotirmo_gpu_executor}), pero la sobrecarga introducida por este mecanismo es despreciable en tiempo. Además, hay que tener en cuenta que no es obligatorio el uso de un \emph{Executor} por parte de un algoritmo.
 
 Una de las principales ventajas que podemos comentar sobre este sistema es que ahora un algoritmo no tiene porque estar sujeto a un único modo de hacer las cosas. Se puede detectar si hay un \emph{Executor} en concreto y si no está se pude seleccionar otro. Así, en caso de que se retire uno por cuestiones de mantenimiento o depuración el sistema podría seguir funcionando (siempre que se implemente esta forma de trabajar).
 
@@ -214,9 +212,9 @@ En la figura~\ref{fig:alg_ex_prox} puede verse como pueden interactuar entre sí
 
 \subsection{Modificaciones para la mejora de la escalabilidad}
 
-Durante las primeras pruebas realizadas sobre DHC se notó que el tiempo de respuesta de la interfaz web podía verse seriamente comprometido si la velocidad utilizada por los agentes para solicitar tareas o devolver tareas es muy alta y si la distancia entre el agente y el controlador es grande. Este último punto se constató cuando se hicieron pruebas en las que el controlador se encontraba en un servidor en Alemania y el agente se encontraba en España. Sin duda la ralentización en este punto se debía a las latencias de la red por la espera de los asentimientos (paquetes ACK de la arquitectura IP). Estos retrasos pueden afectar de forma importante en la escalabilidad del sistema, por lo que se ha decidido realizar cambios para eliminar en la medida de lo posible estos problemas.
+Durante las primeras pruebas realizadas sobre DHC se notó que el tiempo de respuesta de la interfaz web podía verse seriamente afectado si la velocidad utilizada por los agentes para solicitar tareas o devolver tareas es muy alta y si la distancia entre el agente y el controlador es grande. Este último punto se constató cuando se hicieron pruebas en las que el controlador se encontraba en un servidor en Alemania y el agente se encontraba en España. Sin duda la ralentización en este punto se debía a las latencias de la red por la espera de los asentimientos (paquetes ACK de la arquitectura IP). Estos retrasos pueden afectar de forma importante en la escalabilidad del sistema, por lo que se ha decidido realizar cambios para eliminar en la medida de lo posible estos problemas.
 
-Cada agente de DHC se encuentra en un bucle en el que en cada iteración solicita una WU al controlador. En caso de que no haya ninguna tarea que pueda realizar el agente se procede a esperar 5 segundos. Este tiempo puede resultar insuficiente si el controlador tiene que hacer gran cantidad de cálculos o si el número de agentes es tal que saturen con peticiones al controlador (efecto DDoS). Por este motivo se ha diseñado un algoritmo que ajuste el tiempo de espera de forma dinámica para ajustarse mejor a las capacidades del controlador.
+Cada agente de DHC se encuentra en un bucle en el que en cada iteración solicita una WU al controlador. En caso de que no haya ninguna tarea que pueda realizar, el agente se procede a esperar 5 segundos. Este tiempo puede resultar insuficiente si el controlador tiene que hacer gran cantidad de cálculos o si el número de agentes es tal que saturen con peticiones al controlador (efecto DDoS). Por este motivo se ha diseñado un algoritmo que ajuste el tiempo de espera de forma dinámica para ajustarse mejor a las capacidades del controlador.
 
 El nuevo algoritmo tiene en cuenta el tiempo que tarda el controlador en dar una respuesta al agente y si la respuesta dada contiene o no una WU. Con esto se pretende que el sistema se ajuste mejor a las condiciones ambientales del sistema.
 
@@ -230,7 +228,7 @@ Por otra parte, en caso de que el tiempo disminuyese supondría justo lo contrar
 
 Aunque el ideal sería que el sistema pudiera estar constantemente funcionando, la realidad dista mucho de esto ya que es fácil que se de el caso de que no haya tareas que procesar o, que habiéndolas, éstas no sean compatibles con los agentes libres.
 
-Teniendo lo anterior en cuenta, es fácil considerar que si en un momento dado no hay tareas, la próxima vez que consultemos al agente éste siga sin disponer de trabajos que asignar. Como este caso puede darse de forma continuada durante muchas consultas creemos que tiene sentido considerar que cada vez que se haga una petición a un controlador y éste no tenga WUs la espera hasta la siguiente vez que solicite una tarea se vea incrementado hasta un tiempo máximo. 
+Teniendo lo anterior en cuenta, es fácil considerar que si en un momento dado no hay tareas, la próxima vez que consultemos al agente éste siga sin disponer de trabajos que asignar. Como este caso puede darse de forma continuada durante muchas consultas creemos que tiene sentido considerar que cada vez que se haga una petición a un controlador, y éste no tenga WUs, la espera hasta la siguiente vez que solicite una tarea se vea incrementado hasta un tiempo máximo. 
 
 En caso de que el controlador empiece a ofrecer de nuevo WU a los agentes, estos empezarán a disminuir el tiempo entre solicitudes de forma paulatina hasta que vuelvan a estar estables.
 
@@ -255,31 +253,31 @@ La figura~\ref{fig:control_tiempo_espera} puede verse una explicación gráfica 
 
 \section{Diseño e implementación de un mecanismo de carga de extensiones}
 
-Ahora que se dispone de un API que facilita la creación de algoritmos y mecanismos para ejecutar éstos, se ha diseñado un sistema que permite cargar nuevos algoritmos y \emph{Executors} que se encuentren fuera de la aplicación. Estos algoritmos y \emph{Executors} que pueden cargarse de este modo son denominados \emph{plugins}.
+Ahora que se dispone de un API que facilita la creación de algoritmos y mecanismos para ejecutar estos, se ha diseñado un sistema que permite cargar nuevos algoritmos y \emph{Executors} que se encuentren fuera de la aplicación. Estos algoritmos y \emph{Executors} que pueden cargarse de este modo son denominados \emph{plugins}.
 
-Para comprender mejor la idea hay que tener en cuenta que hasta este momento, si se modificaba un algoritmo al estar este dentro del programa había que generar un nuevo ejecutable con dicha modificación. Lo que se pretende es que el algoritmo no tenga que formar parte del agente y que pueda ser una unidad que se encuentre por separado.
+Para comprender mejor la idea hay que tener en cuenta que hasta este momento, si se modificaba un algoritmo al estar éste dentro del programa había que generar un nuevo ejecutable con dicha modificación. Lo que se pretende es que el algoritmo no tenga que formar parte del agente y que pueda ser una unidad que se encuentre por separado.
 
 Para poder implementar este apartado se ha desarrollado una serie de clases (figura~\ref{fig:plugins}) que van a permitir describir el contenido de un fichero que pueda ser cargado desde fuera, el contenido del mismo y añaden facilidades para poder crear instancias de las clases que defina. Las clases definidas son:
 
 \begin{description}
-	\item[PluginFacility:] clase abstracta que describe una funcionalidad que va a presentar el plugin al agente. Esta está identificada por un nombre, su versión y el tipo. Además, permite crear instancias de la funcionalidad.
+	\item[PluginFacility:] clase abstracta que describe una funcionalidad que va a presentar el \emph{plugin} al agente. Ésta está identificada por un nombre, su versión y el tipo. Además, permite crear instancias de la funcionalidad.
 	
 	\item[PluginFacilityAlgorithm:] permite que el plugin pueda ofrecer a los agentes algoritmos. Esta clase implementa PluginFacility.
 	
 	\item[PluginFacilityExecutor:] permite que el plugin pueda ofrecer a los agentes \emph{Executors}. Esta clase implementa PluginFacility.
 	
-	\item[PluginFactory:] esta clase debe ser instanciada en el plugin y en ella hay que registrar todos aquellos componentes que ofrecerá el plugin al agente. Cada componente a ofrecer deberá heredad de PluginFacility. Además, esta clase proporciona información extra como el autor del plugin o el listado de \emph{facilites} que se van a exportar.
+	\item[PluginFactory:] esta clase debe ser instanciada en el plugin y en ella hay que registrar todos aquellos componentes que ofrecerá el plugin al agente. Cada componente a ofrecer deberá heredar de PluginFacility. Además, esta clase proporciona información extra como el autor del plugin o el listado de \emph{facilites} que se van a exportar.
 \end{description}
 
-Además de lo anterior, los plugins deben contener una función llamda \emph{GetPluginFactory} que permitirá obtener la instancia de \emph{PluginFactory} que tiene el plugin.
+Además de lo anterior, los \emph{plugins} deben contener una función llamda \emph{GetPluginFactory} que permitirá obtener la instancia de \emph{PluginFactory} que tiene el \emph{plugin}.
 
 \begin{figure}
 	\centering
 	\includegraphics[width=0.7\textwidth]{images/plugins.pdf}
-	\caption{Diseño del sistema de plugins}\label{fig:plugins}
+	\caption{Diagrama de clases del sistema de plugins}\label{fig:plugins}
 \end{figure}
 
-Como tener que memorizar todo el proceso de crear un plugin puede resultar muy complicado (intervienen muchas clases con dependencias entre ellas) se ha añadido una serie de macros de C que permiten simplificar en gran medida la creación de un plugin. Por ejemplo, para la creación del algoritmo que implementa SHA256 se ha creado una clase denominada sha256 que exportamos como algoritmo del siguiente modo:
+Como tener que memorizar todo el proceso de crear un \emph{plugin} puede resultar muy complicado (intervienen muchas clases con dependencias entre ellas) se ha añadido una serie de macros de C que permiten simplificar en gran medida la creación de los mismos. Por ejemplo, para la creación del algoritmo que implementa SHA-256 se ha creado una clase denominada sha256 que exportamos como algoritmo del siguiente modo:
 
 \begin{verbatim}
 BEGIN_PLUGIN("Samuel Rodriguez Sevilla")
@@ -287,12 +285,22 @@ BEGIN_PLUGIN("Samuel Rodriguez Sevilla")
 END_PLUGIN()
 \end{verbatim}
 
+Las macros existentes son:
+\begin{description}
+	\item[BEGIN\_PLUGIN(author\_name)] Indica que se va a definir un \emph{plugin} y su autor es \emph{author\_name}.
+	
+	\item[END\_PLUGIN()] Finaliza la definición de un \emph{plugin}.
+	
+	\item[ADD\_ALGORITHM(class, name, verion)] Añade un algoritmo definido en la clase \emph{class} que será identificado por \emph{name} y cuya versión es \emph{version}.
+	
+	\item[ADD\_EXECUTOR(class, name, verion)] Igual que el algoritmo, pero para un \emph{Executor}.
+\end{description}
 
 \section{Mejoras en la depuración}
 
-Cuando se desarrollan aplicaciones siempre hay que tener muy encuenta que se pueden producir errores durante la ejecución. Generalmenet, el método habitual para comprobar los fallos es utilizar salidas por pantalla tratando de acotar el lugar del fallo; este sistema es poco profesional por lo que para la realización de esta práctica se ha utilizado otros mecanismos.
+Cuando se desarrollan aplicaciones siempre hay que tener muy encuenta que se pueden producir errores durante la ejecución. Generalmente, el método habitual para comprobar los fallos es utilizar salidas por pantalla tratando de acotar el lugar del fallo; este sistema es poco profesional por lo que para la realización de esta práctica se han utilizado otros mecanismos.
 
-Para comprobar la ejecución de toda aplicación en caso de errores el mejor método es el uso de un depurador, por este motivo se ha utilizado el depurador de gnu gdb. Pero aún así no siempre es suficiente con utilizar un buen depurador, sino que tener información extra a la que éste pueda darnos puede ser de gran utilidad. Por este motivo se ha implementado un sistema de trazas para depuración que no buscan la acotación de los errores, esa información ya se encuentra en el fichero de volcado creado en los fallos graves, sino que ofrece una visión más global sobre qué está sucediendo en el código. Esta información puede ser desde cuando se entra en un método, cuando se sale de éste, salida de información varia, etc.
+Para comprobar la ejecución de toda aplicación en caso de errores el mejor método es el uso de un depurador, por este motivo se ha utilizado el depurador GNU GDB. Pero aún así no siempre es suficiente con utilizar un buen depurador, sino que tener información extra a la que éste pueda darnos puede ser de gran utilidad. Por este motivo se ha implementado un sistema de trazas para depuración que no buscan la acotación de los errores, esa información ya se encuentra en el fichero de volcado creado en los fallos graves, sino que ofrece una visión más global sobre qué está sucediendo en el código. Esta información puede ser desde cuando se entra en un método, cuando se sale de éste, salida de información varia, etc.
 
 Para activar la salida de depuración se debe llamar a cmake del siguiente modo:
 \begin{verbatim}
@@ -304,7 +312,7 @@ Así, cuando cmake esté generando el fichero de Makefile tendrá conocimiento d
 Las funciones para utilizar la salida de depuración son:
 
 \begin{description}
-	\item[DO\_ENTER(class, method)] Se encarga de anunciar cuándo se entra en un método/función. También configura automáticamente el sistema para controlar cuándo se sale del método/función para que quede constancia. Sus parámetros son cadenas que representan la clase en la que nos encontramos (class) y el método (method).
+	\item[DO\_ENTER(class, method)] Se encarga de anunciar cuándo se entra en un método/función. También configura automáticamente el sistema para controlar cuándo se sale del método/función para que quede constancia. Sus parámetros son cadenas que representan la clase en la que nos encontramos (\emph{class}) y el método (\emph{method}).
 	
 	\item[DO\_ERROR(str)] Muestra un error por la salida de depuración. Acepta como parámetro la salida que debe mostrar.
 
@@ -329,6 +337,8 @@ Las funciones para utilizar la salida de depuración son:
 		\item[DEBUG] Mensajes de depuración junto a todos los mensajes de los niveles anteriores.
 	\end{description}
 \end{description}
+
+
 \section{Nuevo controlador}
 
 Además de los cambios anteriores realizados al agente también se han realizado cambios en el controlador. Concretamente se ha rehecho completamente reutilizando el código justo. El motivo de la creación de este nuevo controlador se debe, principalmente, a que se quiere disponer de un sistema bien organizado y claramente centrado en la labor de controlar las tareas.
@@ -340,7 +350,7 @@ Por el motivo anterior se decidió crear un nuevo controlador haciendo uso del \
 \begin{itemize}
 	\item Abstrae la base de datos facilitando el trabajo con los datos independientemente del motor de base de datos utilizado.
 	
-	\item Maneja el flujo de funcionamiento de la aplicación permitiendo de este modo que el programador se centre únicamente en la labor de desarrollo de las funcionalidades el programa.
+	\item Maneja el flujo de funcionamiento de la aplicación permitiendo, de este modo, que el programador se centre únicamente en la labor de desarrollo de las funcionalidades el programa.
 	
 	\item Tiene actualizaciones constantes que, en caso de mejoras de rendimiento o estabilidad, pueden incorporarse fácilmente a nuestro desarrollo sin necesidad de realizar cambios sobre el mismo.
 	
@@ -352,7 +362,7 @@ Por el motivo anterior se decidió crear un nuevo controlador haciendo uso del \
 Por otra parte, aprovechando este cambio del controlador se ha intentado realizar algunas optimizaciones. Entre ellas podemos destacar:
 
 \begin{itemize}
-	\item Optimización de la base de datos. Para ello se estudio el uso que hace el controlador de los accesos y se comprobó que las tablas de que se utilizan para realizar las estadísticas son constantemente utilizadas y éstas nunca llegan a tener un número de elementos muy elevado (el controlador borra los datos que considera antiguos). Por este motivo se ha decidido pasar estas tablas a memoria de modo que el acceso sea más rápido. El mayor problema de esta solución es que en caso de caída del la base de datos se perderían estos valores, pero al no ser información fundamental no supone una gran preocupación.
+	\item Optimización de la base de datos. Para ello se estudió el uso que hace el controlador de los accesos y se comprobó que las tablas que se utilizan para realizar las estadísticas son constantemente utilizadas y estas nunca llegan a tener un número de elementos muy elevado (el controlador borra los datos que considera antiguos). Por este motivo se ha decidido pasar estas tablas a memoria de modo que el acceso sea más rápido. El mayor problema de esta solución es que en caso de caída del la base de datos se perderían estos valores, pero al no ser información fundamental no supone una gran preocupación.
 	
 	\item Agrupación de accesos a base de datos. En el antiguo controlador se podía encontrar acciones que realizaban dos o tres accesos a la base de datos para modificar un mismo elemento. Para evitar esta situación lo que se ha hecho ha sido ir acumulando los cambios a realizar y una vez que no se van a hacer más se hace la actualización de la base de datos. Esto permite ahorrar algo de tiempo y reduce la carga sobre la base de datos.
 \end{itemize}

@@ -6,7 +6,7 @@ La duración total del proyecto ha sido de 11 meses, teniendo en cuenta que la d
 
 \section{Desglose de actividades del proyecto}
 
-Para calcular el total de horas del proyecto se ha tenido en cuenta todas las actividades realizadas en el mismo. En el cuadro~\ref{tab:des_horas} puede apreciarse el trabajo que ha ido desde el estudio de la solución previa, el análisis de los posibles cambios a realizar, el diseño de las modificaciones realizadas o la instalación del sistema de pruebas (la máquina Tesla).
+Para calcular el total de horas del proyecto se ha tenido en cuenta todas las actividades realizadas en el mismo. En el cuadro~\ref{tab:des_horas} puede apreciarse el trabajo realizado, que ha ido desde el estudio de la solución previa, el análisis de los posibles cambios a realizar, el diseño de las modificaciones realizadas hasta la instalación del sistema de pruebas (la máquina Tesla).
 
 \begin{table}
 	\centering
@@ -95,17 +95,39 @@ Por lo anterior, solo es necesario repercutir el coste de los dispositivos mater
 		\hline
 		Recurso & Cantidad & Coste total \\
 		\hline
-		Ordenador personal & 2 & 3.000,00\euro \\
-		\hline
 		Tesla T1070 & 1 & 7.082,00\euro \\
 		\hline
 		Servidor Tesla & 1 & 2.528,00\euro\\
 		\hline
 		\hline
-		\multicolumn{2}{|l|}{Total} & 12.610,00\euro\\
+		\multicolumn{2}{|l|}{Total} & 9.610,00\euro\\
 		\hline
 	\end{tabular}
 	\caption{Coste de los recursos materiales empleados}\label{tab:re_mat}
+\end{table}
+
+\section{Amortizaciones}
+
+La amortización es la perdida de valor del equipo por su uso y su antigüedad. Por este motivo debe ser repercutida en el proyecto y que así no se pierda dinero por la compra de los mismos.
+
+Se ha considerado que un mes tiene en torno a las 160 horas laborables (4 semanas de 40 horas cada una) para la realización del cuadro~\ref{tab:amortizacion}.
+
+\begin{table}
+	\centering
+	
+	\begin{tabular}{|l|r|r|r|r|}
+		\hline
+		Recurso & Precio & Amortización (meses) & Uso & Repercutido\\
+		\hline
+		MacBook Pro & 2.600,00\euro & 60 & 60\% & 42,05\euro \\
+		\hline
+		Sobremesa & 1.200,00\euro & 60 & 40\% & 28,75\euro \\
+		\hline
+		\hline
+		\multicolumn{4}{|l|}{Total} & 70,80\euro\\
+		\hline
+	\end{tabular}
+	\caption{Coste por amortización de equipos}\label{tab:amortizacion}
 \end{table}
 
 \section{Gastos indirectos}
@@ -129,7 +151,7 @@ Se debe tener en cuenta el coste de todos aquellos elementos que si bien no repe
 		\hline
 		Electricidad & 74,75\euro\\
 		\hline
-		Servicio de limpieza & 3593,75\euro\\
+		Servicio de limpieza & 3.593,75\euro\\
 		
 		\hline
 		\hline
@@ -164,12 +186,14 @@ En el cuadro~\ref{tab:cost_indi} hay un resumen de los gastos indirectos del pro
 		\hline
 		Subcontratas & 186,89\euro \\
 		\hline
-		Material     & 12.610.00\euro\\
+		Amortizaciones & 70,80\euro\\
+		\hline
+		Material     & 9.610.00\euro\\
 		\hline
 		Indirectos   & 7.918,63\euro\\
 		\hline
 		\hline
-		Total        & 29.915,52\euro\\
+		Total        & 26.986,32\euro\\
 		\hline
 	\end{tabular}
 	\caption{Resumen de los gastos del proyecto}\label{tab:resu_gastos}
@@ -177,16 +201,16 @@ En el cuadro~\ref{tab:cost_indi} hay un resumen de los gastos indirectos del pro
 
 Con todos los datos juntos (ver cuadro~\ref{tab:resu_gastos}) precedemos a calcular el precio de venta de la solución desarrollada.
 
-Lo primero de todo es que pueden darse imprevistos a lo largo del desarrollo, como roturas de material, enfermedad del personal, etc. Por este motivo se aplica un margen del 10\% sobre el precio para compensar estos posibles imprevistos: 2.991,55\euro.
+Lo primero de todo es que pueden darse imprevistos a lo largo del desarrollo, como roturas de material, enfermedad del personal, etc. Por este motivo se aplica un margen del 10\% sobre el precio para compensar estos posibles imprevistos: 2.698,63\euro.
 
 $$
-\mbox{Coste Total} + \mbox{Margen de imprevistos} = \mbox{32.907,07\euro}
+\mbox{Coste Total} + \mbox{Margen de imprevistos} = \mbox{29.684,95\euro}
 $$
 
-El margen de beneficio a aplicar es del 25\% sobre el precio con imprevistos: 8.226,77\euro.
+El margen de beneficio a aplicar es del 25\% sobre el precio con imprevistos: 7.421,24\euro.
 
 $$
-	\mbox{Precio Final} = \mbox{Precio con Imprevistos} + \mbox{Beneficio} = \mbox{41.133,84\euro}
+	\mbox{Precio Final} = \mbox{Precio con Imprevistos} + \mbox{Beneficio} = \mbox{37.106,19\euro}
 $$
 
-El precio final de la solución, contando el 18\% de I.V.A., es: {\large \textbf{48.537,93\euro}}.
+El precio final de la solución, contando el 18\% de I.V.A., es: {\large \textbf{43.785,30\euro}}.

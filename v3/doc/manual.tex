@@ -8,7 +8,7 @@ Antes de poder hacer uso de la aplicación es necesario instalarla. En las sigui
 
 \subsection{Instalación del agente}
 
-El agente es uno de los elementos esenciales de DHC y el que entraña mayor dificultad de instalación. Por ese motivo hay que prestar especialdetalle al procedimiento para identificar posibles fallos.
+El agente es uno de los elementos esenciales de DHC y el que entraña mayor dificultad de instalación. Por ese motivo hay que prestar especial detalle al procedimiento para identificar posibles fallos.
 
 El proceso de instalacion consiste en la instalación del sistema operativo en la máquina, los controladores del mismo y las herramientas de compilación tal y como se ha descrito en el apéndice~\ref{chap:entorno}.
 
@@ -37,7 +37,7 @@ Una vez instalado todas las herramientas necesarias se procede a la compilación
 	$ make
 	\end{verbatim}
 	
-	\item Una vez compilado el código disponemos en el directorio del proyecto de una carpeta llamada \emph{bin} y otra \emph{ptx} que contienen los binarios de linux y de CUDA. Para terminar la instalación procederemos del siguiente modo:
+	\item Una vez compilado el código disponemos en el directorio del proyecto de una carpeta llamada \emph{bin} y otra \emph{ptx} que contienen los binarios del sistema operativo y de CUDA. Para terminar la instalación procederemos del siguiente modo:
 	
 	\begin{verbatim}
 	$ sudo cp bin/agent /usr/bin
@@ -82,11 +82,16 @@ El controlador es la parte encargada de la gestión del sistema. Es algo más se
 Para poder utilizar el controlador hace falta que el ordenador disponga del servidor web Apache y PHP. Además puede tener MySQL o se puede alojar la base de datos en otro ordenador. Con independencia de dónde se decida instalar MySQL se considerarán las siguiente variables que utilizaremos para identificar datos de configuración:
 
 \begin{description}
-	\item[PWEB] Ruta al punto en que se encontrará el controlador y que es un directorio público en internet (normalmente es /var/www).
+	\item[PWEB] Ruta al punto en que se encontrará el controlador y que es un directorio accesible desde internet (normalmente es /var/www).
+
 	\item[WEB\_HOST] Dirección del servidor web para la base de datos (si el servidor aloja ambos servicios se considerará que es localhost).
+
 	\item[MYSQL\_HOST] Dirección IP de la máquina que aloja el servidor de base de datos (en caso de ser el mismo equipo que el servidor web se considerará que es localhost).
+
 	\item[DB\_USER] Usuario que se configurará en MySQL para poder acceder a la base de datos del controlador.
+
 	\item[DB\_PASS] Contraseña del usuario \$DB\_USER.
+
 	\item[DB\_NAME] Nombre que tendrá la base de datos (por ejemplo, DHC).
 \end{description}
 
@@ -234,17 +239,17 @@ Si en algún momento queremos conocer mejor la situación de los agentes, se pue
 	\caption{Estadísticas de funcionamiento}\label{fig:DHC_estadisticas}
 \end{figure}
 
-\section{Administración de plugins}
+\section{Administración de \emph{plugins}}
 
-Durante el tiempo que esté en uso DHC pueden surgir ocasiones en las que se necesite instalar nuevos plugins o eliminar los antiguos.  Para ello se seguirán los siguientes pasos en el agente sin olvidar que tras la modificación hay que reiniciar el agente.
+Durante el tiempo que esté en uso DHC pueden surgir ocasiones en las que se necesite instalar nuevos \emph{plugins} o eliminar los antiguos.  Para ello se seguirán los siguientes pasos en el agente sin olvidar que tras la modificación hay que reiniciar el agente.
 
 \subsection{Instalación de nuevos plugins}
 
-Para instalar nuevos plugins en el sistema solo hay que copiar estos al directorio /usr/lib/cracker/ptx. Los plugins tienen todos la extensión .aplug.so.
+Para instalar nuevos plugins en el sistema solo hay que copiar estos al directorio /usr/lib/cracker/ptx. Los \emph{plugins} tienen todos la extensión .aplug.so.
 
 \subsection{Eliminación plugins obsoletos o erróneos}
 
-Para eliminar un plugin con errores u obsoleto basta con borrar el fichero que lo contiene:
+Para eliminar un \emph{plugin} con errores u obsoleto basta con borrar el fichero que lo contiene:
 
 \begin{verbatim}
 $ sudo rm /usr/local/cracker/ptr/nombre_plugin.aplug.so	
@@ -257,7 +262,7 @@ En ciertas ocasiones puede hacer falta realizar instalaciones especiales de DHC.
 \subsection{Varios controladores con un MySQL}
 Puede darse el caso de que se necesite disponer de varios controladores de DHC pero que compartan una única base de datos. Esto puede resultar útil si la carga sobre un único controlador es muy elevada.
 
-Para llevar a cabo este proceso se deben instalar dos o más controlador solo con servidor web siguiendo los pasos descritos anteriormente y a parte se configurará otro servidor con MySQL. Ambos controladores se configurarán para utilizar dicho servidor de MySQL.
+Para llevar a cabo este proceso se deben instalar dos o más controladores, solo con servidor web siguiendo los pasos descritos anteriormente, y a parte se configurará otro servidor con MySQL. Ambos controladores se configurarán para utilizar dicho servidor de MySQL.
 
 Una vez que se inicien los agentes se irá pasando a cada uno la URL del controlador que deseemos o podemos configurar un balanceador de carga automático.
 
@@ -266,6 +271,6 @@ Una vez que se inicien los agentes se irá pasando a cada uno la URL del control
 En ciertas ocasiones, los agentes pueden tardar mucho en devolver el resultado de una WU por lo que se hace necesario modificar los tiempo de caducidad para evitar un exceso de reciclados que ralentizarían sobremedida el proceso de comprobación.
 
 \subsection{Cambio de los directorios de búsqueda predeterminados}
-Cuando un agente se inicia siempre comprueba la existencia de plugins en unos directorios predefinidos. Además, también busca en estos mismos directorio los ficheros binarios de CUDA que le puedan ser solicitados por los algoritmos. Por defecto estos directorios son: el directorio desde el que se ejecuta el agente, el directorio \emph{ptx} desde el que se ejecuta el agente y el directorio \emph{/usr/lib/cracker/ptx}.
+Cuando un agente se inicia siempre comprueba la existencia de \emph{plugins} en unos directorios predefinidos. Además, también busca en estos mismos directorio los ficheros binarios de CUDA que le puedan ser solicitados por los algoritmos. Por defecto estos directorios son: el directorio desde el que se ejecuta el agente, el directorio \emph{ptx} desde el que se ejecuta el agente y el directorio \emph{/usr/lib/cracker/ptx}.
 
 En caso de que se quisiese cambiar este comportamiento se puede editar el fichero config.cpp del agente para añadir o eliminar directorios de búsqueda.

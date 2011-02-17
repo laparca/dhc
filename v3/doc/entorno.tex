@@ -4,7 +4,7 @@ Para el desarrollo del proyecto se ha hecho uso de una gran cantidad de herramie
 
 \section{CMake}
 
-CMake es una herramienta para la construcción de fichero Makefile. El mayor inconveniente que hay a la hora de utilizar ficheros Makefile es que es complicado mantenerlos y aún más crear versiones para diferentes sistemas operativos. Este último punto se debe a que puede variar sutilmente algunas de las reglas de para crear el fichero y que dependiendo del sistema operativo se puedan necesitar unas u otras librerías. Además, utilizando ficheros Makefile es complicado realizar comprobaciones sobre el sistema, com puedan ser comprobar si está o no instalada una biblioteca en concreto.
+CMake es una herramienta para la construcción de ficheros Makefile. El mayor inconveniente que hay a la hora de utilizar ficheros Makefile es que es complicado mantenerlos y aún más crear versiones para diferentes sistemas operativos. Este último punto se debe a que puede variar sutilmente algunas de las reglas de para crear el fichero y que dependiendo del sistema operativo se puedan necesitar unas u otras librerías. Además, utilizando ficheros Makefile es complicado realizar comprobaciones sobre el sistema, com puedan ser comprobar si está o no instalada una biblioteca en concreto.
 
 Existen varias soluciones para la generación de ficheros Makefile, entre ellas destaca GNU Autotools. Ésta es probablemente una de las herramientas más famosas en el mundo del software libre por ser la que se utiliza dentro del proyecto GNU. Desgraciadamente Autotools es una herramienta complicada de utilizar lo que nos hizo decantarnos por CMake.
 
@@ -128,7 +128,7 @@ El compilador de GNU es probablemente uno de los más utilizados hoy día en el 
 
 La mayor parte del código empleado en el proyecto está escrito en C++ por lo que se ha necesitado hacer uso del compilador de C++ que de GNU, principalmente por ser el más sencillo de instalar.
 
-Para asegurarnos que al instalar el compilador g++ se instalen todas las dependencias que necesitamos podemos ejecutar la siguiente orden:
+Para asegurarnos que al instalar el compilador GNU G++ se instalen todas las dependencias que necesitamos podemos ejecutar la siguiente orden:
 
 \begin{verbatim}
 $ sudo apt-get install build-essential g++
@@ -162,7 +162,7 @@ $ sudo apt-get install php5
 
 \section{CakePHP}
 
-CakePHP es un \emph{framework} de desarrollo web que hace uso del lenguaje de programación PHP y el patrón de diseño MVC. Con CakePHP se pueden hacer aplicaciones fácilmente sin tener que preocuparse de cosas como el acceso a base de datos o el control de flujo a través de la aplicación.
+CakePHP es un \emph{framework} de desarrollo web que hace uso del lenguaje de programación PHP y el patrón arquitectónico MVC. Con CakePHP se pueden hacer aplicaciones fácilmente sin tener que preocuparse de cosas como el acceso a base de datos o el control de flujo a través de la aplicación.
 
 Gracias al uso de CakePHP se ha podido centrar la atención del controlador más en las tareas propias del mismo. De este modo ahora no hay que preocuparse de como hacer el acceso a la base de datos o incluso el tipo de base de datos que se está utilizando.
 
@@ -175,7 +175,7 @@ Para utilizar CakePHP solo hace falta descargarlo y descromprimirlo en un direct
 	
 	\item[app/models] Describe la estructura de la base de datos (las tablas y sus relaciones).
 
-	\item[app/config] Tiene la configuración de qué motor de base de datos hay que utilizar y la configuración de la misma. Por otra parte se ha almacenado aquí el script para generar las tablas en esta base de datos.
+	\item[app/config] Tiene la configuración del motor de base de datos que hay que utilizar y la configuración de la misma. Por otra parte se ha almacenado aquí el script para generar las tablas en esta base de datos.
 \end{description}
 
 \section{MySQL}
@@ -244,23 +244,23 @@ Algunos de los diagramas expuestos en la memoria hacen uso de dicho lenguaje. Co
 
 \section{Debian y Ubuntu}
 
-Debian es una de las distribuciones de Linux más antiguas y su filosofía es utilizar solo software libre. Una de los puntos más importantes a destacar sobre esta distribución es que está mantenida enteramente por voluntarios y que tiene uno de los mayores repositorios de aplicaciones de todas las distribuciones existentes.
+Debian es una de las distribuciones de Linux más antiguas y su filosofía es utilizar sólo software libre. Una de los puntos más importantes a destacar sobre esta distribución es que está mantenida enteramente por voluntarios y que tiene uno de los mayores repositorios de aplicaciones de todas las distribuciones existentes.
 
-Debian posé muchas distribuciones derivadas que sobre ésta añaden paquetes y/o hacen cambios de configuración. Una de estas distribuciones, y probablemente la distribución más famosa actualmente, es Ubuntu.
+Debian posee muchas distribuciones derivadas que sobre ésta añaden paquetes y/o hacen cambios de configuración. Una de estas distribuciones, y probablemente la distribución más famosa actualmente, es Ubuntu.
 
 Para descargar Debian se puede ir a \url{http://www.debian.org/distrib/} y Ubuntu se puede obtener de \url{http://www.ubuntu.com/desktop/get-ubuntu/download}.
 
-\section{SLOCCount}
+%\section{SLOCCount}
 
-SLOCCount es una herramienta para contar número de líneas de código de proyectos software. Tras una ejecución de esta herramienta sobre un directorio con software ofrece estadísticas del número de líneas total y cómo se distribuyen entre los distintos lenguajes de programación utilizados.
+%SLOCCount es una herramienta para contar número de líneas de código de proyectos software. Tras una ejecución de esta herramienta sobre un directorio con software ofrece estadísticas del número de líneas total y cómo se distribuyen entre los distintos lenguajes de programación utilizados.
 
-Además de lo anterior, SLOCCount trata de hacer una estimación del coste del código comprobado utilizando el modelo COCOMO.
+%Además de lo anterior, SLOCCount trata de hacer una estimación del coste del código comprobado utilizando el modelo COCOMO.
 
-Para poder utilizar esta herramienta hay que instalarla previamente con el siguiente comando:
+%Para poder utilizar esta herramienta hay que instalarla previamente con el siguiente comando:
 
-\begin{verbatim}
-$ sudo apt-get install sloccount
-\end{verbatim}
+%\begin{verbatim}
+%$ sudo apt-get install sloccount
+%\end{verbatim}
 
 \section{Organización del entorno de trabajo}
 
