@@ -28,3 +28,9 @@ ADD_LATEX_DOCUMENT(Document.tex
 		agradecimientos.tex
 	IMAGE_DIRS images
 	DEFAULT_PDF)
+	
+ADD_LATEX_DOCUMENT(presentation.tex
+	BIBFILES bibliografia.bib
+	IMAGE_DIRS images
+	MANGLE_TARGET_NAMES
+	DEFAULT_PDF)
