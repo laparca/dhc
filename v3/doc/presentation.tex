@@ -1,26 +1,38 @@
-\documentclass[12pt]{beamer}
+\documentclass[12pt,hyperref={pdfpagelabels=false}]{beamer}
 \usepackage[utf8]{inputenc}
 \usepackage[spanish]{babel}
-\usepackage{graphicx}
-\usepackage[pdftex]{hyperref}
+%\usepackage{graphicx}
+%\usepackage[pdftex]{hyperref}
 \usepackage{listings}
 \usepackage{eurofont}
-
+\usepackage{lmodern}
 
 %\usetheme{Warsaw}
 %\mode<presentation>
 %{ \usetheme{boxes} }
+
+
+% Comment the next line to create a printable version
 \beamerdefaultoverlayspecification{<+->}
 \setbeamercovered{transparent}
 \usepackage{keynote-gradient}
 
-\begin{document}
 \title{Programación mediante tarjetas gráficas}
 \subtitle{Mejora de una aplicación distribuida}
 \author{Samuel Rodríguez Sevilla\\Tutor: José María Sierra Cámara}
 
 
+\begin{document}
+
+
 \frame{\titlepage}
+
+\begin{frame}
+	\begin{center}
+		\Huge iCrack
+	\end{center}
+\end{frame}
+
 
 \begin{frame}{Contenidos}
 	\tableofcontents[pausesections]
@@ -29,31 +41,113 @@
 \section{Introducción}
 \begin{frame}{Introducción}
 	\begin{itemize}
-		\item \uncover<1>{La seguridad es muy importante actualmente}
-		\item \uncover<2->{Las contraseñas son un punto débil importante}
+		\item La seguridad es muy importante actualmente
+		\item Hay muchos factores que afectan a la seguridad
 		\begin{itemize}
-			\item \uncover<3->{Se necesitan buenas políticas para las contraseñas}
-			\item \uncover<4>{Es necesario herramientas para evaluar la calidad de los algoritmos utilizados}
+			\item Fallos de programación de las aplicaciones
+			\item Mala configuración de los sistemas
+			\item Factores humanos
 		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Introducción}
+	El factor humano es probablemente el que más afecta a la seguridad ya que no hay una verdadera concienciación sobre los peligros que entraña revelar claves.
+
+\end{frame}
+
+\begin{frame}{Introducción}
+	Por esto es importente
+	\pause
+	\begin{itemize}
+		\item Disponer de buenas políticas para las contraseñas
+		\item Utilizar herramientas para evaluar la calidad de los algoritmos utilizados
 	\end{itemize}
 \end{frame}
 
 \subsection{Objetivos}
 \begin{frame}{Objetivos}
+	\begin{center}
+		Obtener una herramienta capaz de evaluar algoritmos de seguridad y contraseñas haciendo uso de tarjetas gráficas.
+	\end{center}
+\end{frame}
+
+\begin{frame}{Objetivos}
 	\begin{itemize}
-		\item A
+		\item Sencilla de utilizar
+		\item Ampliable con nuevos algoritmos
+		\item Distribuida
+		\item Libre
+	\end{itemize}
+\end{frame}
+
+\subsection{Uso de tarjetas gráficas}
+\begin{frame}{Uso de tarjetas gráficas}
+	\begin{center}
+		Su velocidad ha crecído mucho~\cite{nvidia:cuda_c_programming_guide} y han añadido nuevas características que las hacen muy atractivas para todo tipo de tareas.
+	\end{center}
+\end{frame}
+
+\begin{frame}{Uso de tarjetas gráficas}
+	Entre sus principales características destancan:
+	\pause
+	\begin{itemize}
+		\item Una gran velocidad para realizar operaciones aritméticas
+		\item Gran capacidad de paralelización de tareas
+		\item Son fáciles de programar
 	\end{itemize}
 \end{frame}
 
 
+\section{DHC}
+\begin{frame}{DHC}
+	Se buscó una herramienta que se ajustase a los objetivos.
+\end{frame}
+
 \section{Mejoras introducidas}
 
-\subsection{}
-\begin{frame}{}
-	
+\subsection{Mejora de la escalabilidad}
+\begin{frame}{Mejora de la escalabilidad}
+	\begin{center}
+		DHC pierde mucha velocidad debido a las latencias de red.
+		% Esto se constata cuando se tiene una instalación...
+	\end{center}
 \end{frame}
+
+
+\subsection{Sistema de algoritmos}
+\begin{frame}{Sistema de algoritmos}
+	\begin{center}
+		Sustituye el código estático de DHC y facilita la carga de nuevos algoritmos sin tener que hacer modificaciones sobre una gran cantidad de códigos.
+	\end{center}
+\end{frame}
+
+\subsection{Sistema de ejecución}
+\begin{frame}{Sistema de ejecución}
+	\begin{center}
+		Homogeniza el modo en el que se ejecutan los algoritmos.
+	\end{center}
+\end{frame}
+
+\subsection{Carga de plugins}
+\begin{frame}{Carga de plugins}
+	\begin{center}
+		Facilita la creación de algoritmos sin tener que cambiar una sola línea de código del agente.
+	\end{center}
+\end{frame}
+
+\subsection{Nuevo controlador}
+\begin{frame}{Nuevo controlador}
+
+\end{frame}
+
+
+
 \section{Presupuesto}
 \begin{frame}{Presupuesto}
+	\begin{center}
+		43.785,30\euro
+	\end{center}
 \end{frame}
 
 
@@ -66,5 +160,15 @@
 \begin{frame}{Trabajos futuros}
 \end{frame}
 
+\begin{frame}
+	\begin{center}
+		\Huge Fin
+	\end{center}
+\end{frame}
 
+\section{Bibliografía}
+\begin{frame}[allowframebreaks]{Bibliografía}
+	\bibliographystyle{alpha}
+	\bibliography{bibliografia}
+\end{frame}
 \end{document}
