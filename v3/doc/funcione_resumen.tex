@@ -21,17 +21,17 @@ Las funciones resumen, que son las que nos interesan para el presento proyecto f
 	\item Debe ser muy complicado encontrar colisiones, esto es, dos entradas diferentes que produzcan el mismo resumen.
 \end{itemize}
 
-Este tipo de funciones son ampliamente utilizadas en el mundo de la seguridad como sistema para el almacenamiento de contraseñas de usuario, la generación de claves de sesión o la firma digital de documentos (por poner algunos ejemplos). Al ser ampliamente utilizadas es importante disponer de mecanismos para comprobar la fortaleza del mecanismo de funcionamiento. Por otra parte hay que poder comprobar también las calidad de las contraseñas para evitar problemas por posibles debilidades de las funciones resumen.
+Este tipo de funciones son ampliamente utilizadas en el mundo de la seguridad como sistema para el almacenamiento de contraseñas de usuario, la generación de claves de sesión o la firma digital de documentos (por poner algunos ejemplos). Al ser ampliamente utilizadas es importante disponer de mecanismos para comprobar la fortaleza del mecanismo de funcionamiento. Por otra parte también hay que poder comprobar la calidad de las contraseñas para evitar problemas por posibles debilidades de las funciones resumen.
 
 A causa de su gran uso es necesario disponer de sistemas que comprueben la fortaleza de las contraseñas elegidas por los usuarios o de las claves de sesión que pueda generar un sistema de seguridad. El primer caso es importante para garantizar la seguridad de las organizaciones, impidiendo que los usuarios elijan contraseñas que puedan ser adivinadas o quebrantadas por posibles atacantes dando acceso a la información privada de ésta con los consiguientes problemas por posibles copias y/o borrados de información. El segundo caso es importante para garantizar que los sistemas seguros sean capaces de generar claves suficientemente robustas para impedir ataques externos.
 
 \section{Comprobación de funciones resumen y contraseñas}\label{sec:comprobacion_resumen}
 
-Existen dos formas básicas para comprobar la fortaleza de los mecanismos de seguridad. El primero es buscar debilidades en la propia función resumen que se va a utilizar. El segundo mecanismo es comprobar la calidad de la clave utilizada. Para este último caso lo más sencillo es utilizar un de mecanismo de fuerza bruta. Éste tipo de comprobación consisten en probar todas las combinaciones posibles entradas para generar resúmenes y éstos se cotejan con un resumen conocido previamente.
+Existen dos formas básicas para comprobar la fortaleza de los mecanismos de seguridad. El primero es buscar debilidades en la propia función resumen que se va a utilizar. El segundo mecanismo es comprobar la calidad de la clave utilizada. Para este último caso lo más sencillo es utilizar un mecanismo de fuerza bruta. Éste tipo de comprobación consiste en probar todas las posibles entradas para generar resúmenes y éstos se cotejan con un resumen conocido previamente.
 
 El mayor problema de los sistemas de fuerza bruta es el tiempo que tardan en ofrecer algún resultado. Esto se debe a la gran cantidad de comprobaciones que deben realizar. Por este motivo es importante poder predecir el tiempo que dedicarán previamente para comprobar si vale o no la pena intentar realizar una comprobación de éste tipo.
 
-Para poder calcular el tiempo que se necesitará para poder poder hacer una comprobación de fuerza bruta empezaremos por el caso genera. En éste, el tiempo máximo (el que recorre todas la combinaciones posibles) es de:
+Para poder calcular el tiempo que se necesitará para hacer una comprobación de fuerza bruta empezaremos por el caso general. En éste, el tiempo máximo (el que recorre todas la combinaciones posibles) es de:
 
 $$ T_{max}=t\sum^n_{i=m}k^i $$
  
@@ -61,7 +61,7 @@ Es fácil comprobar que utilizando sistemas de fuerza bruta para comprobar resú
 
 A parte de los sistemas de fuerza bruta, existen muchas técnicas que han surgido a partir de la investigación de los distintos tipos de sistemas de resumen. Estos nuevos sistemas proceden de debilidades de los propios algoritmos y deben ser tenidos en cuenta a la hora de evaluar la fortaleza de las funciones resumen.
 
-Aunque no es propósito del presente proyecto de fin de carrera implementar todos los sistemas de comprobación conocidos sí es importante tenerlos en cuenta para poder hacer comparaciones y valoraciones con respecto a las soluciones implementadas.
+Aunque no es el propósito del presente proyecto de fin de carrera implementar todos los sistemas de comprobación conocidos sí es importante tenerlos en cuenta para poder hacer comparaciones y valoraciones con respecto a las soluciones implementadas.
 
 \subsection{Ataque de cumpleaños}
 
@@ -83,7 +83,7 @@ Donde $P(i, n)$ es la probabilidad de que para una población final de $n$ eleme
 
 Este mismo principio es aplicable a las funciones resumen~\cite{Bellare04hashfunction}, ya que se puede considerar que en lugar de días del año tenemos resúmenes (todas las posibles combinaciones de éstos) y en lugar de personas tenemos textos o mensajes a ser cifrados.
 
-En el caso de las funciones resumen hay que tener en cuenta la distribución que hacen éstas de los datos de entrada ya que las funciones no uniformes serán en las que es más sencillo encontrar colisiones (se puede centrar la búsqueda en los cúmulos). Esto supone que en lugar de tener probar combinaciones aleatorias diferentes podríamos reducir el número intentos.
+En el caso de las funciones resumen hay que tener en cuenta la distribución que hacen éstas de los datos de entrada ya que las funciones no uniformes serán en las que es más sencillo encontrar colisiones (se puede centrar la búsqueda en los cúmulos). Esto supone que en lugar de tener que probar combinaciones aleatorias diferentes podríamos reducir el número de intentos.
  
 \begin{figure}
 	\centering
@@ -91,11 +91,11 @@ En el caso de las funciones resumen hay que tener en cuenta la distribución que
 	\caption{Probabilidad de encontrar dos personas nacidas el mismo día con respecto al tamaño del grupo}\label{fig:Birthday}
 \end{figure}
 
-Estas características del sistema del cumpleaños lo convierten en un sistema ideal para sustituir a los mecanismos de fuerza bruta convencionales, pero hay que tener en cuenta que se debe considerar el tiempo de crear los mensajes a probar (dependiendo de su longitud podría hacer al sistema igual de rápido que uno de fuerza bruta) y el tamaño de la muestra. El principal problema del ataque de cumpleaños es que debe trabajar sobre todas las posibles combinaciones existentes lo que puede suponer un problema en casos en los que sepamos que hay una gran cantidad de restricciones. Por ejemplo, en el caso expuesto al inicio de la sección en el que se tardaba 9,5 horas en completar la búsqueda se tardaría cerca de 8.217,73 años utilizando este mecanismo. Esto significa que hay que estudiar el problema para poder descubrir las debilidades locales (en el caso de las contraseñas puede ser la longitud, el conjunto de caracteres posibles, etc.).
+Estas características del sistema del cumpleaños lo convierten en un sistema ideal para sustituir a los mecanismos de fuerza bruta convencionales, pero hay que tener en cuenta que se debe considerar el tiempo de crear los mensajes a probar (dependiendo de su longitud podría hacer al sistema igual de rápido que uno de fuerza bruta) y el tamaño de la muestra. El principal problema del ataque de cumpleaños es que debe trabajar sobre todas las posibles combinaciones existentes, lo que puede suponer un problema en casos en los que sepamos que hay una gran cantidad de restricciones. Por ejemplo, en el caso expuesto al inicio de la sección en el que se tardaba 9,5 horas en completar la búsqueda se tardaría cerca de 8.217,73 años utilizando este mecanismo. Esto significa que hay que estudiar el problema para poder descubrir las debilidades locales (en el caso de las contraseñas puede ser la longitud, el conjunto de caracteres posibles, etc.).
 
 \subsection{Tablas arcoíris}
 
-Las tablas arcoíris son una técnica por la que se toma un conjunto de entradas y sobre cada una de éstas se realizan un proceso iterativo de resúmenes que van tomando el último resumen realizado para hacer uno nuevo hasta obtener un elemento que consideraremos terminal. Se puede considerar este proceso como una tabla en el que la primera columna son las distintas entradas que se han elegido y cada columna $C_j$, para $j>1$, representa el resumen de la columna anterior ($C_j = H(C_{j-1})$, ver cuadro~\ref{tab:arcoiris}). La tabla arcoíris consiste en tomar la primera y última columnas.
+Las tablas arcoíris son una técnica por la que se toma un conjunto de entradas y sobre cada una de éstas se realizan un proceso iterativo de resúmenes que van tomando el último resumen realizado para hacer uno nuevo hasta obtener un elemento que consideraremos terminal. Se puede considerar este proceso como una tabla donde la primera columna representa las distintas entradas que se han elegido y cada columna $C_j$, para $j>1$, representa el resumen de la columna anterior ($C_j = H(C_{j-1})$, ver cuadro~\ref{tab:arcoiris}). La tabla arcoíris consiste en tomar la primera y última columnas.
 
 \begin{table}
 	\centering
@@ -111,19 +111,19 @@ Las tablas arcoíris son una técnica por la que se toma un conjunto de entradas
 		$m_4$ & $m'_4$ & $m''_4$ & $m'''_4$ & $m_{4,terminal}$\\
 		\hline
 	\end{tabular}
-	\caption{Ejemplo de generación de una tabla arcoiris}\label{tab:arcoiris}
+	\caption{Ejemplo de generación de una tabla arcoíris}\label{tab:arcoiris}
 \end{table}
 
-Una vez que se dispone de la tabla arcoíris se pueden empezar a probar claves por fuerza bruta y si en algún momento alguna coincide con algún elemento final de la tabla arcoíris simplemente tenemos que buscar los resúmenes empezando en el que genero dicho elemento terminal (el mensaje inicial).
+Una vez que se dispone de la tabla arcoíris se puede empezar a probar claves por fuerza bruta. Si en algún momento alguna coincide con algún elemento final de la tabla arcoíris simplemente tenemos que buscar los resúmenes empezando en el que genero dicho elemento terminal (el mensaje inicial).
 
 El principal problema de éste sistema es determinar el tamaño de la tabla a utilizar y el tiempo que se necesita para crearla. En general este mecanismo solo se utiliza para casos muy concretos de funciones resumen débiles.
 
 \subsection{Caminos diferenciales para SHA-1}\label{sub:sha1}
 
-La técnica de los caminos diferenciales consiste en realizar una estudio sobre los cambios en los bits de las variables utilizadas en una función resumen. El objetivo es detectar estadísticamente los puntos en los que se producen alternancia de bits o en los que éstos no cambian para realizar una aproximación estadística a posibles colisiones.
+La técnica de los caminos diferenciales consiste en realizar un estudio sobre los cambios en los bits de las variables utilizadas en una función resumen. El objetivo es detectar estadísticamente los puntos en los que se producen alternancia de bits o en los que éstos no cambian para realizar una aproximación estadística a posibles colisiones.
 
-En \cite{citeulike:7684257} se puede encontrar un estudio que a partir del uso de aproximaciones no lineales es capaz de encontrar una colisión en SHA-1 en $2^{52}$ intentos. Para ello toma el resumen para el que deseamos hayar un mensaje que lo genere y trata de determinar los mensajes que pudieron haberlo generado deshaciendo el algoritmo tomando los datos de los posibles cambios obtenidos en el estudio anteriormente comentado.
+En \cite{citeulike:7684257} se puede encontrar un estudio que a partir del uso de aproximaciones no lineales es capaz de encontrar una colisión en SHA-1 en $2^{52}$ intentos. Para ello toma el resumen para el que deseamos hallar un mensaje que lo genere y trata de determinar los mensajes que pudieron haberlo generado deshaciendo el algoritmo tomando los datos de los posibles cambios obtenidos en el estudio anteriormente comentado.
 
-Como sucedía con el ataque del cumpleaños, esta técnica es interesante siempre y cuando el conjunto de caracteres de entrada sea completo ya que en el caso de de contraseñas, donde se utiliza un juego de caracteres muy limitado, una técnica de fuerza bruta puede resultar más eficiente.
+Como sucedía con el ataque del cumpleaños, esta técnica es interesante siempre y cuando el conjunto de caracteres de entrada sea completo ya que en el caso de contraseñas, donde se utiliza un juego de caracteres muy limitado, una técnica de fuerza bruta puede resultar más eficiente.
 
 

@@ -1,27 +1,27 @@
 \chapter{Trabajos futuros}\label{cap6}
 
-Tras terminar el proyecto hay muchas mejoras que han quedado pendientes o sería deseable poder añadir. A continuación puede verse una lista de aquellas elementos que se han considerado más importante de cara a la continuidad del proyecto:
+Tras terminar el proyecto hay muchas mejoras que han quedado pendientes o sería deseable poder añadir. A continuación puede verse una lista de aquellos elementos que se han considerado más importante de cara a la continuidad del proyecto:
 
 \begin{description}
 	\item[Mejorar las comunicaciones entre agentes y controlador.]
 
-		Hasta este momento las comunicaciones entre agente y controlador hacen uso de un protocolo un poco pobre en lo que a características se refiere lo que supone también una restricción a la hora de hacer ampliaciones. La mejora propuesta busca ampliar este protocolo para que la variedad de funciones que pueda tener el agente sea mucho mayor.
+		Hasta este momento las comunicaciones entre agente y controlador hacen uso de un protocolo un poco pobre, en lo que a características se refiere, lo que supone también una restricción a la hora de hacer ampliaciones. La mejora propuesta busca ampliar este protocolo para que la variedad de funciones que pueda tener el agente sea mucho mayor.
 
 		Para desarrollar el nuevo protocolo habría que:
 
 		\begin{itemize}
 			\item Estudiar las mejoras que se quieren introducir para saber cómo afectarían a las comunicaciones (por ejemplo, para enviar \emph{plugins} hay que poder indicarlo).
 
-			\item Definir el nuevo protocolo (mensajes que envia el agente al controlador y las posibles respuestas a estos) con respecto al punto anterior.
+			\item Definir el nuevo protocolo (mensajes que envía el agente al controlador y las posibles respuestas a estos) con respecto al punto anterior.
 
-			\item Realizar las modificaciones pertinenten en el controlador y en el agente. Para ello habrá que cambiar el fichero \emph{agents\_controller.php}, del controlador, y \emph{ControllerLink.cpp}, del agente.
+			\item Realizar las modificaciones pertinentes en el controlador y en el agente. Para ello habrá que cambiar el fichero \emph{agents\_controller.php}, del controlador, y \emph{ControllerLink.cpp}, del agente.
 		\end{itemize}
 
 	\item[Carga de algoritmos desde el controlador.]
 
 		Esta extensión permitiría centralizar la administración de los algoritmos en el controlador de modo que no haga falta tener que entrar de forma remota en cada uno de los agentes para añadir nuevas funcionalidades. Esto facilitaría la administración del sistema al evitar tener que acceder a cada agente para instalar las extensiones.
 
-		Para realizar esta tarea habría que modificar el controlador y el agente de tal modo que:
+		Para realizar esta tarea habría que modificar el controlador y el agente de modo que:
 
 		\begin{itemize}
 			\item El controlador debe saber en todo momento que algoritmos y \emph{executors} tienen los agentes.
@@ -30,7 +30,7 @@ Tras terminar el proyecto hay muchas mejoras que han quedado pendientes o sería
 
 			\item El controlador pueda enviar a los agentes los \emph{plugins}.
 
-			\item El Agente debe poder cargar los \emph{plugins} cuando se lo indique el controlador.
+			\item El agente debe poder cargar los \emph{plugins} cuando se lo indique el controlador.
 		\end{itemize}
 
 		Para esto habría que cambiar el protocolo de comunicación que se utiliza actualmente.
@@ -39,7 +39,7 @@ Tras terminar el proyecto hay muchas mejoras que han quedado pendientes o sería
 
 		En la actualidad hay una gran cantidad de algoritmos de resumen que pueden ser portados a  DHC y sería interesante disponer de ellos.
 
-		Estos algoritmos se pueden crear fácilmente dentro de \emph{plugins} que serán cargados posteriormente. Para ello cada nuevo algoritmo deberá heredar de la clase \emph{Algorithm}, implementar su funcionalidad y ser exportado como \emph{plugin}.
+		Estos algoritmos se pueden crear fácilmente dentro de \emph{plugins} que serían cargados posteriormente. Para ello cada nuevo algoritmo deberá heredar de la clase \emph{Algorithm}, implementar su funcionalidad y ser exportado como \emph{plugin}.
 
 	\item[Crear nuevos mecanismos de ejecución.]
 
@@ -59,7 +59,7 @@ Tras terminar el proyecto hay muchas mejoras que han quedado pendientes o sería
 
 	\item[Implementar nuevos protocolos de seguridad.]
 
-		DHC no tiene porque restringirse solo a funciones resumen. Con esto se conseguiría que la herramienta abarcase una mayor número de mecanismos de seguridad como  podrían ser:
+		DHC no tiene porque restringirse sólo a funciones resumen. Con esto se conseguiría que la herramienta abarcase un mayor número de mecanismos de seguridad como  podrían ser:
 
 		\begin{itemize}
 			\item Contraseñas de redes WiFi con protección WPA.
@@ -73,7 +73,7 @@ Tras terminar el proyecto hay muchas mejoras que han quedado pendientes o sería
 
 		Esta característica puede utilizarse para determinar cuando un \emph{plugin} ha cambiado y volverlo a cargar sin tener que reiniciar el agente. De este modo el rendimiento de la aplicación mejoraría al no tener que parar casi nunca.
 
-		El desarrollo de esta mejor podría hacerse del siguiente modo:
+		El desarrollo de esta mejora podría hacerse del siguiente modo:
 
 		\begin{itemize}
 			\item Se debe determinar las llamadas al sistema que permiten monitorizar los cambios sobre el sistema de ficheros.

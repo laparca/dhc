@@ -4,13 +4,13 @@ Para el desarrollo del proyecto se ha hecho uso de una gran cantidad de herramie
 
 \section{CMake}
 
-CMake es una herramienta para la construcción de ficheros Makefile. El mayor inconveniente que hay a la hora de utilizar ficheros Makefile es que es complicado mantenerlos y aún más crear versiones para diferentes sistemas operativos. Este último punto se debe a que puede variar sutilmente algunas de las reglas de para crear el fichero y que dependiendo del sistema operativo se puedan necesitar unas u otras librerías. Además, utilizando ficheros Makefile es complicado realizar comprobaciones sobre el sistema, com puedan ser comprobar si está o no instalada una biblioteca en concreto.
+CMake es una herramienta para la construcción de ficheros Makefile. El mayor inconveniente que hay a la hora de utilizar ficheros Makefile es que resulta complicado mantenerlos y aún más crear versiones para diferentes sistemas operativos. Este último punto se debe a que pueden variar sutilmente algunas de las reglas para crear el fichero y que dependiendo del sistema operativo se puedan necesitar unas u otras librerías. Además, utilizando ficheros Makefile es complicado realizar comprobaciones sobre el sistema, como pueden ser comprobar si está o no instalada una biblioteca en concreto.
 
 Existen varias soluciones para la generación de ficheros Makefile, entre ellas destaca GNU Autotools. Ésta es probablemente una de las herramientas más famosas en el mundo del software libre por ser la que se utiliza dentro del proyecto GNU. Desgraciadamente Autotools es una herramienta complicada de utilizar lo que nos hizo decantarnos por CMake.
 
 CMake utiliza una sintaxis sencilla para definir las reglas de comprobación, asignación de dependencias y cualquier cosa que tenga que ver con el proceso de generación del proyecto.
 
-Para instalar cmake en el sistema se ejecutará el siguiente comando:
+Para instalar CMake en el sistema se ejecutará el siguiente comando:
 
 \begin{verbatim}
 $ sudo apt-get install cmake
@@ -20,7 +20,7 @@ $ sudo apt-get install cmake
 
 Una parte muy importante de todo proyecto es la gestión de los ficheros que se están utilizando. En el caso de un proyecto software el control de los cambios es fundamental para evitar problemas.
 
-Git es un sistema de control de versiones desarrollador por Linus Torvalds para el núcleo Linux. Sus principales características son:
+Git es un sistema de control de versiones desarrollado por Linus Torvalds para el núcleo Linux. Sus principales características son:
 
 \begin{itemize}
 	\item Es un sistema distribuido, lo que evita la necesidad de disponer siempre de un servidor central al que enviar los cambios, como sucede con otros sistemas como CVS o Subversion.
@@ -36,12 +36,12 @@ Para poder utilizar git solo hace falta instalarlo ejecutando el siguiente coman
 $ sudo apt-get install git-core
 \end{verbatim}
 
-Durante el desarrollo del proyecto se ha utilizado varias ramas para controlar las distintas partes. Concretamente se ha utilizado:
+Durante el desarrollo del proyecto se han utilizado varias ramas para controlar las distintas partes. Concretamente se ha utilizado:
 
 \begin{description}
-	\item[master] Mantiene el código que ha se ha comprobado que funciona correctamente. No se puede incorporar nada a esta rama directamente, sino que hay que desarrollar primero en otra rama, comprobar correcto funcionamiento de los cambios y luego se realiza la mezcla de los cambios con \emph{master}s.
+	\item[master] Mantiene el código que se ha comprobado que funciona correctamente. No se puede incorporar nada a esta rama directamente, sino que hay que desarrollar primero en otra rama, comprobar correcto funcionamiento de los cambios y luego se realiza la mezcla de los cambios con \emph{master}s.
 	
-	\item[ldopen] En esta rama se realizaron los cambios para soportar plugins. La nomenclatura de ldopen proviene de la llamada a sistema utilizada para poder desarrollar esta funcionalidad.
+	\item[ldopen] En esta rama se realizaron los cambios para soportar \emph{plugins}. La nomenclatura de ldopen proviene de la llamada a sistema utilizada para poder desarrollar esta funcionalidad.
 	
 	\item[nuevaweb] Aquí se encuentra todo el código de pruebas del nuevo controlador desarrollado así como cambios sobre los agentes para soportar la nueva arquitectura.
 	
@@ -52,7 +52,7 @@ Durante el desarrollo del proyecto se ha utilizado varias ramas para controlar l
 
 Para poder hacer uso del controlador es necesario disponer de un servidor web con soporte de PHP. En este caso se ha utilizado el servidor web Apache en su versión 2 por ser el más popular, disponer de una abundante documentación y ser software libre.
 
-Cualquier distribución de GNU/Linux puede instalar este servidor web con unos pocos \emph{clicks} de ratón o en su defecto un único comando. en el caso de las distribuciones basadas en Debian solo hace falta ejecutar el siguiente comando:
+Cualquier distribución de GNU/Linux puede instalar este servidor web con unos pocos \emph{clicks} de ratón o en su defecto un único comando. En el caso de las distribuciones basadas en Debian solo hace falta ejecutar el siguiente comando:
 
 \begin{verbatim}
 $ sudo apt-get install apache2
@@ -62,9 +62,9 @@ $ sudo apt-get install apache2
 
 Redmine es un gestor de proyectos realizado en Ruby on Rails. Permite la asignación de tareas, calendarios, documentación y otras muchas funcionalidades más a través de plugins. Como la mayoría de las herramientas utilizadas es software libre.
 
-Esta herramienta ha sido de utilidad para poder controlar los problemas que han ido surgiendo y que no quedaran pendientes.
+Esta herramienta ha sido de utilidad para poder controlar los problemas que han ido surgiendo y que no quedarán pendientes.
 
-La instalación de redmine es probablemente de las más complicadas de todas las herramientas utilizadas en este proyecto. Para instalar esta herramienta se ha tenido que seguir los siguientes pasos:
+La instalación de Redmine es probablemente de las más complicadas de todas las herramientas utilizadas en este proyecto. Para instalar esta herramienta se ha tenido que seguir los siguientes pasos:
 
 \begin{itemize}
 	 \item Instalación de ruby, rails y rake:
@@ -89,7 +89,7 @@ Para desarrollar el proyecto se ha hecho uso de la versión 2.3 de CUDA que pued
 
 Es importante comprobar antes de utilizar CUDA si la tarjeta gráfica que tiene el equipo es compatible.
 
-Para instalar CUDA en linux se necesita instalar primero el controlador de la tarjeta gráfica. Este controlador requiere las cabeceras del núcleo Linux para poder compilarse. Por este motivo hay que asegurarse de que ya se encuentre instaladas y en caso contrario se pueden instalar con el siguiente comando:
+Para instalar CUDA en linux se necesita instalar primero el controlador de la tarjeta gráfica. Este controlador requiere las cabeceras del núcleo Linux para poder compilarse. Por este motivo hay que asegurarse de que ya se encuentren instaladas y en caso contrario se pueden instalar con el siguiente comando:
 
 \begin{verbatim}
 $ sudo apt-get install linux-headers-generic
@@ -122,19 +122,19 @@ $ sudo sh ./cudatoolkit_3.2.16_linux_64_ubuntu10.04.run
 
 Es recomendable instalar las herramientas en los directorios que nos indique como predeterminados (generalmente \emph{/usr/local/cuda}).
 
-\section{GNU G++}
+\section{Compilador de C y C++ de GNU}
 
 El compilador de GNU es probablemente uno de los más utilizados hoy día en el mundo del software libre. Este compilador dispone de herramientas para compilar una gran cantidad de lenguajes distintos como C, C++, Objective-C, Pascal y muchos más. Es el compilador que traen todas las distribuciones GNU/Linux en la actualidad y hasta sistemas operativos como Mac OS X lo utilizan.
 
-La mayor parte del código empleado en el proyecto está escrito en C++ por lo que se ha necesitado hacer uso del compilador de C++ que de GNU, principalmente por ser el más sencillo de instalar.
+La mayor parte del código empleado en el proyecto está escrito en C++ por lo que se ha necesitado hacer uso del compilador de C++ de GNU, principalmente por ser el más sencillo de instalar en Linux.
 
-Para asegurarnos que al instalar el compilador GNU G++ se instalen todas las dependencias que necesitamos podemos ejecutar la siguiente orden:
+Para asegurarnos que al instalar el compilador de GNU se instalen todas las dependencias que necesitamos podemos ejecutar la siguiente orden:
 
 \begin{verbatim}
 $ sudo apt-get install build-essential g++
 \end{verbatim}
 
-El paquete \emph{build-essential} se encarga de instalar todas las herramientas y bibliotecas de compilación básicas. Luego le indicamos que se asegure de instalar g++.
+El paquete \emph{build-essential} se encarga de instalar todas las herramientas y bibliotecas de compilación básicas. Luego le indicamos que se asegure de instalar g++ (nombre que tiene el compilador de C++ suministrado por GNU).
 
 \section{NASM}
 
@@ -204,11 +204,11 @@ $ sudo apt-get intall gimp
 
 \section{\LaTeX}
 
-Es una de las herramientas más extendidas para la creación de textos científicos. \LaTeX son un conjunto de reglas para la herramienta \TeX creada por Donald E. Knuth. Su diseño está pensado para no tener que prestar demasiada atención a detalles de presentación para centrar el esfuerzo en el contenido. Es muy parecido a lo que ahora se hace en web con HTML+CSS.
+Es una de las herramientas más extendidas para la creación de textos científicos. \LaTeX{} son un conjunto de reglas para la herramienta \TeX{} creada por Donald E. Knuth. Su diseño está pensado centrarse en el contenido de los documentos en lugar de en su diseño. Es muy parecido a lo que ahora se hace en web con HTML+CSS.
 
-La memoria de este proyecto final de carrera ha sido escrito utilizando \LaTeX por las ventajas que ofrece frente a otros sistemas como Microsoft Word o LibreOffice. Entre estas ventajas podemos destacar que al almacenar solo ficheros de texto es más sencillo realizar un control de versiones sobre las modificaciones, lo que resulta más complicado utilizando ficheros binarios.
+La memoria de este proyecto final de carrera ha sido escrito utilizando \LaTeX{} por las ventajas que ofrece frente a otros sistemas como Microsoft Word o LibreOffice. Entre estas ventajas podemos destacar que al almacenar solo ficheros de texto es más sencillo realizar un control de versiones sobre las modificaciones, lo que resulta más complicado utilizando ficheros binarios.
 
-Para instalar el compilador de \LaTeX en el sistema hay que ejecutar:
+Para instalar el compilador de \LaTeX{} en el sistema hay que ejecutar:
 
 \begin{verbatim}
 $ sudo apt-get install texlive-latex-extra
@@ -218,11 +218,11 @@ $ sudo apt-get install texlive-latex-extra
 
 GnuPlot es una herramienta para la generación de gráficas de funciones. Ha sido utilizada para la gráfica de la distribución de la paradoja del cumpleaños.
 
-Esta herramienta es muy útil cuando se necesita hacer gráficas de datos y no se tiene un sistema muy potente ya que requiere de poca memoria. Un ejemplo de ello es cuando se tienes grandes tablas de datos en MS Office lo que hace que tarde en generar gráficas o incluso manejar los datos.
+Esta herramienta es muy útil cuando se necesita hacer gráficas de datos y no se tiene un sistema muy potente ya que requiere de poca memoria. Un ejemplo de ello es cuando se tienen grandes tablas de datos en MS Office lo que hace que tarde en generar gráficas o incluso manejar los datos.
 
 En este caso se ha creado un script de GnuPlot que ha sido integrado dentro del sistema de compilación automático de CMake para generar un PDF y poder ser incrustado en el documento \LaTeX.
 
-Para instalar GnuPlot solo hace falta utilizar la siguiente orden en el sistema:
+Para instalar GnuPlot sólo hace falta utilizar la siguiente orden en el sistema:
 
 \begin{verbatim}
 $ sudo apt-get install gnuplot
@@ -230,7 +230,7 @@ $ sudo apt-get install gnuplot
 
 \section{LibreOffice}
 
-LibreOffice es una herramienta que ha nacido a partir del código de OpenOffice.org. Su creación viene motivada a que los desarrolladores de OpenOffice.org estaban a disgusto con las políticas empresariales de Oracle.
+LibreOffice es una herramienta que ha nacido a partir del código de OpenOffice.org. Su creación se motivo en el descontento de los desarrolladores por la falta de una estrategia por parte de Oracle tras la compra de Sun (y con ello de OpenOffice.org). Aparentemente, Oracle no tiene mucho interés en apoyar el software libre adquirido por la compra de Sun Microsystems.
 
 Todas los diagramas que aparecen en la memoria ha sido realizadas con la aplicación de dibujo de LibreOffice.
 
@@ -240,11 +240,11 @@ LibreOffice puede ser descargado desde su página web en \url{http://www.libreof
 
 UML, siglas de \emph{Unified Modeling Language}, es un lenguaje gráfico para modelar software ampliamente utilizando en el mundo de la programación orientada a objetos.
 
-Algunos de los diagramas expuestos en la memoria hacen uso de dicho lenguaje. Concretamente se ha hecho uso de diagramas de clases y de secuencia. El primero permite expresar de forma gráfica los elementos que formar todo, o una parte, de un programa, pero sin entrar al detalle de como deben comportarse. Los diagramas de secuencia representan un caso de funcionamiento concreto y son útiles para poder mostrar cómo actúa una parte del proyecto.
+Algunos de los diagramas expuestos en la memoria hacen uso de dicho lenguaje. Concretamente se ha hecho uso de diagramas de clases y de secuencia. El primero permite expresar de forma gráfica los elementos que forman todo, o una parte, de un programa, pero sin entrar al detalle de como deben comportarse. Los diagramas de secuencia representan un caso de funcionamiento concreto y son útiles para poder mostrar cómo actúa una parte del proyecto.
 
 \section{Debian y Ubuntu}
 
-Debian es una de las distribuciones de Linux más antiguas y su filosofía es utilizar sólo software libre. Una de los puntos más importantes a destacar sobre esta distribución es que está mantenida enteramente por voluntarios y que tiene uno de los mayores repositorios de aplicaciones de todas las distribuciones existentes.
+Debian es una de las distribuciones de Linux más antiguas y su filosofía es utilizar sólo software libre. Uno de los puntos más importantes a destacar sobre esta distribución es que está mantenida enteramente por voluntarios y que tiene uno de los mayores repositorios de aplicaciones de todas las distribuciones existentes.
 
 Debian posee muchas distribuciones derivadas que sobre ésta añaden paquetes y/o hacen cambios de configuración. Una de estas distribuciones, y probablemente la distribución más famosa actualmente, es Ubuntu.
 
@@ -275,7 +275,7 @@ Para realizar el proyecto se ha utilizado, a parte de las herramientas anteriorm
 	
 	Desde estos equipos se realizan constantes peticiones de \emph{pull} y \emph{push} a git para mantener siempre una copia actualizada de los cambios.
 	
-	\item[Equipo de ejecución] Este equipo se encuentra instalado en el laboratorio de Evalues en el Parque Cientifico-Tecnológico de Leganés. Dispone de una 2 microprocesadores AMD Opteron de 4 núcleos cada uno, 8 GB de RAM y una NVIDIA Tesla S1070.
+	\item[Equipo de ejecución] Este equipo se encuentra instalado en el laboratorio de Evalues en el Parque Cientifico-Tecnológico de Leganés. Dispone de 2 microprocesadores AMD Opteron de 4 núcleos cada uno, 8 GB de RAM y una NVIDIA Tesla S1070.
 	
 	Tanto la unidad Tesla como el equipo que la controla pueden montarse en un \emph{rack} de ordenadores.
 	

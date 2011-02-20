@@ -8,16 +8,16 @@ Con las pruebas realizadas se ha procurado asegurar el buen funcionamiento de lo
 
 Las pruebas sobre el sistema de \emph{plugins} tratan de comprobar, por una parte, el buen funcionamiento de la carga dinámica de las extensiones, así como de las mejoras suministradas por el API de algoritmos y de \emph{executors}.
 
-Este apartado ha sido uno de los más importantes ya que todos los cambios realizados tienen un impacto importante sobre la estructura del proyecto. De este modo se debe garantizar que tras los cambios todo el sistema sigue funcionando de forma correcta.
+Este apartado ha sido uno de los más importantes ya que todos los cambios realizados tienen un gran impacto sobre la estructura del proyecto. De este modo se debe garantizar que tras los cambios todo el sistema sigue funcionando de forma correcta.
 
-Los pasos seguidos para el propósito descrito ha sido el siguiente:
+Los pasos seguidos para el propósito descrito han sido el siguiente:
 
 \begin{enumerate}
 	\item Paso del algoritmo de MD4 al nuevo sistema.
 	
 	Con esto se pretendía probar si el mecanismo de control de algoritmos funcionaba correctamente sin influir en los resultados.
 	
-	Se eligió el algoritmo de MD4 a lazar entre todos los implementados en DHC.
+	Se eligió el algoritmo de MD4 al azar entre todos los implementados en DHC.
 	
 	\item Paso de todos los algoritmos antiguos al nuevo sistema.
 	
@@ -35,20 +35,20 @@ Los pasos seguidos para el propósito descrito ha sido el siguiente:
 	
 	\item Creación del plugin \emph{DummyPlug}.
 	
-	Este plugin de prueba no realiza ninguna operación dentro del sistema, pero es útil para comprobar que el subsistema de plugins es capaz de cargar correctamente los mismos.
+	Este plugin de prueba no realiza ninguna operación dentro del sistema, pero es útil para comprobar que el subsistema de \emph{plugins} es capaz de cargar correctamente los mismos.
 	
 	\item Transformación de los algoritmos en \emph{plugins}.
 	
-	Finalmente, se pasaron todos los algoritmos para que hagan uso del sistema de \emph{plugins} y así comprobar el funcionamiento real. Además, de este modo se independizan los plugins del agente.
+	Finalmente, se pasaron todos los algoritmos para que hagan uso del sistema de \emph{plugins} y así comprobar el funcionamiento real; de este modo se independizan los \emph{plugins} del agente.
 \end{enumerate}
 
 Para realizar las pruebas anteriores se fueron realizando los cambios paulatinamente y corrigiendo los errores que surgieron. En estos momentos se puede considerar que el subsistema de \emph{plugins}, algoritmos y \emph{executors} funciona correctamente.
 
 \section{Controlador}
 
-El controlador ha sufrido un rediseño importante de su aspecto que ha buscando mantener la misma funcionalidad que tenía anteriormente y a la vez ofrecer una experiencia más agradabe mejorando la presentación. Para ello se ha hecho uso de las técnicas actuales de diseño web como uso de degradados.
+El controlador ha sufrido un rediseño importante de su aspecto que ha buscando mantener la misma funcionalidad que tenía anteriormente y a la vez ofrecer una experiencia más agradable mejorando la presentación. Para ello se ha hecho uso de las técnicas actuales de diseño web como uso de degradados.
 
-Los cambios realizados ha supuesto una mejora constatada tras dar a probar ambas interfaces a un grupo de personas. Este grupo se componía de 7 personas completamente ajenas al desarrollo de este proyecto y constataron la mejora del mismo.
+Los cambios realizados han supuesto una mejora constatada tras dar a probar ambas interfaces a un grupo de personas. Este grupo se componía de 7 personas completamente ajenas al desarrollo de este proyecto y pudieron constatar la mejora del mismo.
 
 Por otro lado, los cambios en los agentes destinados a mejorar el tiempo de respuesta del controlador han contribuido a que, en momentos de alta carga de trabajo, los tiempos de espera se reduzcan. Esto supone una mejor experiencia de usuario al eliminar posibles impaciencias por la tardanza en obtener una página del controlador. Para poder comprobar este último punto solo ha sido necesario enviar un hash al sistema para que se ponga en marcha y controlar el tiempo que tarda en devolver una página.
 
@@ -65,14 +65,14 @@ Un ejemplo claro sería la introducción de un nuevo algoritmo, que antes supon�
 
 Además, puede ser necesario el cambio de más ficheros dependiendo de cómo se haya implementado el algoritmo.
 
-Tras la reimplentación del sistema se simplifica enormemente el número de ficheros a modificar ya que ahora solo hace falta cambiar el del propio algoritmo. Igualmente, añadir nuevas funcionalidades se simplifica enormemente ya que no hay necesidad de modificar línea alguna de código sobre el agente.
+Tras la reimplantación del sistema se simplifica enormemente el número de ficheros a modificar ya que ahora solo hace falta cambiar el del propio algoritmo. Igualmente, al añadir nuevas funcionalidades se simplifica enormemente ya que no hay necesidad de modificar línea alguna de código sobre el agente.
 
-Igualmente el controlador se ha visto claramente beneficiado por el uso de CakePHP ya que, gracias al uso de una estructura ordenada en la organización de los elementos que componen al software, se puede ir directamente a la parte en la que pueda haber cualquier problema para solucionarla.
+Igualmente el controlador se ha visto claramente beneficiado por el uso de CakePHP ya que, gracias al uso de una estructura ordenada en la organización de los elementos que componen el software, se puede ir directamente a la parte en la que pueda haber cualquier problema para solucionarla.
 
 \section{Algoritmo SHA-256}
 
-Las pruebas sobre este algoritmo han consistido, por una parte, en comprobar que los resúmenes que generaba eran correctos. Una vez confirmado este punto se ha procedido a calcular el tiempo que tarda en calcular en resumen para poder compararlo con el resto de algoritmos.
+Las pruebas sobre este algoritmo han consistido, por una parte, en comprobar que los resúmenes que generaba eran correctos. Una vez confirmado este punto se ha procedido a calcular el tiempo que tarda en calcular un resumen para poder compararlo con el resto de algoritmos.
 
-Para comprobar el tiempo que tarda se eligió una palabra de prueba con minúscula, mayúsculas, números y algunso símbolos y una longitud de 8 caracteres. Tras esto se generó su resumen SHA-1 y SHA-256. Tras medir los tiempos que tardaba el sistema en encontrar la palabra para SHA-1 y SHA-256 se pudo determinar que la implementación de este último es 1,5 veces más lenta que la primera. Esto se debe principalmente a que el nuevo algoritmo requiere más pasos para obtener el resumen.
+Para comprobar el tiempo que tarda se eligió una palabra de prueba con minúsculas, mayúsculas, números y algunos símbolos y una longitud de 8 caracteres. Tras esto se generó su resumen SHA-1 y SHA-256. Tras medir los tiempos que tardaba el sistema en encontrar la palabra para SHA-1 y SHA-256 se pudo determinar que la implementación de este último es 1,5 veces más lenta que la primera. Esto se debe principalmente a que el nuevo algoritmo requiere más pasos para obtener el resumen.
 
 El resultado anterior es importante de cara a la implementación de nuevos algoritmos ya que será importante tener en cuenta cuanto más complejos son y, en caso de una complejidad excesiva, si es útil implementarlo. Si la complejidad de un algoritmo resultase muy elevada podría suceder que el tiempo que tardase en devolver un resultado fuera demasiado elevado. Esto significa que es importante comprobar con las ecuaciones mostradas en~\ref{sec:comprobacion_resumen} para determinar de forma anticipada los tiempos.

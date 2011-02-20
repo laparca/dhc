@@ -1,18 +1,18 @@
 \chapter{Manual de usuario} 
 
-En el este capítulo se va a mostrar como instalar y usar DHC. Además se verán algunos detalles más avanzados de configuración para casos especiales.
+En este capítulo se va a mostrar como instalar y usar DHC. Además se verán algunos detalles más avanzados de configuración para casos especiales.
 
 \section{Instalación}
 
-Antes de poder hacer uso de la aplicación es necesario instalarla. En las siguiente subsecciones se explicarán los pasos detallados para poner a punto el sistema.
+Antes de poder hacer uso de la aplicación es necesario instalarla. En las siguientes subsecciones se explicarán los pasos detallados para poner a punto el sistema.
 
 \subsection{Instalación del agente}
 
 El agente es uno de los elementos esenciales de DHC y el que entraña mayor dificultad de instalación. Por ese motivo hay que prestar especial detalle al procedimiento para identificar posibles fallos.
 
-El proceso de instalacion consiste en la instalación del sistema operativo en la máquina, los controladores del mismo y las herramientas de compilación tal y como se ha descrito en el apéndice~\ref{chap:entorno}.
+El proceso de instalación consiste en la instalación del sistema operativo en la máquina, los controladores del mismo y las herramientas de compilación tal y como se ha descrito en el apéndice~\ref{chap:entorno}.
 
-Una vez instalado todas las herramientas necesarias se procede a la compilación del agente. Para este propósito se deberán seguir los siguiente pasos:
+Una vez instaladas todas las herramientas necesarias se procede a la compilación del agente. Para este propósito se deberán seguir los siguiente pasos:
 
 \begin{enumerate}
 	\item Se hace una copia del repositorio para trabajar con ella:
@@ -21,7 +21,7 @@ Una vez instalado todas las herramientas necesarias se procede a la compilación
 	$ git clone $LOCATION dhc
 	\end{verbatim}
 	
-	\$LOCATION hace referencia al lugar en el que se encuentre el repositorio y puede ser de la forma \emph{file://directorio} o \emph{usuario@ssh://direccion/ruta}. Una vez realizada esta copia dispondremos de una version local del respositorio sobre la que trabajar. Esta versión se habrá creado en el directorio en el que nos estuviéramos en el momento de realizar la llamada.
+	\$LOCATION hace referencia al lugar en el que se encuentre el repositorio y puede ser de la forma \emph{file://directorio} o \emph{usuario@ssh://direccion/ruta}. Una vez realizada esta copia dispondremos de una versión local del respositorio sobre la que trabajar. Esta versión se habrá creado en el directorio en el que estuviéramos en el momento de realizar la llamada.
 	
 	\item Preparamos la compilación:
 	
@@ -79,7 +79,7 @@ En el cuadro~\ref{tab:mat_agente} podemos ver la lista de tareas a realizar. Est
 
 El controlador es la parte encargada de la gestión del sistema. Es algo más sencilla de instalar que el agente al no requerir ninguna compilación, pero en cambio necesita que se modifiquen ciertos ficheros.
 
-Para poder utilizar el controlador hace falta que el ordenador disponga del servidor web Apache y PHP. Además puede tener MySQL o se puede alojar la base de datos en otro ordenador. Con independencia de dónde se decida instalar MySQL se considerarán las siguiente variables que utilizaremos para identificar datos de configuración:
+Para poder utilizar el controlador hace falta que el ordenador disponga del servidor web Apache y PHP. Además puede tener MySQL o se puede alojar la base de datos en otro ordenador. Con independencia de dónde se decida instalar MySQL se considerarán las siguientes variables que utilizaremos para identificar datos de configuración:
 
 \begin{description}
 	\item[PWEB] Ruta al punto en que se encontrará el controlador y que es un directorio accesible desde internet (normalmente es /var/www).
@@ -115,7 +115,7 @@ Los pasos a seguir para la instalación son los siguientes:
 	$ git clone $LOCATION dhc
 	\end{verbatim}
 	
-	\$LOCATION hace referencia al lugar en el que se encuentre el repositorio y puede ser de la forma \emph{file://directorio} o \emph{usuario@ssh://direccion/ruta}. Una vez realizada esta copia dispondremos de una version local del respositorio sobre la que trabajar. Esta versión se habrá creado en el directorio en el que nos estuviéramos en el momento de realizar la llamada.
+	\$LOCATION hace referencia al lugar en el que se encuentre el repositorio y puede ser de la forma \emph{file://directorio} o \emph{usuario@ssh://direccion/ruta}. Una vez realizada esta copia dispondremos de una versión local del respositorio sobre la que trabajar. Esta versión se habrá creado en el directorio en el que estuviéramos en el momento de realizar la llamada.
 
 	\item Copiamos el controlador a su destino:
 	
@@ -195,7 +195,7 @@ $ agent $DIRECCION_CONTROLADOR
 
 Donde \$DIRECCION\_CONTROLADOR es la URL del controlador.
 
-Una vez que se tiene a los agentes en funcionamiento se puede proceder a utilizar el controlador. Para este fin de hará uso de un navegador web\footnote{Actualmente existe una gran cantidad de navegadores web en el mercado. Se recomienda encarecidamente el uso de navegadores con soporte de HTML5 y CSS3 como pueden ser Google Chrome, Apple Safari o Mozilla Firefox.}
+Una vez que se tiene a los agentes en funcionamiento se puede proceder a utilizar el controlador. Para este fin se hará uso de un navegador web\footnote{Actualmente existe una gran cantidad de navegadores web en el mercado. Se recomienda encarecidamente el uso de navegadores con soporte de HTML5 y CSS3 como pueden ser Google Chrome, Apple Safari o Mozilla Firefox.}
 
 Nada más entrar en la aplicación podemos observar una pantalla como la mostrada en la figura~\ref{fig:DHC_principal}. En caso de que el sistema esté en funcionamiento podremos ver a qué velocidad está trabajando (en millones de hashes por segundo) o nada en otro caso.
 
@@ -205,7 +205,7 @@ Nada más entrar en la aplicación podemos observar una pantalla como la mostrad
 	\caption{Pantalla principal de DHC}\label{fig:DHC_principal}
 \end{figure}
 
-El primer paso es ir a enviar para solicitar la realialización de alguna tarea (ver figura~\ref{fig:DHC_enviar}). En este punto tendremos que seleccionar todas las opciones de configuración de la tarea.
+El primer paso es ir a enviar para solicitar la realización de alguna tarea (ver figura~\ref{fig:DHC_enviar}). En este punto tendremos que seleccionar todas las opciones de configuración de la tarea.
 
 \begin{figure}
 	\centering
@@ -223,7 +223,7 @@ En todo momento podemos comprobar qué tareas hay en funcionamiento desde la pan
 	\caption{Cola de tareas}\label{fig:DHC_cola}
 \end{figure}
 
-Finalmente, podemos comprobar las tereas que se han terminado en la sección salida (ver figura~\ref{fig:DHC_salida}). Además, se puede comprobar la razón de la finalización de la tarea (resultado encontrado, no encontrado, etc.).
+Finalmente, podemos comprobar las tareas que se han terminado en la sección salida (ver figura~\ref{fig:DHC_salida}). Además, se puede comprobar la razón de la finalización de la tarea (resultado encontrado, no encontrado, etc.).
 
 \begin{figure}
 	\centering
@@ -245,7 +245,7 @@ Durante el tiempo que esté en uso DHC pueden surgir ocasiones en las que se nec
 
 \subsection{Instalación de nuevos plugins}
 
-Para instalar nuevos plugins en el sistema solo hay que copiar estos al directorio /usr/lib/cracker/ptx. Los \emph{plugins} tienen todos la extensión .aplug.so.
+Para instalar nuevos \emph{plugins} en el sistema solo hay que copiar estos al directorio /usr/lib/cracker/ptx. Los \emph{plugins} tienen todos la extensión .aplug.so.
 
 \subsection{Eliminación plugins obsoletos o erróneos}
 
@@ -271,6 +271,6 @@ Una vez que se inicien los agentes se irá pasando a cada uno la URL del control
 En ciertas ocasiones, los agentes pueden tardar mucho en devolver el resultado de una WU por lo que se hace necesario modificar los tiempo de caducidad para evitar un exceso de reciclados que ralentizarían sobremedida el proceso de comprobación.
 
 \subsection{Cambio de los directorios de búsqueda predeterminados}
-Cuando un agente se inicia siempre comprueba la existencia de \emph{plugins} en unos directorios predefinidos. Además, también busca en estos mismos directorio los ficheros binarios de CUDA que le puedan ser solicitados por los algoritmos. Por defecto estos directorios son: el directorio desde el que se ejecuta el agente, el directorio \emph{ptx} desde el que se ejecuta el agente y el directorio \emph{/usr/lib/cracker/ptx}.
+Cuando un agente se inicia siempre comprueba la existencia de \emph{plugins} en unos directorios predefinidos. Además, también busca en estos mismos directorios los ficheros binarios de CUDA que le puedan ser solicitados por los algoritmos. Por defecto estos directorios son: el directorio desde el que se ejecuta el agente (directorio ./), el directorio \emph{ptx} desde el que se ejecuta el agente (directorio ./ptx) y el directorio \emph{/usr/lib/cracker/ptx}.
 
 En caso de que se quisiese cambiar este comportamiento se puede editar el fichero config.cpp del agente para añadir o eliminar directorios de búsqueda.
