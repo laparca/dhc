@@ -1,4 +1,4 @@
-\documentclass[12pt,hyperref={pdfpagelabels=false}]{beamer}
+\documentclass[12pt]{beamer}
 \usepackage[utf8]{inputenc}
 \usepackage[spanish]{babel}
 %\usepackage{graphicx}
@@ -27,11 +27,11 @@
 
 \frame{\titlepage}
 
-\begin{frame}
-	\begin{center}
-		\Huge iCrack
-	\end{center}
-\end{frame}
+%\begin{frame}
+%	\begin{center}
+%		\Huge iCrack
+%	\end{center}
+%\end{frame}
 
 
 \begin{frame}{Contenidos}
@@ -84,25 +84,69 @@
 \subsection{Uso de tarjetas gráficas}
 \begin{frame}{Uso de tarjetas gráficas}
 	\begin{center}
-		Su velocidad ha crecído mucho~\cite{nvidia:cuda_c_programming_guide} y han añadido nuevas características que las hacen muy atractivas para todo tipo de tareas.
+		Su velocidad ha crecido mucho~\cite{nvidia:cuda_c_programming_guide} y han añadido nuevas características que las hacen muy atractivas para todo tipo de tareas.
 	\end{center}
 \end{frame}
 
+
+\lstset{emph={int,float,void}, emphstyle=\color{blue},
+emph={[2]__global__,__device__,__kernel__,threadIdx},emphstyle={[2]\color{green}}}
+\defverbatim[colored]\testcode{%
+\begin{lstlisting}[frame=single]
+__global__ void vector_add(
+  float *v1, float *v2, float *r)
+{
+  int p = threadIdx.x;
+  r[p] = v1[p] + v2[p];
+}
+\end{lstlisting}}
 \begin{frame}{Uso de tarjetas gráficas}
-	Entre sus principales características destancan:
+	Entre sus principales características destacan:
 	\pause
+
 	\begin{itemize}
-		\item Una gran velocidad para realizar operaciones aritméticas
-		\item Gran capacidad de paralelización de tareas
+		\item Una gran velocidad realizando operaciones aritméticas
+		\only<2>{
+			\begin{figure}
+				\centering
+				\includegraphics[width=0.5\textwidth]{images/evolucion-gpu.png}
+				\caption{Incremento de los FLOPS en CPU y GPU (fuente~\cite{nvidia:cuda_c_programming_guide})}
+			\end{figure}
+		}
+			
+		\item Gran capacidad para el paralelismo
+			\only<3>{
+				\begin{figure}
+					\centering
+					\includegraphics[width=0.7\textwidth]{images/cpuvsgpu.pdf}
+					\caption{Comparación interna CPU y GPU (fuente~\cite{nvidia:cuda_c_programming_guide})}			
+				\end{figure}
+			}
+			
 		\item Son fáciles de programar
+			\only<4>{
+				\testcode
+			}
 	\end{itemize}
 \end{frame}
 
-
 \section{DHC}
 \begin{frame}{DHC}
-	Se buscó una herramienta que se ajustase a los objetivos.
+	Se tomó como base de las modificaciones por varios motivos:
+	\pause
+	\begin{itemize}
+		\item Es software libre
+		\item Cumplía casi todos los requisitos
+		\item Es la única herramienta gratuita de este tipo
+	\end{itemize}
 \end{frame}
+
+\begin{frame}{DHC}
+	\begin{center}
+		Pero a pesar de todo, también tiene algunas carencias...		
+	\end{center}
+\end{frame}
+
 
 \section{Mejoras introducidas}
 
