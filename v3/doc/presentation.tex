@@ -96,7 +96,9 @@
 \lstset{emph={int,float,void}, emphstyle=\color{blue},
 emph={[2]__global__,__device__,__kernel__,threadIdx},emphstyle={[2]\color{green}}}
 \defverbatim[colored]\testcode{%
-\begin{lstlisting}[frame=single,backgroundcolor=\transparent{0.2}]
+\begin{lstlisting}[frame=single%,%
+%	backgroundcolor=\transparent{0.2}%
+]
 __global__ void vector_add(
   float *v1, float *v2, float *r)
 {
@@ -281,6 +283,10 @@ __global__ void vector_add(
 		\item Gracias a los plugins es más fácil ampliar DHC
 		\item Usar \emph{frameworks} MVC facilita el desarrollo web
 	\end{itemize}
+\end{frame}
+
+\begin{frame}{Conclusiones}
+	Gracias a todos estos cambios es más sencillo usar la tarjeta gráfica y comprobar contraseñas.
 \end{frame}
 
 \begin{frame}{Conclusiones}
