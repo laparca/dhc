@@ -89,7 +89,8 @@
 \subsection{Uso de tarjetas gráficas}
 \begin{frame}{Uso de tarjetas gráficas}
 	\begin{center}
-		Su velocidad ha crecido mucho~\cite{nvidia:cuda_c_programming_guide} y han añadido nuevas características que las hacen muy atractivas para todo tipo de tareas.
+%		Su velocidad ha crecido mucho~\cite{nvidia:cuda_c_programming_guide} y han añadido nuevas características que las hacen muy atractivas para todo tipo de tareas.
+		Su velocidad ha crecido mucho y han añadido nuevas características que las hacen muy atractivas para todo tipo de tareas.
 	\end{center}
 \end{frame}
 
@@ -117,7 +118,8 @@ __global__ void vector_add(
 			\begin{figure}
 				\centering
 				\includegraphics[width=0.5\textwidth]{images/evolucion-gpu.png}
-				\caption{Incremento de los FLOPS en CPU y GPU (fuente~\cite{nvidia:cuda_c_programming_guide})}
+%				\caption{Incremento de los FLOPS en CPU y GPU (fuente~\cite{nvidia:cuda_c_programming_guide})}
+				\caption{Incremento de los FLOPS en CPU y GPU (fuente NVIDIA)}
 			\end{figure}
 		}
 
@@ -126,7 +128,8 @@ __global__ void vector_add(
 				\begin{figure}
 					\centering
 					\includegraphics[width=0.7\textwidth]{images/cpuvsgpu.pdf}
-					\caption{Comparación interna CPU y GPU (fuente~\cite{nvidia:cuda_c_programming_guide})}
+%					\caption{Comparación interna CPU y GPU (fuente~\cite{nvidia:cuda_c_programming_guide})}
+					\caption{Comparación interna CPU y GPU (fuente NVIDIA)}
 				\end{figure}
 			}
 
@@ -167,6 +170,16 @@ __global__ void vector_add(
 \section{Mejoras introducidas}
 
 \mysection{Mejoras introducidas}
+
+\subsection{SHA-256}
+\begin{frame}
+	Primera funcionalidad añadida. Nos permite evaluar:
+	\pause
+	\begin{itemize}
+		\item La facilidad para ampliar DHC
+		\item Comprender mejor la programación con tarjetas gráficas
+	\end{itemize}
+\end{frame}
 
 \subsection{Mejora de la escalabilidad}
 \begin{frame}{Mejora de la escalabilidad}
@@ -238,40 +251,55 @@ __global__ void vector_add(
 	\end{center}
 \end{frame}
 
+\begin{frame}{Nuevo controlador}
+	\only<1>{
+		\begin{figure}
+			%\centering
+			\includegraphics[width=0.7\textwidth]{images/cola_vieja.png}
+		\end{figure}
+	}
+	\only<2>{
+		\begin{figure}
+			%\centering
+			\includegraphics[width=0.6\textwidth]{images/cola.png}
+		\end{figure}
+	}
+\end{frame}
 
 \section{Presupuesto}
 \mysection{Presupuesto}
 
 \begin{frame}{Presupuesto}
 	\begin{center}
-		La duración del proyecto ha sido de 11 meses y solo se ha trabajado unas 13,2 horas semanales.
+		El precio final del proyecto es de \color{green}43.785,30\euro{} \color{white} y su duración ha sido de 11 meses, trabajado unas 13,2 horas semanales.
 	\end{center}
 \end{frame}
 
-\begin{frame}{Presupuesto}
-	Se han tenido en cuenta todos los gastos de un desarrollo real:
-	\pause
-	\begin{itemize}
-		\item Gastos directos
-		\begin{itemize}
-			\item Sueldos \color{green}9.200,00\euro
-			\item Subcontratas \color{green}186,89\euro
-			\item Equipos \color{green}9.610,00\euro
-		\end{itemize}
-		\item Gastos indirectos \color{green}7.918,63\euro
-		\item Amortizaciones \color{green}70,80\euro
-		\item Colchón de riesgos \color{green}10\%
-		\item Beneficio \color{green}25\%
-	\end{itemize}
-\end{frame}
+%\begin{frame}{Presupuesto}
 
-\begin{frame}{Presupuesto}
-	\begin{center}
-		Precio final del proyecto contando el 18\% de I.V.A.
-		\pause
-		\only<2>{\Huge 43.785,30\euro}
-	\end{center}
-\end{frame}
+%	Se han tenido en cuenta todos los gastos de un desarrollo real:
+%	\pause
+%	\begin{itemize}
+%		\item Gastos directos
+%		\begin{itemize}
+%			\item Sueldos \color{green}9.200,00\euro
+%			\item Subcontratas \color{green}186,89\euro
+%			\item Equipos \color{green}9.610,00\euro
+%		\end{itemize}
+%		\item Gastos indirectos \color{green}7.918,63\euro
+%		\item Amortizaciones \color{green}70,80\euro
+%		\item Colchón de riesgos \color{green}10\%
+%		\item Beneficio \color{green}25\%
+%	\end{itemize}
+%\end{frame}
+
+%\begin{frame}{Presupuesto}
+%	\begin{center}
+%		Precio final del proyecto contando el 18\% de I.V.A.
+%		\pause
+%		\only<2>{\Huge 43.785,30\euro}
+%	\end{center}
+%\end{frame}
 
 
 \section{Conclusiones y trabajos futuros}
@@ -283,11 +311,14 @@ __global__ void vector_add(
 		\item Se ha conseguido mejorar la mantenibilidad de la solución
 		\item Gracias a los plugins es más fácil ampliar DHC
 		\item Usar \emph{frameworks} MVC facilita el desarrollo web
+		\item El nuevo diseño del controlador lo hace más atractivo
 	\end{itemize}
 \end{frame}
 
 \begin{frame}{Conclusiones}
-	Gracias a todos estos cambios es más sencillo usar la tarjeta gráfica y comprobar contraseñas.
+	\begin{center}
+		Gracias a todos estos cambios es más sencillo usar la tarjeta gráfica y comprobar contraseñas.
+	\end{center}
 \end{frame}
 
 \begin{frame}{Conclusiones}
@@ -313,9 +344,9 @@ __global__ void vector_add(
 	\end{center}
 \end{frame}
 
-\section{Bibliografía}
-\begin{frame}[allowframebreaks]{Bibliografía}
-	\bibliographystyle{alpha}
-	\bibliography{bibliografia}
-\end{frame}
+%\section{Bibliografía}
+%\begin{frame}[allowframebreaks]{Bibliografía}
+%	\bibliographystyle{alpha}
+%	\bibliography{bibliografia}
+%\end{frame}
 \end{document}

@@ -9,7 +9,7 @@ SET(LATEX_OUTPUT_PATH "out")
 
 ADD_LATEX_DOCUMENT(Document.tex
 	BIBFILES bibliografia.bib
-	INPUTS 
+	INPUTS
 		resumen.tex
 		introduccion.tex
 		funcione_resumen.tex
@@ -28,9 +28,9 @@ ADD_LATEX_DOCUMENT(Document.tex
 		agradecimientos.tex
 	IMAGE_DIRS images
 	DEFAULT_PDF)
-	
+
 ADD_LATEX_DOCUMENT(presentation.tex
-	BIBFILES bibliografia.bib
+#	BIBFILES bibliografia.bib
 	IMAGE_DIRS images
 	MANGLE_TARGET_NAMES
 	DEFAULT_PDF)
