@@ -16,3 +16,53 @@
 
 \setbeamertemplate{itemize item}{\lower3pt\hbox{\Large\textbullet}}
 \setbeamerfont{frametitle}{size=\huge} 
+
+%\useoutertheme{umbcfootline}
+%\setfootline{\insertshortauthor}
+
+\setbeamertemplate{navigation symbols}{} % no nav symbols
+
+\AtBeginSubsection[]
+{
+  \begin{frame}<beamer>
+    \frametitle{Contenidos}
+    \tableofcontents[currentsection,currentsubsection]
+  \end{frame}
+}
+\AtBeginSection[]
+{
+  \begin{frame}<beamer>
+    \frametitle{Contenidos}
+    \tableofcontents[currentsection,currentsubsection]
+  \end{frame}
+}
+
+%\setbeamertemplate{footline}[text line]{\insertsectionhead}
+
+\definecolor{oxygenorange}{HTML}{F7800A}
+\definecolor{oxygengray}{HTML}{686868}
+%\definecolor{oxygenlightgray}{HTML}{EEEEEE}
+\definecolor{oxygenlightgray}{HTML}{4C6084}
+%\definecolor{oxygenblue}{HTML}{236EAF}
+\definecolor{oxygenblue}{HTML}{555555}
+
+\setbeamercolor*{Location bar}{fg=oxygenorange,bg=oxygenlightgray}
+
+\setbeamercolor*{section in head/foot}{bg=oxygenblue,fg=white}
+
+\setbeamerfont{section in head/foot}{size=\tiny,series=\normalfont}
+
+\useoutertheme{default}
+
+\setbeamertemplate{footline}
+{
+  \linethickness{0.25pt}
+  \framelatex{
+  \begin{beamercolorbox}[leftskip=.3cm,sep=0.1cm]{Location bar}
+    \usebeamerfont{section in head/foot}%
+    %\insertshortauthor~|~\insertshorttitle~|~\insertshortsection
+		\insertshorttitle~|~\insertsectionhead~|~\insertsubsectionhead
+    \hfill
+    \insertframenumber/\inserttotalframenumber
+  \end{beamercolorbox}}
+}

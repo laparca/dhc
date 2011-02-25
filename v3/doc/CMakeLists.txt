@@ -30,6 +30,8 @@ ADD_LATEX_DOCUMENT(Document.tex
 	DEFAULT_PDF)
 
 ADD_LATEX_DOCUMENT(presentation.tex
+	INPUTS
+		keynote-gradient.sty
 #	BIBFILES bibliografia.bib
 	IMAGE_DIRS images
 	MANGLE_TARGET_NAMES

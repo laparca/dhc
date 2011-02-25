@@ -13,17 +13,18 @@
 %{ \usetheme{boxes} }
 
 
-\newcommand{\mysection}[1]{\begin{frame}{}\begin{center}\Huge #1\end{center}\end{frame}}
+%\newcommand{\mysection}[1]{\section{#1}\begin{frame}{}\begin{center}\Huge #1\end{center}\end{frame}}
+\newcommand{\mysection}[1]{\section{#1}}
 
 % Comment the next line to create a printable version
 \beamerdefaultoverlayspecification{<+->}
 \setbeamercovered{transparent}
 \usepackage{keynote-gradient}
 
-\title{Programación mediante tarjetas gráficas}
+\title[Mejora aplicación distribuida]{Programación mediante tarjetas gráficas}
 \subtitle{Mejora de una aplicación distribuida}
-\author{Samuel Rodríguez Sevilla\\Tutor: José María Sierra Cámara}
-
+\author[Samuel Rodríguez]{Samuel Rodríguez Sevilla\\Tutor: José María Sierra Cámara}
+\date{25 de febrero de 2011}
 
 \begin{document}
 
@@ -41,7 +42,7 @@
 	\tableofcontents[pausesections]
 \end{frame}
 
-\section{Introducción}
+%\section{Introducción}
 \mysection{Introducción}
 \begin{frame}{Introducción}
 	\begin{itemize}
@@ -95,7 +96,7 @@
 \end{frame}
 
 
-\lstset{emph={int,float,void}, emphstyle=\color{blue},
+\lstset{emph={int,float,void}, emphstyle=\color{yellow},
 emph={[2]__global__,__device__,__kernel__,threadIdx},emphstyle={[2]\color{green}}}
 \defverbatim[colored]\testcode{%
 \begin{lstlisting}[frame=single%,%
@@ -140,15 +141,20 @@ __global__ void vector_add(
 	\end{itemize}
 \end{frame}
 
-\section{DHC}
+%\section{DHC}
 \mysection{DHC}
 \begin{frame}{DHC}
 	Se tomó como base de las modificaciones por varios motivos:
 	\pause
 	\begin{itemize}
-		\item Es software libre
-		\item Cumplía casi todos los requisitos
 		\item Es la única herramienta gratuita de este tipo
+		\item Cumplía casi todos los requisitos
+		\begin{itemize}
+			\item Es distribuida
+			\item Usa tarjetas gráficas
+			\item Está especialmente diseñado para funciones resumen
+		\end{itemize}
+		\item Es software libre
 	\end{itemize}
 \end{frame}
 
@@ -160,6 +166,7 @@ __global__ void vector_add(
 		\item El \color{green}Controlador \color{white}que gestiona las tareas y el resparto de las mismas
 	\end{itemize}
 \end{frame}
+
 \begin{frame}{DHC}
 	\begin{center}
 		Pero a pesar de todo, también tiene algunas carencias...
@@ -167,12 +174,12 @@ __global__ void vector_add(
 \end{frame}
 
 
-\section{Mejoras introducidas}
+%\section{Mejoras introducidas}
 
 \mysection{Mejoras introducidas}
 
 \subsection{SHA-256}
-\begin{frame}
+\begin{frame}{SHA-256}
 	Primera funcionalidad añadida. Nos permite evaluar:
 	\pause
 	\begin{itemize}
@@ -202,6 +209,12 @@ __global__ void vector_add(
 	\end{itemize}
 \end{frame}
 
+\begin{frame}{Mejora de la escalabilidad}
+	\begin{center}
+		\includegraphics[width=0.7\textwidth]{images/control_tiempo_espera.pdf}
+	\end{center}
+\end{frame}
+
 
 
 \subsection{Sistema de algoritmos}
@@ -222,11 +235,18 @@ __global__ void vector_add(
 \begin{frame}{Carga de plugins}
 	\begin{center}
 		Facilita la creación de algoritmos sin tener que cambiar una sola línea de código del agente.
-		\begin{figure}
-			\centering
-			\includegraphics[width=0.7\textwidth]{images/nuevo_agente.pdf}
-		\end{figure}
-
+		\only<2>{
+			\begin{figure}
+				\centering
+				\includegraphics[width=0.7\textwidth]{images/nuevo_agente.pdf}
+			\end{figure}
+		}
+		\only<3>{
+			\begin{figure}
+				\centering
+				\includegraphics[width=0.4\textwidth]{images/plugins.pdf}
+			\end{figure}
+		}
 	\end{center}
 \end{frame}
 
@@ -248,6 +268,11 @@ __global__ void vector_add(
 \begin{frame}{Nuevo controlador}
 	\begin{center}
 		Se ha hecho uso del \emph{framework} MVC CakePHP que simplifica enormemente el desarrollo.
+		\only<2>{
+			\begin{figure}
+				\includegraphics[width=0.7\textwidth]{images/basic_mvc.png}
+			\end{figure}
+		}
 	\end{center}
 \end{frame}
 
@@ -266,12 +291,13 @@ __global__ void vector_add(
 	}
 \end{frame}
 
-\section{Presupuesto}
+%\section{Presupuesto}
 \mysection{Presupuesto}
 
 \begin{frame}{Presupuesto}
 	\begin{center}
-		El precio final del proyecto es de \color{green}43.785,30\euro{} \color{white} y su duración ha sido de 11 meses, trabajado unas 13,2 horas semanales.
+		El proyecto ha tenido una duración de 11 meses a un as 13,2 horas semanales (un total de 575 horas) y que ha supuesto un coste de \color{green}43.785,30\euro{}\color{white}.
+%		El precio final del proyecto es de \color{green}43.785,30\euro{} \color{white} y su duración ha sido de 11 meses, trabajado unas 13,2 horas semanales.
 	\end{center}
 \end{frame}
 
@@ -302,7 +328,7 @@ __global__ void vector_add(
 %\end{frame}
 
 
-\section{Conclusiones y trabajos futuros}
+%\section{Conclusiones y trabajos futuros}
 \mysection{Conclusiones y trabajos futuros}
 
 \subsection{Conclusiones}
